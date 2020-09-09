@@ -1,0 +1,10 @@
+id_categoria, nombre, id_grupo_categoria, categoria_por_perfil, clave_categoria, fecha, subcategoria, activa, id_subcategoria
+219,Prueba Categoria 2,8,Otros,12345698,20/03/2018 16:24,Otros,t,4
+220,Prueba Categoria 3,8,Otros,12345699,21/03/2018 16:24,Otros,t,4
+221,Prueba Categoria 4,8,Otros,12345700,22/03/2018 16:24,Otros,t,4
+222,Prueba Categoria 5,8,Otros,12345701,23/03/2018 16:24,Otros,t,4
+223,Prueba Categoria 6,8,Otros,12345702,24/03/2018 16:24,Otros,t,4
+224,Prueba Categoria 7,8,Otros,12345703,25/03/2018 16:24,Otros,t,4
+225,Prueba Categoria 8,8,Otros,12345704,26/03/2018 16:24,Otros,t,4
+226,Prueba Categoria 9,8,Otros,12345705,27/03/2018 16:24,Otros,t,4
+227,Prueba Categoria 10,8,Otros,12345706,28/03/2018 16:24,Otros,t,4

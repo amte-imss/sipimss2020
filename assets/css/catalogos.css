@@ -1,0 +1,62 @@
+#detailsDialog{
+  width: 700px;
+}
+
+#detailsForm{
+    display: flex;
+    flex-direction: column;
+}
+
+#detailsFormCursos{
+  display: flex;
+  flex-direction: row;
+}
+
+.renglon{
+  display: flex;
+  flex-direction: row;
+}
+
+.columna{
+  display: flex;
+  flex-direction: column;
+}
+
+.input{
+  margin-bottom: 20px;
+}
+
+#msjError{
+  font-size: 15px;
+  color: red;
+}
+
+#info_catalogo{
+  border-left: 5px solid #3333;
+  text-indent: 10px;
+}
+
+#carga_masiva{
+  width: 200px;
+  float: right;
+}
+
+#secCSV{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 25px;
+}
+
+#dropzone_config{
+  width: 100%;
+  height: auto;
+  border-style: dotted;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+}

@@ -1,0 +1,6 @@
+nombre,descripcion,tipo,activo,label,orden,nivel,is_validado,id_proceso_educativo,clave_ces,clave_unidad,anio,division,fecha_inicio,fecha_fin
+curso1,curso1,curso,true,curso1,1,1,true,NULL,CES123, UNI123, 2018, 1, 2018-01-20, 2018-02-20
+curso2,curso2,curso,true,curso2,2,1,true,NULL,CES123, UNI123, 2018, 1, 2018-01-20, 2018-02-20
+curso3,curso3,curso,true,curso3,3,1,true,NULL,CES123, UNI123, 2018, 1, 2018-01-20, 2018-02-20
+curso4,curso4,curso,true,curso4,4,1,true,NULL,CES123, UNI123, 2018, 1, 2018-01-20, 2018-02-20
+curso5,curso5,curso,true,curso5,5,1,true,NULL,CES123, UNI123, 2018, 1, 2018-01-20, 2018-02-20

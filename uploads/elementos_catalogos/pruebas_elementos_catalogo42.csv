@@ -1,0 +1,6 @@
+nombre,descripcion,id_catalogo,tipo,activo,label,orden,nivel,is_validado
+elemento1,elemento1,3,elemento_catalogos,true,curso1,1,1,true
+elemento2,elemento2,3,elemento_catalogos,true,curso2,2,1,true
+elemento3,elemento3,3,elemento_catalogos,true,curso3,3,1,true
+elemento4,elemento4,3,elemento_catalogos,true,curso4,4,1,true
+elemento5,elemento5,3,elemento_catalogos,true,curso5,5,1,true
