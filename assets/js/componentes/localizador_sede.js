@@ -4,19 +4,28 @@
  */
 var memoria_sede = new Object();
 $(document).ready(function () {//Ejecuta al final de la página
+
     $('.localiza_sede').each(function (index, element) {
-//    var sede = memoria_values['sede'];
+        //    var sede = memoria_values['sede'];
+        //console.log("element.name");
+        //console.log(element);
+        
         $("#" + element.name).trigger('onchange');
         var config = memoria_sede[element.name];//Componente de resultados
+        //console.log("config de trigger ");
+        //console.log(config);
         if (element.value.length > 0) {
             //Consulta
+            //console.log("Es qui sin definir" );
             add_select_item_value_sede(element.name, config.anio, element.value);
         } else if (typeof memoria_values[element.name] !== 'undefined') {
-//            alert(config.anio);
+            //            alert(config.anio);
+            //console.log("Es aqui definido" + memoria_values[element.name] );
             add_select_item_value_sede(element.name, config.anio, memoria_values[element.name]);
-//            alert(element.name);
+            //            alert(element.name);
         }
     });
+    
 });
 
 function get_inicializa(config, element) {
@@ -59,11 +68,16 @@ function agregar_unidad_drop_down(element) {
     var componente = data.data('componente');//Componente de resultados
     var periodo = data.data('periodo');//Componente de resultados
     var dropdown_resultado = $("#" + componente);//Componente de resultados
-//    var cmp = document.getElementById(componente);
-//    alert(dropdown_resultado.attr('value'));
+    
+    //    var cmp = document.getElementById(componente);
+    //    alert(dropdown_resultado.attr('value'));
     if (dropdown_resultado.attr('value')) {
+        //console.log("Entra aquí ");
+        //console.log(dropdown_resultado);
+        //console.log(dropdown_resultado.attr('value'));
         add_select_item_value_sede(componente, periodo, dropdown_resultado.attr('value'));
     } else {
+        //console.log("O acaso es que Entra aquí ");
         var elmnt = document.getElementById(componente);
         if (elmnt.options.length === 2) {//Si existe información actual
             apprise('No ha selecciono una sede, desea conservar la sede actual', {verify: true}, function (btnClick) {

@@ -51,7 +51,7 @@ class Formulario_model extends MY_Model {
         $select = array(
             //formularioo campo
             'cf.id_campos_formulario', 'cf.tooltip', 'cf.placeholder', 'cf.display', 'cf.nueva_linea', 'cf.attributes_extra'
-            , 'cf.regla_notificacion', 'cf.excepciones_opciones', 'cf.campos_dependientes'
+            , 'cf.regla_notificacion', 'cf.excepciones_opciones', 'cf.campos_dependientes', 'cf.is_linea_completa'
             //formulario
             , 'f.id_formulario', 'f.id_elemento_seccion', 'f.label lbl_formulario', 'f.nombre nom_formulario', 'f.ruta_file_js'
             //campos
@@ -160,7 +160,7 @@ class Formulario_model extends MY_Model {
             $this->db->join('catalogo.catalogo cat', 'cat.id_catalogo = cf.id_catalogo', 'left');
             $this->db->order_by('cf.orden', 'asc');
             $resultado = $this->db->get('ui.campos_formulario cf');
-//            pr($this->db->last_query());
+            //            pr($this->db->last_query());
             return $resultado->result_array();
         }
         return null;
@@ -530,7 +530,7 @@ class Formulario_model extends MY_Model {
                 $str_post_data = $datos_post_formulario[$value_df['nom_campo']];
                 if (strpos($str_post_data, Formulario_model::KEY_OTHER_CAMPO) !== FALSE) {
                     $prop_post_otro = explode("_", $str_post_data);
-                    pr($prop_post_otro);
+                    //pr($prop_post_otro);
                     if (!empty($prop_post_otro) and isset($datos_post_formulario[$value_df['nom_campo'] . Formulario_model::KEY_OTHER_CAMPO_AUXILIAR])) {//Valida que el json no este vacio y que existan las llaves solicitadas
 //                            if (!empty($json_decode_catalogo_otro) and isset($json_decode_catalogo_otro[Formulario_model::KEY_OTHER_CAMPO]) and isset($json_decode_catalogo_otro['value_other'])) {//Valida que el json no este vacio y que existan las llaves solicitadas
 //                                $forma_palabra = preg_replace('/( ){2,}/u', ' ', str_replace("_", " ", $json_decode_catalogo_otro['value_other']));
@@ -1494,7 +1494,8 @@ class Formulario_model extends MY_Model {
 
         $select = array(
             'A.id_campos_formulario', 'B.id_campo',
-            'B.label campo', 'A.id_formulario', 'B.nombre'
+            //'B.label campo', 'A.id_formulario', 'B.nombre'
+            "concat(\"B\".\"label\", '(', \"B\".\"nombre\", ')') campo", 'A.id_formulario', 'B.nombre'
         );
         $this->db->select($select);
         $this->db->join('ui.campo B', 'B.id_campo = A.id_campo', 'inner');
@@ -1502,7 +1503,7 @@ class Formulario_model extends MY_Model {
         if (isset($params['id_campo_formulario']) && $params['id_campo_formulario'] != '') {
             $this->db->where('id_campo_formulario!=', $params['id_campo_formulario']);
         }
-        $campos_formulario = $this->db->get('campos_formulario A')->result_array();
+        $campos_formulario = $this->db->get('ui.campos_formulario A')->result_array();
         return $campos_formulario;
     }
 

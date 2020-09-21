@@ -110,6 +110,9 @@ $lang['form_validation_field_required_depends'] = 'El campo {field} es obligator
 $lang['form_validation_folio_comprobante_unico_docente_seccion'] = 'El campo {field} ya existe. ';
 $lang['form_validation_anio_menor_actual'] = 'El campo {field} debe ser menor o igual que el actual. ';
 $lang['form_validation_fecha_menor_actual'] = 'El campo {field} debe ser menor o igual que la actual. ';
+$lang['form_validation_anio_mayor_actual'] = 'El campo {field} debe ser mayor o igual que el actual. ';
+$lang['form_validation_anio_menorigual_que'] = 'El campo {field} debe ser menor o igual que {param}.';
+$lang['form_validation_anio_mayorigual_que'] = 'El campo {field} debe ser mayor o igual que {param}.';
 
 /*
 

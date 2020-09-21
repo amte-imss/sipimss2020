@@ -34,6 +34,7 @@ class Rama_organica extends MY_Controller
                 case Rama::UNIDAD:
                     $filtros['periodo'] = $periodo;
                     $filtros['clave_unidad'] = $clave;
+
                     $salida = $this->rama->get_unidades($filtros);
                     break;
             }
@@ -55,19 +56,22 @@ class Rama_organica extends MY_Controller
 
     public function get_localizador()
     {
+        //pr($this->input->post());
         if ($this->input->post())
         {
 
             if ($this->input->post('view') != null && $this->input->post('view', true) == 1)
             {
-//                pr("renderrrrrrrrrr");
-//                pr($this->input->post());
+                //pr("renderrrrrrrrrr");
+                //pr($this->input->post(null, true));
                 $this->render_localizador();
             } else
             {
                 $filtros = $this->input->post(null, true);
+                
                 $filtros['config'] = json_decode(base64_decode($filtros['config']), true);
-//                pr($filtros);
+                //pr("aquí es ");
+                //pr($filtros);
                 $filtros_unidades = $this->procesa_filtros_unidades($filtros);
                 $output['datos'] = $this->rama->get_unidades($filtros_unidades);                
                 $output['config'] = $filtros;
@@ -86,10 +90,14 @@ class Rama_organica extends MY_Controller
     {
         $filtros_nuevos = [];
         $filtros_unidades = $this->config->item('filtros_unidades');
+        //pr($filtros['config']['configuraciones']['anio']);
+        
         foreach ($filtros_unidades as $kf => $fu)
         {
             foreach ($filtros as $key => $value)
             {
+                //pr($key);
+                //pr($kf);
                 if (startsWith($key, $kf))
                 {
                     $filtros_nuevos[$fu] = $value;
@@ -98,8 +106,15 @@ class Rama_organica extends MY_Controller
         }
         if (!isset($filtros_nuevos['periodo']))
         {
-            $filtros_nuevos['periodo'] = date('Y');
+            if(isset($filtros['config']['configuraciones']['anio'])){
+                $filtros_nuevos['periodo'] = $filtros['config']['configuraciones']['anio'];
+            }else{
+                $filtros_nuevos['periodo'] = date('Y');
+            }
+            
         }
+        pr($filtros_nuevos);
+        //pr($filtros_nuevos);
 //        if($filtros['localizador_sede_id_servicio_'.$filtros['data_index']] == 2){
 //            $filtros_nuevos['select'] = array('A.id_unidad_instituto', 'A.clave_unidad', 'A.nombre unidad',
 //            'A.clave_presupuestal', 'A.nivel_atencion', 'A.latitud', 'A.longitud',
@@ -133,23 +148,28 @@ class Rama_organica extends MY_Controller
     }
 
     private function render_localizador()
-    {
+    {   
         $config = $this->input->post(null, true);
-//        pr($config);
         $output['config'] = $config;
-        $output['niveles'] = $this->rama->get_niveles_atencion(false);
-        $output['servicios'] = $this->rama->get_niveles_servicios();
-        $output['delegaciones'] = dropdown_options($this->rama->get_delegaciones(), 'id', 'nombre');
-        $output['unidades_normativas'] = []; //cambiar
-        $filtros = $this->get_filtros_umae();
-        $output['umaes'] = dropdown_options($this->rama->get_unidades($filtros), 'clave_unidad', 'unidad');
+        $tipo_sede = $config['configuraciones']['tipo_sede'];
+        
+        $output['servicios'] = $this->rama->get_niveles_servicios($tipo_sede);
+        if($tipo_sede != 2){//Académica = 2
+            //        pr($config);
+            $output['niveles'] = $this->rama->get_niveles_atencion(false);
+            $output['delegaciones'] = dropdown_options($this->rama->get_delegaciones(), 'id', 'nombre');
+            $output['unidades_normativas'] = []; //cambiar
+            $filtros = $this->get_filtros_umae($config['configuraciones']['anio']);
+            $output['umaes'] = dropdown_options($this->rama->get_unidades($filtros), 'clave_unidad', 'unidad');
+        }
         $this->load->view('rama_organica/localizador.tpl.php', $output);
     }
 
     private function get_filtros_umae($periodo = null)
     {
+        $filtros['periodo'] = $periodo;            
         if(is_null($periodo)){
-            $filtros['periodo'] = date('Y');
+            $filtros['periodo'] = date('Y');                        
         }
         $filtros['select'] = array(
             'A.clave_unidad', 'A.nombre_unidad_principal unidad'

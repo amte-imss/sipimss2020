@@ -390,30 +390,56 @@ if (!function_exists('get_etiqueta_row')) {
      * @author LEAS
      * @return designa etiqueta de linea nueva para las vistas html, 
      */
-    function get_etiqueta_row($indice = 1, $nueva_linea = false) {
+    function get_etiqueta_row($indice = 1, $nueva_linea = false, $is_linea_completa = false) {
 //        pr($indice);
 //        pr($indice % 2);
         $array_result = array();
         if ($indice % 2 == 0) {//Es continuación de la fila (par)
             if ($nueva_linea and $indice > 1) {//si es nueva linea y el indice es mayor que 1 
-                $array_result['row_begin'] = "</div><br><div class='row'>"; //Etiqueta de inicio de fila 
-                $array_result['row_end'] = ""; //Etiqueta de fin de etiqueta 
-                $array_result['row_close'] = "</div>";
-//                pr($indice);
+                if($is_linea_completa){
+                    $array_result['row_begin'] = "</div><br><div class='row'>"; //Etiqueta de inicio de fila 
+                    $array_result['row_end'] = ""; //Etiqueta de fin de etiqueta 
+                    $array_result['row_close'] = "</div>";
+    //                pr($indice);
+                }else{
+                    $array_result['row_begin'] = "</div><br><div class='row'>"; //Etiqueta de inicio de fila 
+                    $array_result['row_end'] = ""; //Etiqueta de fin de etiqueta 
+                    $array_result['row_close'] = "</div>";
+    //                pr($indice);
+                }
                 $indice ++;
                 $array_result['indice'] = $indice;
             } else {
 //                pr($indice);
-                $array_result['row_begin'] = ""; //Etiqueta de inicio de fila 
-                $array_result['row_end'] = "</div>"; //Etiqueta de fin de etiqueta 
-                $array_result['row_close'] = "";
-                $array_result['indice'] = $indice;
+                if($is_linea_completa){
+                    //pr("Is linea aquí ".$indice);
+                    $array_result['row_begin'] = "</div><br><div class='row'>"; //Etiqueta de inicio de fila 
+                    $array_result['row_end'] = ""; //Etiqueta de fin de etiqueta 
+                    $array_result['row_close'] = "</div>";
+                    $indice ++;
+                    $array_result['indice'] = $indice;
+                }else{
+                    $array_result['row_begin'] = ""; //Etiqueta de inicio de fila 
+                    $array_result['row_end'] = "</div>"; //Etiqueta de fin de etiqueta 
+                    $array_result['row_close'] = "";
+                    $array_result['indice'] = $indice;
+                }
+            
             }
         } else {//Nueva fila impar
-            $array_result['row_begin'] = "<br><div class='row'>"; //Etiqueta de inicio de fila 
-            $array_result['row_end'] = ""; //Etiqueta de fin de etiqueta 
-            $array_result['row_close'] = "</div>";
-            $array_result['indice'] = $indice;
+            if($is_linea_completa){
+                //pr("isLineaCompleta: ".$is_linea_completa);
+                $array_result['row_begin'] = "<br><div class='row'>"; //Etiqueta de inicio de fila 
+                $array_result['row_end'] = "</div>"; //Etiqueta de fin de etiqueta 
+                $array_result['row_close'] = "</div>";
+                $indice ++;
+                $array_result['indice'] = $indice;
+            }else{
+                $array_result['row_begin'] = "<br><div class='row'>"; //Etiqueta de inicio de fila 
+                $array_result['row_end'] = ""; //Etiqueta de fin de etiqueta 
+                $array_result['row_close'] = "</div>";
+                $array_result['indice'] = $indice;
+            }
         }
         return $array_result;
     }

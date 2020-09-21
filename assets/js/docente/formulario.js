@@ -12,9 +12,9 @@ function actualiza_campos_dependientes(element, lanzar) {
         var configuracion = array_padres_dependientes[element.name];
         Object.keys(configuracion.campos).forEach(function (index) {
             var dependientes = configuracion.campos[index];
-//            console.log("Recorre campos " + dependientes);
-//            console.log(dependientes);
-//            console.log(configuracion.elementos[dependientes]);
+            console.log("Recorre campos " + dependientes);
+            console.log("Dependientes " + dependientes);
+            console.log("Configuracion " + configuracion.elementos[dependientes]);
             if (document.getElementById(dependientes)) {//Valida que exista una dependencia por identificacor
                 if (typeof configuracion.elementos[dependientes] !== 'undefined') {//Valida que exista una dependencia por identificacor
                     var opciones = configuracion.elementos[dependientes];

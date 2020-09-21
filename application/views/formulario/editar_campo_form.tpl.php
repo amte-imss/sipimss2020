@@ -156,7 +156,8 @@ echo js('formularios/editar_campo_form.js');
                         'options'=> $rules_lista,
                         'value'=> $value,
                         'attributes'=> array(
-                            'class'=>'form-control'
+                            'class'=>'mdb-select colorful-select dropdown-primary md-form',
+                            'searchable'=>'Buscar aquí...'
                           )
                       )
                     );

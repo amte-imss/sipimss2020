@@ -104,7 +104,7 @@ echo js('secciones/nuevo_elemento.js');
                         'value'=>(isset($datos['label']))? $datos['label'] : '',
                         'attributes' => array(
                             'class'=>'form-control',
-                            'maxlength' => '50'
+                            'maxlength' => '100'
                           )
                         )
                       );

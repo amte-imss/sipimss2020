@@ -17,20 +17,25 @@
                 <div class="input-group input-group">
                     <span class="input-group-addon">Localizar por:</span>
                     <?php
-                    echo $this->form_complete->create_element(
-                            array('id' => 'localizador_sede_id_servicio_' . $config['data_index'],
-                                'type' => 'dropdown',
-                                'first' => array('' => 'Seleccione...'),
-                                'options' => $servicios,
-                                'attributes' => array(
-                                    'class' => 'form-control',
-                                    'data-toggle' => 'tooltip',
-                                    'title' => 'Nivel de atención',
-                                    'data-index' => $config['data_index'],
-                                    'onchange' => 'localizador_sede_servicio(this)')
-                            )
-                    );
-                    ?>
+                    $arreglo = array('id' => 'localizador_sede_id_servicio_' . $config['data_index'],
+                    'type' => 'dropdown',                        
+                    'first' => array('' => 'Seleccione...'),
+                    'options' => $servicios,
+                    'attributes' => array(
+                            'class' => 'form-control',
+                            'data-toggle' => 'tooltip',
+                            'title' => 'Nivel de atención',
+                            'data-index' => $config['data_index'],
+                            'onchange' => 'localizador_sede_servicio(this)')
+                        );
+                    
+                    if(isset($config['configuraciones']['tipo_sede']) && $config['configuraciones']['tipo_sede']==2){
+                       unset($arreglo['first']);                       
+                       $arreglo['attributes']['class']  = 'form-control sede_academica_filtro';
+                    }
+                                            
+                    echo $this->form_complete->create_element($arreglo);
+                            ?>
                 </div>
             </div>
         </div>
@@ -190,3 +195,15 @@
 
     </div>
 </div>
+
+<?php if(isset($config['configuraciones']['tipo_sede']) && $config['configuraciones']['tipo_sede'] == 2 ){ ?>
+    <script>
+        $(document).ready(function () {//Ejecuta al final de la página
+            $('.sede_academica_filtro').each(function (index, element) {        
+                //console.log("element filtro sede academica");
+                //console.log(element);
+                $("#" + element.name).trigger('onchange');
+            });
+        });
+    </script>
+<?php } ?>

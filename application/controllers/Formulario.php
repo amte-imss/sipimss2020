@@ -658,6 +658,7 @@ class Formulario extends MY_Controller {
                 $filtros = array(
                     'select' => array('clave_regla_dependecia_catalogo', 'nombre'),
                     'where' => array('id_catalogo_hijo' => $registro['id_catalogo'])
+                    
                 );
                 $output['reglas_dependencia_catalogo'] =dropdown_options($this->cm->get_registros('catalogo.reglas_dependencia_catalogos', $filtros), 'clave_regla_dependecia_catalogo', 'nombre');
                 //pr($output);

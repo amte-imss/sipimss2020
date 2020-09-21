@@ -1375,9 +1375,11 @@ class Catalogo extends MY_Controller {
                         $column_headers = ['nombre','descripcion','tipo','activo','label','orden','nivel','is_validado'];
                         $delimiter = ',';
                         $datos['carga'] = $this->csvimport->get_array($nombre_archivo, $column_headers, $detect_line_endings=FALSE, $initial_line=FALSE, $delimiter);
+                        //Agrega el id del catalogo
                         foreach ($datos['carga'] as $key => $value) {
                             $datos['carga'][$key]['id_catalogo'] = $id;
                         }
+                        //pr($datos['carga']);
                         if(!$this->verificar_cabeceras($nombre_archivo, $column_headers))
                         {
                             return $this->restfull_respuesta('error', "No se pudo cargar el archivo, las columnas son incorrectas, verifique su archivo sobre el nombre de las columnas", []);
@@ -1417,7 +1419,7 @@ class Catalogo extends MY_Controller {
      * @return boolean regresa verdad o falso si son correctas las cabeceras
      *
      */
-     private function verificar_cabeceras($archivo, $columnas)
+     private function verificar_cabeceras($archivo, $columnas = array())
      {
         $lineas=file($archivo);
         $cabeceras_archivo = explode(',',$lineas[0]);
@@ -1425,14 +1427,14 @@ class Catalogo extends MY_Controller {
         {
             return false;
         }
-
+        //pr('cabeceras file ');
+        //pr($cabeceras_archivo);
+        //pr($columnas);
+        
         foreach ($cabeceras_archivo as $key => $value) {
-            if (in_array(trim($value), $columnas))
+            if (!in_array(trim($value), $columnas))
             {
-
-            }
-            else
-            {
+                //pr('is correcto ' . $value);
                 return false;
             }
         }

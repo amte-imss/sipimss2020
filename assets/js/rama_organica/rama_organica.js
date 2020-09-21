@@ -3,13 +3,17 @@
  * Ahora, sólo Dios sabe.
  * Lo siento.
  */
+ var localizadores_sede = [];
 
-var localizadores_sede = [];
+
+
 
 (function ($) {
 
     var index_localizadores = 0;
     $.fn.localizador_sedes = function (config, unidades_cargadas) {
+        
+        //console.log(configuraciones);
         var destino = site_url + '/rama_organica/get_localizador/';
         var configuraciones = {};
         if (typeof config !== 'undefined') {
@@ -34,7 +38,7 @@ var localizadores_sede = [];
                     case 'checkbox':
                         localizador.value[item.clave_unidad] = true;
                         break;
-                    default :
+                    default ://radio
                         localizador.value = item.clave_unidad;
                         break;
                 }
@@ -75,7 +79,11 @@ function sipimss_rama_funciones(elemento) {
 }
 
 function localizador_sede_servicio(elemento) {
+    //console.log('elemento ');
     var index = elemento.getAttribute('data-index');
+    
+    //console.log(elemento);
+    //console.log(index);
     $('#localizador_sede_id_delegacion_' + index).parent().parent().css('display', 'none');
     $('#localizador_sede_id_tipo_unidad_' + index).parent().parent().css('display', 'none');
     $('#localizador_sede_cve_umae_' + index).parent().parent().css('display', 'none');
@@ -88,6 +96,7 @@ function localizador_sede_servicio(elemento) {
     $('#localizador_sede_cve_umae_' + index).val('');
     $('#localizador_sede_cve_unidad_normativa_' + index).val('');
     $('#localizador_sede_cve_coordinacion_' + index).val('');
+    //console.log("el elemento de servicio es: " + elemento.value);
     switch (elemento.value) {
         case 1:
         case '1':
@@ -109,6 +118,8 @@ function localizador_sede_servicio(elemento) {
         case '4':
         case 6:
         case '6':
+        case '7':
+        case 7:
             localizador_submit(index, '#localizador_sede_table_' + index);
         break;
         case 5:
@@ -116,10 +127,11 @@ function localizador_sede_servicio(elemento) {
             $('#localizador_sede_cve_unidad_normativa_' + index).parent().parent().css('display', 'block');
             $('#localizador_sede_cve_coordinacion_' + index).parent().parent().css('display', 'block');
             break;        
-        case '':
-        break;
+            case '':
+                break;
+
         default:
-            console.log('opcion no encontrada');
+            //console.log('opcion no encontrada');
         break;
     }
 
@@ -141,7 +153,7 @@ function localizador_sede_nivel(elemento) {
 }
 
 function localizador_sede_callback_select(parametros) {
-    console.log(parametros);
+    //console.log(parametros);
     $('#' + parametros.item).empty();
     $('#' + parametros.item).append('<option value="">Seleccionar...</option>');
     // Use jQuery's each to iterate over the opts value
@@ -237,7 +249,7 @@ function localizador_sede_tipo_unidad(elemento){
 
 }
 
-function localizador_sede_umae(elemento){
+function localizador_sede_umae(elemento){   
     var data_index = elemento.getAttribute('data-index');
     localizador_submit(data_index, '#localizador_sede_table_' + data_index);
 }

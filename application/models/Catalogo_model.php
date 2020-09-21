@@ -423,7 +423,7 @@ class Catalogo_model extends MY_Model {
         $query = $this->db->get($nombre_tabla);
         $salida = $query->result_array();
         $query->free_result();
-        //pr($this->db->last_query());
+  //      pr($this->db->last_query());
         $this->db->flush_cache();
         $this->db->reset_query();
         return $salida;

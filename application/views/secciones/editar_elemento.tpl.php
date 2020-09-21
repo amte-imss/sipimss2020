@@ -116,7 +116,7 @@ echo js('secciones/editar_elemento.js');
                           'value'=>$elemento_seccion['label'],
                           'attributes' => array(
                             'class'=>'form-control',
-                            'maxlength' => '50'
+                            'maxlength' => '100'
                             )
                           )
                         );

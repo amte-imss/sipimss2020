@@ -104,7 +104,9 @@ $config['filtros_unidades'] = array(
     'localizador_sede_id_servicio_' => 'nivel_servicio',
     'localizador_sede_id_nivel_' => "nivel",
     'localizador_sede_id_tipo_unidad_' => "tipo_unidad",
-    'localizador_sede_cve_umae_' => 'clave_unidad_principal'
+    'localizador_sede_cve_umae_' => 'clave_unidad_principal',
+    'periodo' => 2017
+    
 );
 
 /**

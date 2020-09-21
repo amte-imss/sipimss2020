@@ -16,7 +16,9 @@ class En_seccion_actividad_docente {
             MATERIAL_EDUCATIVO = 8,
             DIRECCION_TESIS = 7,
             INVESTIGACION = 6,
-			PUBLICACIONES = 20
+            PUBLICACIONES = 20,
+            CURSOS_DOCENTE = 21
+            ;
 
-    ;
+    
 }

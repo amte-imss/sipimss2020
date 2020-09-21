@@ -30,16 +30,24 @@ class Rama
         return $niveles;
     }
 
-    public function get_niveles_servicios()
+    public function get_niveles_servicios($tipo_ = 1)
     {
-        $servicios = array(
-            1 => 'Delegacional',
-            2 => 'UMAE',
-            3 => 'CIEFD',
-            4 => 'ESCUELAS DE ENFERMERIA',
-            5 => 'OFICINAS CENTRALES',
-            6 => 'CENTROS VACACIONALES'
-        );
+        switch($tipo_){
+            case 2:
+            case '2':
+                $servicios = array(7=>'Sede académica');
+        break;
+        default:
+            $servicios = array(
+                1 => 'Delegacional',
+                2 => 'UMAE',
+                3 => 'CIEFD',
+                4 => 'ESCUELAS DE ENFERMERIA',
+                5 => 'OFICINAS CENTRALES',
+                6 => 'CENTROS VACACIONALES',
+                //7=>'Académica'
+            );
+        }
         return $servicios;
     }
 
@@ -128,6 +136,10 @@ class Rama
         if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 6)
         {
             $this->db->where("A.grupo_tipo_unidad",'CEN_VAC');
+        }
+        if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 7)
+        {
+            $this->db->where("A.sede_academica", true);
         }
         if(isset($filtros['tipo_unidad']) && $filtros['tipo_unidad']!= '')
         {

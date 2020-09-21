@@ -946,7 +946,10 @@ class Core_secciones extends Informacion_docente {
                             }
                             break;
                         case En_reglas_catalogo::ELEMENTOS_DE_PADRES://Únicamente los hijos de los siguientes padres
+                            
                             if (!is_null($catalogo['excepciones_opciones']) and ! empty($catalogo['excepciones_opciones'])) {
+                                //pr("Aqui valida los elementos de l catalogo ");
+                            //pr($catalogo['excepciones_opciones']);
                                 $condicionantes = 'ec.id_catalogo_elemento_padre in' . '(' . $catalogo['excepciones_opciones'] . ')';
                                 if ($valida_campo_otros) {//Valida que selecciono alguna opción no indicada basado en nuevos registros
                                     if (isset($json_campos[$catalogo['nombre_campo']])) {

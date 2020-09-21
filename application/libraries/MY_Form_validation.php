@@ -361,6 +361,18 @@ class MY_Form_validation extends CI_Form_validation {
         return (date('Y', now()) >= intval($str));
     }
 
+    public function anio_mayor_actual($str) {
+        return (date('Y', now()) <= intval($str));
+    }
+    
+    public function anio_mayorigual_que($str, $anio) {
+        return $anio <= intval($str);
+    }
+    
+    public function anio_menorigual_que($str, $anio) {
+        return $anio >= intval($str);
+    }
+    
     public function fecha_menor_actual($str) {
         $fecha_c = date('dmY', strtotime(str_replace("/", "-", $str)));
         $fecha_actual = date('dmY', now());
