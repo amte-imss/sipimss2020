@@ -82,7 +82,7 @@ function html_message(message, tipo) {
  * @param url para conexión ajax
  * @param id html del formulario donde se obtienen los datos a enviar en ajax
  * @param id html del elemento que contendrá los datos del resultado
- * @param función que se ejecutará cuando el ajax es correcto y se tienen datos
+ * @param función que se ejecutará cuando el ajax es correcto y se tienen datos ejemplo: 
  * @param is_jason para indicar que el resultado esperado es una cadena en formato json
  * @param parametros para la función de callback, opcional
  * @returns none
@@ -103,18 +103,20 @@ function data_ajax(path, form_recurso, elemento_resultado, callback, is_json, pa
         var json = null;
         if (typeof is_json !== 'undefined' && is_json) {
             json = JSON.parse(response);
-            console.log(json);
+            //console.log(json);
             if (typeof json.html !== 'undefined') {
                 html = json.html;
             }
         }
         if (typeof callback !== 'undefined' && typeof callback === 'function') {
+            //console.log(response);
             if (typeof parametros !== 'undefined') {
                 if (is_json !== 'undefined' && is_json) {
                     parametros.object = json;
                 }
                 $(elemento_resultado).html(html).promise().done(callback(parametros));
             } else {
+                console.log(callback);
                 $(elemento_resultado).html(html).promise().done(callback());
             }
         } else {

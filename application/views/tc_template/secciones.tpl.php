@@ -94,13 +94,25 @@ $controlador = '/' . $this->uri->rsegment(1);
 
 <script type="text/javascript">
 
-    $('.tip').each(function () {
-        $(this).tooltip(
-                {
-                    html: true,
-                    title: $('#' + $(this).data('tip')).html()
-                });
+$('.tip').each(function () {
+    $(this).tooltip(
+        {
+            html: true,
+            title: $('#' + $(this).data('tip')).html()
+        });
     });
 </script>
 
 <?php echo js("docente/grid_secciones.js"); ?>
+    <?php 
+    if(isset($prop_seccion) && !empty($prop_seccion)){ 
+     $ruta_file_js = $prop_seccion['ruta_file_js']; 
+        if(!empty($ruta_file_js)){
+            $ruta_file_js = json_decode($ruta_file_js, true);
+            //pr($ruta_file_js);
+            foreach ($ruta_file_js as $key => $value)
+                    echo js($value);
+        }
+    }
+    
+    ?>

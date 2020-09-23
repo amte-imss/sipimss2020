@@ -1,5 +1,17 @@
 var monitor_formulario = false;
 var elementos = new Object();
+var formulariosStaticos = {};
+
+var cargoFormulario = 0;
+
+$(document).ready(function () {
+    var is_static_seccion = $("#btn_agregar").data('is_static_seccion');    
+    if(is_static_seccion===1|| is_static_seccion=== '1' ){
+        if(is_static_seccion===1|| is_static_seccion=== '1' ){
+            $( "#btn_agregar" ).trigger( "click" );            
+        }
+    }
+});
 /**
  * Carga el valor de
  * @param {type} element
@@ -329,24 +341,53 @@ function detalle_registro(element) {
 function carga_hijo_seccion(element) {
     var objeto = $(element);
     var ruta_ = objeto.data('ruta');
+    var static_form = objeto.data('seccion_statica');
     var seccion = objeto.data('seccion');
     var elemnto_resultado = 'seccion_seccion';
+    var is_static_seccion = objeto.data('is_static_seccion');
+    
     if (status_monitos()) {//Pregunta por el estado del monitor, si es activo, pregunta si quiere cntinuar
-        apprise('Perdera los cambios efectuados, confirme que desea continuar', {verify: true}, function (btnClick) {
-            if (btnClick)
-            {
-                limpia_niveles(0, '#' + elemnto_resultado);
-                $('#seccion_formulario').html('');//Limpia el icono cargando
-                data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado);
-                reinicia_monitor();
+                    apprise('Perdera los cambios efectuados, confirme que desea continuar', {verify: true}, function (btnClick) {
+                        if (btnClick)
+                        {
+                            limpia_niveles(0, '#' + elemnto_resultado);
+                            $('#seccion_formulario').html('');//Limpia el icono cargando
+                            data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado);
+                            reinicia_monitor();
+                        }
+                    });
+                } else {
+            
+                    limpia_niveles(0, '#' + elemnto_resultado);
+                    $('#seccion_formulario').html('');//Limpia el icono cargando
+                    
+                    if(is_static_seccion===1|| is_static_seccion=== '1' ){
+                        data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado, elementosDespuesSeccion, null, static_form); 
+                    }else{
+                        data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado);
+                    }
             }
-        });
-    } else {
-        limpia_niveles(0, '#' + elemnto_resultado);
-        $('#seccion_formulario').html('');//Limpia el icono cargando
-        data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado);
-    }
 }
+
+
+function elementosDespuesSeccion(param) {
+    
+    if ($("#n_1")) {
+        document.getElementById('n_1').value = param;
+        //$("#n_1").val(param);
+        $("#n_1").trigger( "change" );   
+        //carga_hijo_elemento_seccion(document.getElementById('n_1'));
+    }
+    console.log("Salud");
+    console.log(param);
+    
+    /*if(typeof defaultActividadDocente === 'function') {
+        //Es seguro ejecutar la función
+        defaultActividadDocente();
+    }*/
+}
+
+
 
 /**
  *

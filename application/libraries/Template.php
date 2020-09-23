@@ -214,6 +214,8 @@ class Template {
             'tipo_evento_js' => 'onclick',
             'funcion_js' => 'carga_hijo_seccion(this)',
             'seccion' => null,
+            'id_btn' => 'btn_agregar',
+            'static_form' => 6
         );
     }
 

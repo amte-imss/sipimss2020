@@ -6,7 +6,7 @@ $(document).ready(function () {
 });
 
 function grid_clientes() {
-    console.log("others_cursos");
+  //  console.log("others_cursos");
     
     $(function() {
  

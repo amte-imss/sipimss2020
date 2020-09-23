@@ -59,17 +59,22 @@ class Core_secciones extends Informacion_docente {
         $seccion = $this->csm->get_seccion($this->seccion); //Obtiene la información de sección
         if (!empty($seccion)) {
             $data['titulo_seccion'] = $seccion[0]['label'];
+            $data['prop_seccion'] = $seccion[0];//22092020
+            $data['is_seccion_static'] = $seccion[0]['is_seccion_static'];//22092020
+            
         }
 //        $data['seccion'] = $elementos_seccion;
         $data['seccion'] = '';
+        
         $parametros_boton_agregar_seccion = $this->template->getParametrorBoton(); //Obtiene todos los parametros del botón
         $parametros_boton_agregar_seccion['seccion'] = $this->seccion; //Agrega la sección a la que pertenece el modulo
+        $parametros_boton_agregar_seccion['is_seccion_static'] = $seccion[0]['is_seccion_static'];
         $this->template->setBotonAgregarGeneral($parametros_boton_agregar_seccion);
         $this->template->setFormularioSecciones($data);
         $this->template->getTemplate();
 
         $this->benchmark->mark('code_end');
-        echo $this->benchmark->elapsed_time('code_start', 'code_end');
+        //echo $this->benchmark->elapsed_time('code_start', 'code_end');
 //        echo $this->benchmark->memory_usage();
 //        $this->output->enable_profiler(TRUE);
         $this->output->parse_exec_vars = TRUE;
