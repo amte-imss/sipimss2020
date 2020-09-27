@@ -458,6 +458,10 @@ class Catalogo_model extends MY_Model {
             return $status;
         }
         try {
+            if(empty($params['orden'])){
+                $params['orden'] = null;
+            }
+            pr($params);
             $this->db->update($nombre_tabla, $params, $where_ids);
             $status['success'] = true;
             $status['message'] = 'Actualizado con éxito';

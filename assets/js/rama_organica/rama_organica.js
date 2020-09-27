@@ -13,7 +13,8 @@
     var index_localizadores = 0;
     $.fn.localizador_sedes = function (config, unidades_cargadas) {
         
-        //console.log(configuraciones);
+        //console.log("configuraciones->");
+        //console.log(config);
         var destino = site_url + '/rama_organica/get_localizador/';
         var configuraciones = {};
         if (typeof config !== 'undefined') {
@@ -75,15 +76,18 @@ function grid_fields() {
 }
 
 function sipimss_rama_funciones(elemento) {
-
+    
 }
 
 function localizador_sede_servicio(elemento) {
     //console.log('elemento ');
     var index = elemento.getAttribute('data-index');
+    var value = elemento.value;
     
+    //console.log("Quien soy ...."+elemento.value+"...");
     //console.log(elemento);
-    //console.log(index);
+    //console.log(localizadores_sede[index].configuracion.tipo_sede);
+    //console.log("Pero que rayos");
     $('#localizador_sede_id_delegacion_' + index).parent().parent().css('display', 'none');
     $('#localizador_sede_id_tipo_unidad_' + index).parent().parent().css('display', 'none');
     $('#localizador_sede_cve_umae_' + index).parent().parent().css('display', 'none');
@@ -97,20 +101,32 @@ function localizador_sede_servicio(elemento) {
     $('#localizador_sede_cve_unidad_normativa_' + index).val('');
     $('#localizador_sede_cve_coordinacion_' + index).val('');
     //console.log("el elemento de servicio es: " + elemento.value);
-    switch (elemento.value) {
+    if((localizadores_sede[index].configuracion.tipo_sede == '2' || localizadores_sede[index].configuracion.tipo_sede == 2) && elemento.value.length == 0){
+        //cuando no existe una delegacion designada
+        value = 'academica';
+    }
+    switch (value) {
         case 1:
         case '1':
-            $('#localizador_sede_id_delegacion_' + index).parent().parent().css('display', 'block');
-            $('#localizador_sede_id_nivel_' + index).parent().parent().css('display', 'block');
-            $('#localizador_sede_id_tipo_unidad_' + index).parent().parent().css('display', 'block');
-            $('#localizador_sede_id_nivel_' + index).prop('disabled', false);
+                if(localizadores_sede[index].configuracion.tipo_sede == '2' || localizadores_sede[index].configuracion.tipo_sede == 2){
+                    localizador_submit(index, '#localizador_sede_table_' + index);   
+                }else{
+                    $('#localizador_sede_id_delegacion_' + index).parent().parent().css('display', 'block');
+                    $('#localizador_sede_id_nivel_' + index).parent().parent().css('display', 'block');
+                    $('#localizador_sede_id_tipo_unidad_' + index).parent().parent().css('display', 'block');
+                    $('#localizador_sede_id_nivel_' + index).prop('disabled', false);
+                }
             break;
         case 2:
-        case '2':
-            $('#localizador_sede_cve_umae_' + index).parent().parent().css('display', 'block');
-            $('#localizador_sede_id_nivel_' + index).val('3');
-            $('#localizador_sede_id_nivel_' + index).prop('disabled', true);
-            localizador_submit(index, '#localizador_sede_table_' + index);
+                case '2':
+                if(localizadores_sede[index].configuracion.tipo_sede == '2' || localizadores_sede[index].configuracion.tipo_sede == 2){
+                    localizador_submit(index, '#localizador_sede_table_' + index);   
+                }else{
+                    $('#localizador_sede_cve_umae_' + index).parent().parent().css('display', 'block');
+                    $('#localizador_sede_id_nivel_' + index).val('3');
+                    $('#localizador_sede_id_nivel_' + index).prop('disabled', true);
+                    localizador_submit(index, '#localizador_sede_table_' + index);
+                }
             break;
         case 3:
         case '3':
@@ -129,11 +145,20 @@ function localizador_sede_servicio(elemento) {
             break;        
             case '':
                 break;
+        case 'academica':            
+            if(localizadores_sede[index].configuracion.tipo_sede == '2' || localizadores_sede[index].configuracion.tipo_sede == 2){
+                localizador_submit(index, '#localizador_sede_table_' + index);   
+            }
+            break;
 
         default:
-            //console.log('opcion no encontrada');
-        break;
-    }
+            //Para sede academica
+            if(localizadores_sede[index].configuracion.tipo_sede == '2' || localizadores_sede[index].configuracion.tipo_sede == 2){
+                localizador_submit(index, '#localizador_sede_table_' + index);   
+            }
+            break;
+        }
+                    
 
 }
 
@@ -228,7 +253,7 @@ function localizador_submit(data_index, elemento) {
     if (document.getElementById('localizador_sede_cve_umae_' + data_index) != null && document.getElementById('localizador_sede_cve_umae_' + data_index).value!='') {
         dataSend['localizador_sede_cve_umae_' + data_index] = document.getElementById('localizador_sede_cve_umae_' + data_index).value;
     }
-
+    
     $.ajax({
         url: destino,
         data: dataSend,

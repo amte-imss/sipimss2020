@@ -105,7 +105,7 @@
                                 <b>Nombre:</b> <?php echo $datos_sesion['nombre'] . ' ' . $datos_sesion['apellido_p'] . ' ' . $datos_sesion['apellido_m']; ?> <br>
                                 <b>Matrícula:</b> <?php echo $datos_sesion['matricula']; ?><br>
                                 <b>Categoría:</b> <?php echo $datos_sesion['categoria']; ?><br>
-                                <b>Delegación:</b> <?php echo $datos_sesion['delegacion']; ?> <br>
+                                <b>OOAD:</b> <?php echo $datos_sesion['delegacion']; ?> <br>
                                 <b>Unidad:</b> <?php echo $datos_sesion['unidad']; ?><br>
                                 <!--<b>Rol:</b> <?php // echo $datos_sesion['nombre_role'];         ?><br>-->
                                 <div class="ripple-container"></div></a>

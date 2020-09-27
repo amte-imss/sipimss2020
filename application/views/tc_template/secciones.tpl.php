@@ -24,6 +24,12 @@ $controlador = '/' . $this->uri->rsegment(1);
         text-align: right;
     }
 </style>
+<script type="text/javascript">
+    var properties;
+    <?php  if(isset($config)){?>
+        properties = <?php  echo json_encode($config); ?>;
+    <?php } ?>
+</script>
 
 <div class="col-md-12" id='div_error' style='display:none'>
     <div id='mensaje_error_div' class='alert alert-info' >
@@ -105,14 +111,7 @@ $('.tip').each(function () {
 
 <?php echo js("docente/grid_secciones.js"); ?>
     <?php 
-    if(isset($prop_seccion) && !empty($prop_seccion)){ 
-     $ruta_file_js = $prop_seccion['ruta_file_js']; 
-        if(!empty($ruta_file_js)){
-            $ruta_file_js = json_decode($ruta_file_js, true);
-            //pr($ruta_file_js);
-            foreach ($ruta_file_js as $key => $value)
-                    echo js($value);
+        foreach ($ruta_file_js as $key => $value){
+            echo js($value);
         }
-    }
-    
     ?>

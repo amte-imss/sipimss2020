@@ -35,7 +35,8 @@ class Rama
         switch($tipo_){
             case 2:
             case '2':
-                $servicios = array(7=>'Sede académica');
+                //$servicios = array(7=>'Sede académica');
+                $servicios = dropdown_options($this->get_delegaciones(), 'id', 'nombre');
         break;
         default:
             $servicios = array(
@@ -109,65 +110,75 @@ class Rama
         $this->db->select($select);
         $this->db->join('catalogo.delegaciones B', 'B.id_delegacion = A.id_delegacion', 'inner');
         $this->db->join('catalogo.regiones C', 'C.id_region = B.id_region', 'inner');
-        if (isset($filtros['delegacion']) && $filtros['delegacion'] != '')
-        {
-            $this->db->where('B.clave_delegacional', $filtros['delegacion']);
-        }
-        if (isset($filtros['nivel']) && $filtros['nivel'] != '')
-        {
-            $this->db->where('A.nivel_atencion', $filtros['nivel']);
-        }
-        if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 2)
-        {
-            $this->db->where("(A.grupo_tipo_unidad = 'UMAE' or A.grupo_tipo_unidad = 'CUMAE')");
-        }
-        if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 3)
-        {
-            $this->db->where("A.grupo_tipo_unidad",'CIEFD');
-        }
-        if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 4)
-        {
-            $this->db->where("A.grupo_tipo_unidad",'ESC_ENF');
-        }
-        if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 5)
-        {
-            $this->db->where("A.grupo_tipo_unidad",'OFI_CEN');
-        }
-        if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 6)
-        {
-            $this->db->where("A.grupo_tipo_unidad",'CEN_VAC');
-        }
-        if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 7)
-        {
-            $this->db->where("A.sede_academica", true);
-        }
-        if(isset($filtros['tipo_unidad']) && $filtros['tipo_unidad']!= '')
-        {
-            $this->db->where('id_tipo_unidad', $filtros['tipo_unidad']);
-        }
-        if (isset($filtros['periodo']) && !empty($filtros['periodo']))
-        {
-            $this->db->where('A.anio', $filtros['periodo']);
-        }
-        if(isset($filtros['clave_unidad']) && $filtros['clave_unidad'] != '')
-        {
-            $this->db->where('clave_unidad', $filtros['clave_unidad']);
-        }
-        if(isset($filtros['umae']) && $filtros['umae'])
-        {
-            $this->db->where("A.grupo_tipo_unidad", 'UMAE');
-        }
-        if(isset($filtros['clave_unidad_principal']) && $filtros['clave_unidad_principal'] != '')
-        {
-            $this->db->where("A.clave_unidad_principal", $filtros['clave_unidad_principal']);
+        
+        if(isset($filtros['tipo_sede']) && (intval($filtros['tipo_sede']) == 2 )){
+            $this->db->where("A.sede_academica", true);    
+            if(!empty($filtros['nivel_servicio'])){
+
+                $this->db->where('B.clave_delegacional', $filtros['nivel_servicio']);//Trae el valor de las delegaciones            
+            }       
+            if (isset($filtros['periodo']) && !empty($filtros['periodo']))
+            {
+                $this->db->where('A.anio', $filtros['periodo']);
+            }
+        }else{                
+            if (isset($filtros['delegacion']) && $filtros['delegacion'] != '')
+            {
+                $this->db->where('B.clave_delegacional', $filtros['delegacion']);
+            }
+            if (isset($filtros['nivel']) && $filtros['nivel'] != '')
+            {
+                $this->db->where('A.nivel_atencion', $filtros['nivel']);
+            }
+            if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 2)
+            {
+                $this->db->where("(A.grupo_tipo_unidad = 'UMAE' or A.grupo_tipo_unidad = 'CUMAE')");
+            }
+            if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 3)
+            {
+                $this->db->where("A.grupo_tipo_unidad",'CIEFD');
+            }
+            if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 4)
+            {
+                $this->db->where("A.grupo_tipo_unidad",'ESC_ENF');
+            }
+            if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 5)
+            {
+                $this->db->where("A.grupo_tipo_unidad",'OFI_CEN');
+            }
+            if(isset($filtros['nivel_servicio']) && $filtros['nivel_servicio'] == 6)
+            {
+                $this->db->where("A.grupo_tipo_unidad",'CEN_VAC');
+            }
+            
+            if(isset($filtros['tipo_unidad']) && $filtros['tipo_unidad']!= '')
+            {
+                $this->db->where('id_tipo_unidad', $filtros['tipo_unidad']);
+            }
+            if (isset($filtros['periodo']) && !empty($filtros['periodo']))
+            {
+                $this->db->where('A.anio', $filtros['periodo']);
+            }
+            if(isset($filtros['clave_unidad']) && $filtros['clave_unidad'] != '')
+            {
+                $this->db->where('clave_unidad', $filtros['clave_unidad']);
+            }
+            if(isset($filtros['umae']) && $filtros['umae'])
+            {
+                $this->db->where("A.grupo_tipo_unidad", 'UMAE');
+            }
+            if(isset($filtros['clave_unidad_principal']) && $filtros['clave_unidad_principal'] != '')
+            {
+                $this->db->where("A.clave_unidad_principal", $filtros['clave_unidad_principal']);
+            }
         }
         if(isset($filtros['group_by']))
         {
             $this->db->group_by($filtros['group_by']);
         }
-//        $this->db->limit(10);
+        //        $this->db->limit(10);
         $unidades = $this->db->get('catalogo.unidades_instituto A')->result_array();
-        // pr($this->db->last_query());
+       //  pr($this->db->last_query());
         $this->db->flush_cache();
         $this->db->reset_query();
         return $unidades;

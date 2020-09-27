@@ -10,12 +10,20 @@
 ?>
 <div>
     <!--<p>Localizador de sede</p>-->
+    <?php
+        $titulo_tipo = 'Localizar por:';
+        $sizeDiv = 4;
+        if(isset($config['configuraciones']['tipo_sede']) && $config['configuraciones']['tipo_sede']==2){
+        $titulo_tipo = 'Localizar por OOAD:';
+        $sizeDiv = 5;
+        }
+    ?>
     <input id="localizador_sede_config_<?php echo $config['data_index']; ?>" type="hidden" data-index="<?php echo $config['data_index']; ?>" name="config" value="<?php echo base64_encode(json_encode($config)); ?>">
     <div class="form-group">
         <div class="col col-md-12 col-lg-12 col-sm-12">
-            <div class="col-md-4">
+            <div class="col-md-<?php echo $sizeDiv;?>">
                 <div class="input-group input-group">
-                    <span class="input-group-addon">Localizar por:</span>
+                    <span class="input-group-addon"><?php echo $titulo_tipo;?></span>
                     <?php
                     $arreglo = array('id' => 'localizador_sede_id_servicio_' . $config['data_index'],
                     'type' => 'dropdown',                        
@@ -30,8 +38,11 @@
                         );
                     
                     if(isset($config['configuraciones']['tipo_sede']) && $config['configuraciones']['tipo_sede']==2){
-                       unset($arreglo['first']);                       
+                       //unset($arreglo['first']);                       
                        $arreglo['attributes']['class']  = 'form-control sede_academica_filtro';
+                       if(isset($select_cve_delegacion)){
+                            $arreglo['value'] =  $select_cve_delegacion;
+                       }
                     }
                                             
                     echo $this->form_complete->create_element($arreglo);

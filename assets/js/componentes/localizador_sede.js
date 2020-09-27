@@ -35,9 +35,14 @@ function get_inicializa(config, element) {
 //function carga_localizador_sede(config, element) {
 function carga_localizador_sede(element) {
     $('#my_modal_content').html(crear_estructura_modal());
-    var titulo = "Localizador de sede";
-//    try {//Cacha el error
+    var titulo = "Localizador de sede académica";
+    //    try {//Cacha el error
     var config = memoria_sede[element.name];
+    if(config.hasOwnProperty('tipo_sede') && (config.tipo_sede == 2 || config.tipo_sede == '2')){
+        var val = $('#user_cve_del').val();
+        config['cve_del'] = val;
+
+    }
     if (element.value.length > 0) {
         titulo += ": " + element.options[1].text + " (" + element.value + ")";
     }

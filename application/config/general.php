@@ -81,7 +81,7 @@ $config['columnas_unidades_grid'] = array(
     'latitud' => array('name' => 'latitud', 'type' => "float", 'title' => 'Latitud'),
     'longitud' => array('name' => 'longitud', 'type' => "float", 'title' => 'Longitud'),
     'clave_delegacional' => array('name' => 'clave_delegacional', 'type' => "text", 'title' => 'Cve delegacional'),
-    'delegacion' => array('name' => 'delegacion', 'type' => "float", 'title' => 'Delegación'),
+    'delegacion' => array('name' => 'delegacion', 'type' => "float", 'title' => 'OOAD'),
     'region' => array('name' => 'region', 'type' => "text", 'title' => 'Región'),
 );
 
@@ -105,7 +105,9 @@ $config['filtros_unidades'] = array(
     'localizador_sede_id_nivel_' => "nivel",
     'localizador_sede_id_tipo_unidad_' => "tipo_unidad",
     'localizador_sede_cve_umae_' => 'clave_unidad_principal',
-    'periodo' => 2017
+    'periodo' => 2017,
+    'tipo_sede' => 'tipo_sede'
+    
     
 );
 

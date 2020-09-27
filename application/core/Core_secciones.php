@@ -39,6 +39,7 @@ class Core_secciones extends Informacion_docente {
         $this->benchmark->mark('code_start');
         //$elementos_seccion = $this->elementos_actividad['elemento_seccion']; //Temporal
         $datos_sesion = $this->get_datos_sesion();
+        //pr($this->get_datos_sesion());
         $id_docente = $datos_sesion[En_datos_sesion::ID_DOCENTE]; //Obtiene identificador del docente en la sesión actual
         //Carga textos de comprobante  y de datatable
         $string_value = get_elementos_lenguaje(array(En_catalogo_textos::COMPROBANTE, En_catalogo_textos::DATA_TABLE_SECCIONES));
@@ -57,18 +58,22 @@ class Core_secciones extends Informacion_docente {
         //Titulo de la sección
         $this->load->model('Secciones_model', 'csm');
         $seccion = $this->csm->get_seccion($this->seccion); //Obtiene la información de sección
+        $data['config'] = array();
+        $data['ruta_file_js']['callSeccion'] = "docente/secciones.js";//Agregar el control de seccion
         if (!empty($seccion)) {
             $data['titulo_seccion'] = $seccion[0]['label'];
             $data['prop_seccion'] = $seccion[0];//22092020
+            if(!empty($seccion[0]['ruta_file_js'])){                
+                $data['ruta_file_js'] += array_merge(json_decode($seccion[0]['ruta_file_js'],true), $data['ruta_file_js']);//22092020                
+            }
             $data['is_seccion_static'] = $seccion[0]['is_seccion_static'];//22092020
-            
+            $data['config'] = json_decode($seccion[0]['config'], true);//25092020
+            $parametros_boton_agregar_seccion['config'] = json_decode($seccion[0]['config'], true);//25092020
         }
-//        $data['seccion'] = $elementos_seccion;
         $data['seccion'] = '';
-        
-        $parametros_boton_agregar_seccion = $this->template->getParametrorBoton(); //Obtiene todos los parametros del botón
+        $parametros_boton_agregar_seccion = array_merge($this->template->getParametrorBoton(),$parametros_boton_agregar_seccion); //Obtiene todos los parametros del botón            
         $parametros_boton_agregar_seccion['seccion'] = $this->seccion; //Agrega la sección a la que pertenece el modulo
-        $parametros_boton_agregar_seccion['is_seccion_static'] = $seccion[0]['is_seccion_static'];
+        //$parametros_boton_agregar_seccion['is_seccion_static'] = $seccion[0]['is_seccion_static'];
         $this->template->setBotonAgregarGeneral($parametros_boton_agregar_seccion);
         $this->template->setFormularioSecciones($data);
         $this->template->getTemplate();
@@ -78,7 +83,7 @@ class Core_secciones extends Informacion_docente {
 //        echo $this->benchmark->memory_usage();
 //        $this->output->enable_profiler(TRUE);
         $this->output->parse_exec_vars = TRUE;
-        $this->output->append_output($this->benchmark->memory_usage());
+        //$this->output->append_output($this->benchmark->memory_usage());
     }
 
     /**
@@ -898,7 +903,7 @@ class Core_secciones extends Informacion_docente {
             if (!is_null($formulario) AND ! empty($formulario)) {//Valida que el formulario este definido con por lo menos un catálogo
                 $parametros = array(//Parametros de select y order by
                     'select' => array('ec.id_elemento_catalogo', 'ec.nombre', 'ec.id_catalogo', 'ec.id_catalogo_elemento_padre', 'ec.label', 'ec.is_validado', 'ec.activo'),
-                    'order_by' => array('ec.orden', 'ec.nombre'));
+                    'order_by' => array('ec.orden', 'ec.label'));
                 $this->load->model('Secciones_model', 'cm'); //Carga módelo de catálogos
                 foreach ($formulario as $catalogo) {
                     $parametros['where'] = array('ec.id_catalogo' => $catalogo['id_catalogo']);

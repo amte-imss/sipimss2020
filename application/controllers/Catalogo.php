@@ -970,6 +970,7 @@ class Catalogo extends MY_Controller {
         {
             $filtros['where'] = $this->obtener_id_modulo('catalogo', $id);
             $output['catalogo'] = $this->catalogo->get_registros('catalogo.catalogo', $filtros)[0];
+            //pr($output['catalogo']);
             $output['csv'] = true;
             if($output['catalogo']['tipo'] == 'elementos_catalogos'){
                 $output['title'] = "Elementos del catalogo";

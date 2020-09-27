@@ -373,6 +373,15 @@ class MY_Form_validation extends CI_Form_validation {
         return $anio >= intval($str);
     }
     
+    public function anio_igual_actual($str) {
+        return (date('Y', now()) == intval($str));        
+    }
+    public function rango_1_5($str) {
+        return ( intval($str)>0 && intval($str)<6);        
+    }
+
+
+    
     public function fecha_menor_actual($str) {
         $fecha_c = date('dmY', strtotime(str_replace("/", "-", $str)));
         $fecha_actual = date('dmY', now());

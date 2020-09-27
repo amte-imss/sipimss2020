@@ -98,7 +98,7 @@ $(function(){
                     {name: 'id_catalogo_elemento_padre', title: "Id Catalogo elemento padre", type:'select', items: todos_catalogos, valueField: "id_catalogo", textField: "nombre"},
                     {name: 'activo', title: "Activo"},
                     {name: 'label', title: 'Etiqueta/Label', type: 'text', visible:false},
-                    {name: 'orden', title: 'Orden', type:'text', visible:false},
+                    {name: 'orden', title: 'Orden', type:'text', visible:true},
                     {name: 'nivel', title: 'Nivel', type:'text', visible:true},
                     {name: 'is_valido', title: 'Es valido', visible:false},
                     {type: "control", modeSwitchButton: false, editButton: false, deleteButton: false,

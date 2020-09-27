@@ -9,14 +9,18 @@ $text_seccion = '';
 if (isset($seccion)) {
     $text_seccion = 'data-seccion="' . encrypt_base64($seccion) . '"';
 }
+$display = '';
+if (!empty($config) && isset($config['btnAgregarNuevo']) && $config['btnAgregarNuevo']==0) {
+    $display = 'style="display:none"';
+}
+
 ?>
 
 <button id="<?php echo $id_btn; ?>" name="save" type="button" class="btn btn-lg btnverde" <?php echo $evento; ?>
         data-ruta="<?php echo $ruta; ?>"
-        data-seccion_statica="<?php echo $static_form; ?>"
-        data-is_static_seccion="<?php echo $is_seccion_static; ?>"
+        <?php echo $display; ?>        
         <?php echo $text_seccion; ?>
-        >
-    <span><i class="fa fa-plus"></i></span>
+>
+        <span><i class="fa fa-plus"></i></span>
         <?php echo $titulo; ?>
 </button>

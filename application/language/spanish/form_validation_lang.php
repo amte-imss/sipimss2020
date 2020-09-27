@@ -113,6 +113,9 @@ $lang['form_validation_fecha_menor_actual'] = 'El campo {field} debe ser menor o
 $lang['form_validation_anio_mayor_actual'] = 'El campo {field} debe ser mayor o igual que el actual. ';
 $lang['form_validation_anio_menorigual_que'] = 'El campo {field} debe ser menor o igual que {param}.';
 $lang['form_validation_anio_mayorigual_que'] = 'El campo {field} debe ser mayor o igual que {param}.';
+$lang['form_validation_anio_igual_actual'] = 'El campo {field} debe ser igual al actual.';
+$lang['form_validation_rango_1_5'] = 'El campo {field} debe ser entre 1 y 5 años.';
+
 
 /*
 

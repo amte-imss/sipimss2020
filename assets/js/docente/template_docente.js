@@ -4,11 +4,13 @@ var formulariosStaticos = {};
 
 var cargoFormulario = 0;
 
+
 $(document).ready(function () {
-    var is_static_seccion = $("#btn_agregar").data('is_static_seccion');    
-    if(is_static_seccion===1|| is_static_seccion=== '1' ){
-        if(is_static_seccion===1|| is_static_seccion=== '1' ){
-            $( "#btn_agregar" ).trigger( "click" );            
+    if(typeof properties !== undefined && properties !== undefined){
+        
+        //console.log(properties);
+        if(properties.staticForm==1 || properties.staticForm=='1'){            
+            $("#btn_agregar").trigger("click");            
         }
     }
 });
@@ -361,30 +363,31 @@ function carga_hijo_seccion(element) {
                     limpia_niveles(0, '#' + elemnto_resultado);
                     $('#seccion_formulario').html('');//Limpia el icono cargando
                     
-                    if(is_static_seccion===1|| is_static_seccion=== '1' ){
-                        data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado, elementosDespuesSeccion, null, static_form); 
+                    if(typeof properties !== undefined && properties !== undefined){    
+                        console.log("Value: " + properties.id_elementoSeccionDefault);
+                        if(properties.id_elementoSeccionDefault>-1 || properties.id_elementoSeccionDefault!='-1'){                            
+                            data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado, elementosDespuesSeccion, null, properties.id_elementoSeccionDefault); 
+                        }else{
+                            data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado);
+                        }
                     }else{
                         data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado);
+                        
                     }
+                    
+                }
             }
-}
 
-
-function elementosDespuesSeccion(param) {
-    
-    if ($("#n_1")) {
+            
+            
+function elementosDespuesSeccion(param) {    
+    if ($("#n_1")) {    
         document.getElementById('n_1').value = param;
         //$("#n_1").val(param);
         $("#n_1").trigger( "change" );   
         //carga_hijo_elemento_seccion(document.getElementById('n_1'));
     }
-    console.log("Salud");
-    console.log(param);
     
-    /*if(typeof defaultActividadDocente === 'function') {
-        //Es seguro ejecutar la función
-        defaultActividadDocente();
-    }*/
 }
 
 

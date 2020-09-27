@@ -149,15 +149,15 @@ class Template {
      * @param type String $tpl template que genera la vista del componente comprobante y folio
      * con los siguiente estructura
      * Array(
-      [id_censo] => 108
-      [is_carga_sistema] =>
-      [folio] => 5g7k8h9l
-      [id_file] => 108
-      [nombre_comprobante] => 3342165412_1495119429
-      [ruta] => /assets/us/uploads/3342165412/
-      [nombre_extencion] => pdf
-      [id_validacion_registro] => 1
-      [nombre_validacion] => Registro usuario
+      *[id_censo] => 108
+      *[is_carga_sistema] =>
+      *[folio] => 5g7k8h9l
+      *[id_file] => 108
+      *[nombre_comprobante] => 3342165412_1495119429
+      *[ruta] => /assets/us/uploads/3342165412/
+      *[nombre_extencion] => pdf
+      *[id_validacion_registro] => 1
+      *[nombre_validacion] => Registro usuario
      * actividad del docente en el modulo registro de censo
      * @descripcion Genera y asigna a la variable "elements_comprobante" la vista del componente
      * comprobante y folio del registro del censo
@@ -245,6 +245,7 @@ class Template {
         //  $this->elementos_seccion = $elementos_seccion;
 //        pr($elementos_seccion);
         foreach ($elementos_seccion as $key => $value) {
+            //pr($value);
             $this->element_seccion[$key] = $value;
         }
 //        pr($this->elementos_seccion['componente_comprobante']);
@@ -311,7 +312,7 @@ class Template {
      */
     public function setTemplate($elements = array()) {
         $this->elements['title'] = (array_key_exists('title', $elements)) ? $elements['title'] : null;
-        $this->elements['menu'] = $this->templete_menu(); //(array_key_exists('menu', $elements)) ? $elements['menu'] : null;
+        //$this->elements['menu'] = $this->templete_menu(); //(array_key_exists('menu', $elements)) ? $elements['menu'] : null;
         $this->elements['main_title'] = (array_key_exists('main_title', $elements)) ? $elements['main_title'] : null;
         $this->elements['sub_title'] = (array_key_exists('sub_title', $elements)) ? $elements['sub_title'] : null;
         $this->elements['descipcion'] = (array_key_exists('descipcion', $elements)) ? $elements['descipcion'] : null;
