@@ -10,7 +10,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
     <div class="col-md-5">
       <div class="row">
         <div class="col-md-4">
-              <label for="nombre" class="righthoralign control-label">
+              <label for="nombre" class="pull-right control-label">
                   <b class="rojo">*</b>
                   Nombre (s):</label>
           </div>
@@ -37,7 +37,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
   <div class="col-md-5">
       <div class="row">
           <div class="col-md-4">
-              <label for="apellido_p" class="righthoralign control-label">
+              <label for="apellido_p" class="pull-right control-label">
                   <b class="rojo">*</b>
                   <?php echo $string_value['lbl_ap']; ?> </label>
           </div>
@@ -73,7 +73,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
         <div class="col-md-5">
           <div class="row">
           <div class="col-md-4">
-              <label for="materno" class="righthoralign control-label">
+              <label for="materno" class="pull-right control-label">
                   <b class="rojo">*</b>
                   Apellido materno:</label>
           </div>
@@ -102,7 +102,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
       <div class="col-md-5" id="div_rfc">
           <div class="row">
               <div class="col-md-4">
-                  <label for="rfc" class="righthoralign control-label">
+                  <label for="rfc" class="pull-right control-label">
                       <b class="rojo">*</b>
                       <?php echo $string_value['lbl_rfc'] ?> </label>
               </div>
@@ -135,7 +135,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
   <div class="col-md-5" id="div_curp">
     <div class="row">
       <div class="col-md-4">
-        <label for="curp" class="righthoralign control-label">
+        <label for="curp" class="pull-right control-label">
           <b class="rojo">*</b>
           <?php echo $string_value['lbl_curp'] ?> </label>
       </div>
@@ -164,7 +164,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
   <div class="col-md-5" id="div_edad">
       <div class="row">
           <div class="col-md-4">
-              <label for="edad" class="righthoralign control-label">
+              <label for="edad" class="pull-right control-label">
                   <b class="rojo">*</b>
                   Edad:</label>
           </div>
@@ -198,7 +198,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
       <div class="col-md-5" id="div_correo">
         <div class="row">
           <div class="col-md-4">
-            <label for="paterno" class="righthoralign control-label">
+            <label for="paterno" class="pull-right control-label">
               <b class="rojo">*</b>
               Correo electrónico:</label>
           </div>
@@ -226,7 +226,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
       <div class="col-md-5">
           <div class="row">
               <div class="col-md-4">
-                  <label for="" class="righthoralign control-label">
+                  <label for="" class="pull-right control-label">
                       <b class="rojo">*</b>
                       Sexo:</label>
               </div>
@@ -260,7 +260,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
               <div class="col-md-5">
                   <div class="row">
                       <div class="col-md-4">
-                          <label for="paterno" class="righthoralign control-label">
+                          <label for="paterno" class="pull-right control-label">
                               <b class="rojo">*</b>
                               Teléfono laboral:</label>
                       </div>
@@ -288,7 +288,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                   <div class="col-md-5">
                       <div class="row">
                           <div class="col-md-4">
-                              <label for="" class="righthoralign control-label">
+                              <label for="" class="pull-right control-label">
                                   <b class="rojo">*</b>
                                   Estado Civil:</label>
                           </div>
@@ -322,7 +322,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
               <div class="col-md-5">
                   <div class="row">
                       <div class="col-md-4">
-                          <label for="paterno" class="righthoralign control-label">
+                          <label for="paterno" class="pull-right control-label">
                               <b class="rojo">*</b>
                               Teléfono particular:</label>
                       </div>
@@ -358,7 +358,6 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                       onclick="funcion_actualizar_datos_generales_docente(this);"
                       data-url="<?php echo '/' . $this->uri->rsegment(1); ?>"
                       >
-                  <span><i class="fa fa-refresh"></i></span>
                       <?php echo $string_value['actualizar_general']; ?>
           </button>
   </div>

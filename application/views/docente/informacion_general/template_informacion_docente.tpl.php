@@ -32,15 +32,15 @@ echo js('docente/informacion_docente/informacion_docente.js');
               }
               ?>
           </div>
-          <div class="panel panel-success">
+          <!--div class="panel panel-success">
             <div class="panel-heading">
                <h3 class="panel-title">Información IMSS</h3>
             </div>
             <div class="panel-body">
               <?php
-              if (isset($formulario_imss)) {
+              /*if (isset($formulario_imss)) {
                   echo $formulario_imss;
-              }
+              }*/
               ?>
             </div>
           </div>
@@ -48,25 +48,21 @@ echo js('docente/informacion_docente/informacion_docente.js');
           <div class="col-md-12">
             <div class="col-md-3"></div>
             <div class="col-md-6">
-              <br><!-- <br>
-              <div class="container">
-                <div class="card-profile"> -->
+              <br>
                   <div class="">
                     <?php
-                    if (isset($imagen_docente)) {
+                    /*if (isset($imagen_docente)) {
                         echo $imagen_docente;
-                    }
+                    }*/
                     ?>
                   </div>
                   <div class="card-profile_user-infos">
                     <span class="infos_name"></span>
                     <a href="#"></a>
                   </div>
-                <!-- </div>
-              </div> -->
               </div>
               <div class="col-md-3"></div>
-          </div>
+          </div-->
         </div>
 
     </div>

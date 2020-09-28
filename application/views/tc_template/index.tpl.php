@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
         <?php echo (!is_null($title)) ? "{$title}&nbsp;|" : "" ?>
-        <?php echo (!is_null($main_title)) ? $main_title : "SIPIMSS II" ?>
+        <?php echo (!is_null($main_title)) ? $main_title : "Sistema de Información de Profesores del IMSS" ?>
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -42,7 +42,7 @@
     <?php echo js("jquery.js"); ?>
     <?php echo js("jquery.min.js"); ?>
     <?php echo js("jquery.ui.min.js"); ?>
-
+    
     <!--Let browser know website is optimized for mobile-->
 </head>
 <body>
@@ -73,7 +73,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a  class="navbar-brand" href="<?php echo site_url(); ?>">SIPIMSS
+                <a  class="navbar-brand" href="<?php echo site_url(); ?>">IMSS :: CES
                 </a>
             </div>
             <div class="notifications-wrapper">
@@ -111,7 +111,7 @@
                                 <div class="ripple-container"></div></a>
                             </li>
 
-                            <li><a href="<?php echo site_url(); ?>/perfil"><i class="fa fa-user-plus"></i> Mi perfil</a></li>
+                            <!--li><a href="<?php echo site_url(); ?>/perfil"><i class="fa fa-user-plus"></i> Mi perfil</a></li-->
                             <li><a href="<?php echo site_url(); ?>/inicio/cerrar_sesion"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
                         </ul>
                     </li>
@@ -158,8 +158,7 @@
 
                 <li class="nav pull-right">
                     <ul class="">
-                        <li>
-                            <!-- <a href="#"><img img-responsive class"logos" height="70px" src="assets/img/template_sipimss/sipimss.png" alt=""></a> -->
+                        <!--li>
                             <a href="#">
                                 <img img-responsive src="<?php echo asset_url(); ?>img/template_sipimss/sipimss.png"
                                 height="70px"
@@ -168,7 +167,7 @@
                                 title="SIPIMSS"
                                 target="_blank"/>
                             </a>
-                        </li>
+                        </li-->
                         <li>
                             <!-- <a href="#"><img img-responsive class"logos" height="70px" src="assets/img/template_sipimss/ces.png" alt=""></a> -->
                             <a href="http://educacionensalud.imss.gob.mx">
@@ -232,7 +231,7 @@
         <?php } //fin blank zone  ?>
 
         <?php ?>
-        <div class="row">
+        <div class="row" style="margin-right: 0px;">
             <div class="col-md-12">
                 <div class="">
                     <?php
@@ -277,16 +276,14 @@
 <!-- JQUERY SCRIPTS -->
 <!-- <script src="assets/js/jquery-2.js"></script> -->
 
-<footer class="navbar">
+<footer style="min-height:170px;">
     <div class="col-md-1"></div>
 
     <div class="col-md-5">
         <br>
         <br>
         <br>
-        &copy; <a href="#" target="_blank">SIPIMSS 2017</a>
-        <br>
-        Este sitio se visualiza correctamente a partir Mozila Firefox 50 y Google Chrome 55.
+        &copy; <a href="#" target="_blank">IMSS 2020</a>
     </div>
 
     <div class="col-md-2"></div>
@@ -296,9 +293,9 @@
         <br>
         ¿Tienes alguna duda? Comunícate con nosotros:
         <br>
-        <b>Teléfono:</b> 56 27 69 00 Ext. 21146, 21147 y 21148
+        <b>Teléfono:</b> ???
         <br>
-        <b>Email:</b> soporte.sipimss@gmail.com
+        <b>Email:</b> ???
         <br>
         <b>Horario:</b> de lunes a viernes, de 8h a 16h
     </div>

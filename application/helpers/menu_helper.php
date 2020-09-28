@@ -12,7 +12,7 @@ if (!function_exists('render_menu'))
         $html = '';
         ob_start();
         ?>
-        <ul class="nav  <?php echo ($dropdown != null ? 'collapse' : ''); ?>" <?php echo ($dropdown != null ? 'id="'.$dropdown.'" style="margin-left: 20px;"' : ''); ?>>
+        <ul class="nav  <?php echo ($dropdown != null ? 'collapse in' : ''); ?>" <?php echo ($dropdown != null ? 'id="'.$dropdown.'" style="margin-left: 20px;"' : ''); ?>>
             <?php
             foreach ($menu as $item)
             {
@@ -81,7 +81,7 @@ if (!function_exists('render_menu'))
     {
         // pr($elementos);
         ?>
-        <ul class="nav  collapse" id="menuCENSO" style="margin-left: 20px;">
+        <ul class="nav collapse" id="menuCENSO" style="margin-left: 20px;">
             <?php foreach ($elementos as $row)
             {
             ?>

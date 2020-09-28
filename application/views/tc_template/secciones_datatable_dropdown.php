@@ -20,6 +20,7 @@ echo $this->form_complete->create_element(
                 'onchange' => 'recarga_grid(this);',
                 'data-placement' => 'top',
                 'title' => '',
+                'style' => 'display:none' 
 //                    'data-ruta' => $controlador,
             ),
         )

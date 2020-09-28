@@ -217,7 +217,7 @@ iframe
 
 .navbar-cls-top .navbar-brand {
     color: #fff;
-    background: #79bdb8;
+    /*background: #79bdb8;*/
     width: 180px;
     text-align: center;
     height: 75px;
@@ -335,10 +335,10 @@ iframe
 
 .sidebar-collapse .nav > li > a {
     color: #fff;
-    background: #97cd78;
+    background: #006a62;
     /*background: #A9D7C8;*/
     text-shadow: none;
-    border-bottom: 1px solid #79bdb8;
+    border-bottom: 1px solid #FFF;
 }
 
 .sidebar-collapse > .nav > li > a {
@@ -348,7 +348,7 @@ iframe
 .sidebar-collapse .nav > li > a:hover,
 .sidebar-collapse .nav > li > a:focus {
     color: #fff;
-    background: #006a62;
+    background: #245c4f;
     outline: 0;
 }
 
@@ -369,7 +369,7 @@ iframe
 .navbar-side {
     border: none;
     /*background-color: #202020;*/
-    background-color: #97cd78
+    background-color: #245c4f;
     ;
 }
 
@@ -384,7 +384,7 @@ iframe
 }
 
 .navbar-header {
-    background: #79bdb8;
+    background: #245c4f;
 }
 
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
@@ -465,7 +465,7 @@ iframe
     FOOTER  STYLES
  =============================================*/
 footer {
-    background-color:#008080;
+    background-color:#245c4f;
     padding:20px 50px;
     color:#fff;
     font-size:12px;
@@ -548,7 +548,7 @@ footer a:hover, footer a:focus {
     }
 }
 .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
-    color: #262626;
+    color: #FFF;
     text-decoration: none;
     background-color: #006a62;
 }
