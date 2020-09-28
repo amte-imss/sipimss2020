@@ -24,6 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 case 'file':
                                     $this->load->view('docente/componente_files.php', $aux_array_componente, FALSE);
                                     break;
+                                case 'checkbox':
+                                    $this->load->view('docente/componente_checkbox.php', $aux_array_componente, FALSE);
+                                    break;
                                 case 'date':
                                     if ($value['nom_tipo_dato'] == 'date') {
                                         $this->load->view('docente/componente_date.php', $aux_array_componente, FALSE);
