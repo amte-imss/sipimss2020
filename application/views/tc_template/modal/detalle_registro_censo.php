@@ -1,8 +1,8 @@
 
 <?php
 /** Nota: es importante que se estructure cada id de div de la siguiete manera
-  "div_id_censo_nombre_campo" y que se le asigne la classe como el "nombre del campo que tiene valor" y el predecesor "c_"
-  y que tengan la estructura de
+  *"div_id_censo_nombre_campo" y que se le asigne la classe como el "nombre del campo que tiene valor" y el predecesor "c_"
+  *y que tengan la estructura de
  * <div> 
  *      <p> 
  *        <label>texto: </label>
@@ -14,6 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $string_value = get_elementos_lenguaje(array(En_catalogo_textos::DETALLE_CENSO, En_catalogo_textos::COMPROBANTE));
 $controlador = $this->uri->rsegment(1);
 //pr($formulario_campos);
+
 ?>
 
 <div class="row">
@@ -61,14 +62,19 @@ $controlador = $this->uri->rsegment(1);
                         </div>
                         <?php
                         break;
-                    case 'date'://Tipo de campo file
-                        ?>
+                    case 'date'://Tipo de campo file                        
+                        $imprime_date = $value['respuesta_valor'];
+                        if($value['nom_tipo_dato'] == 'date'){
+                            $imprime_date = get_date_formato(str_replace('/', '-', $value['respuesta_valor']), 'd-m-Y');//reemplazar formato, de lo contrario regresa una fecha diferente
+                        }
+                        ?>                        
                         <div  id="div_<?php echo $value['id_censo'] . '_' . $value['nombre_campo']; ?>" class="col-md-6 goleft <?php echo 'c_' . $value['nombre_campo'] ?>">
                             <p><label class=" pull-left bold-label"><?php echo $value['lb_campo']; ?></label>
-                                <?php echo get_date_formato(str_replace('/', '-', $value['respuesta_valor']), 'd-m-Y');//reemplazar formato, de lo contrario regresa una fecha diferente ?>
+                                <?php echo  $imprime_date; ?>
                             </p>
 
                         </div>
+
                         <?php
                         break;
                     default ://Todo lo demás diferente

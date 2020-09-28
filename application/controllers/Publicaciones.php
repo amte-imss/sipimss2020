@@ -12,7 +12,8 @@ class Publicaciones extends Core_secciones {
     function __construct() {
         parent::__construct();
 
-        $this->elementos_actividad['rutas_generales_js'] = array('docente/publicaciones/publicaciones.js');
+        //$this->elementos_actividad['rutas_generales_js'] = array('docente/publicaciones/publicaciones.js');
+        $this->elementos_actividad['rutas_generales_js'] = null;
         $this->elementos_actividad['ruta_controler_editar_registro'] = '/publicaciones/carga_actividad';
 
         $this->seccion = En_seccion_actividad_docente::PUBLICACIONES; //La sección general que manejará el controlador, indispensable para cargar datos

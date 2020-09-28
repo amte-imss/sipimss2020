@@ -714,6 +714,7 @@ class Formulario_model extends MY_Model {
             'ES.id_elemento_seccion',
             'ES.label nom_elemento_seccion',
             'TC.nombre nom_tipo_campo',
+            'TDC.nombre nom_tipo_dato',
             'F.id_formulario', 'CF.campos_dependientes',
             'F.label lb_formulario', 'F.ruta_file_js',
             'CF.orden',
@@ -781,11 +782,11 @@ class Formulario_model extends MY_Model {
      * "catalogo_secciones_actividad_docente"
      * "campos_mostrar_datatable"
      * Array
-      (
-      [datos_actividad_docente] => Array
-      (
-      [0] => Array
-      (
+      *(
+      *[datos_actividad_docente] => Array
+      *(
+      *[0] => Array
+      *(
       [id_elemento_seccion] => 32
       [nom_elemento_seccion] => Becas laborales
       [id_seccion] => 4
@@ -848,6 +849,7 @@ class Formulario_model extends MY_Model {
         $array_general = array();
         $array_campos = array();
         $array_campos_mostrar_datatable = array();
+        //pr($datos_docente_actividad);
         foreach ($datos_docente_actividad as $value) {
             $llave_cross = $value['id_censo'] . '-' . $value['id_formulario'] . '-' . $value['id_elemento_seccion'];
             if (!isset($array_general[$llave_cross])) {
@@ -874,11 +876,16 @@ class Formulario_model extends MY_Model {
                 );
             }
             $array_general[$llave_cross]['mostrar_datatable'] = $value['mostrar_datatable'];
+            
             switch ($value['nom_tipo_campo']) {//Formatos y casos especiales
                 case 'file':
                     $array_campos[$llave_cross][$value['nombre_campo']] = encrypt_base64($value['respuesta_valor']);
                 case 'date':
-                    $array_campos[$llave_cross][$value['nombre_campo']] = get_date_formato($value['respuesta_valor']);
+                    $val_aux = $value['respuesta_valor'];
+                    if($value['nom_tipo_dato'] == 'date'){
+                        get_date_formato($value['respuesta_valor']);
+                    }
+                    $array_campos[$llave_cross][$value['nombre_campo']] = $val_aux;
                     break;
                 default :
                     $array_campos[$llave_cross][$value['nombre_campo']] = $value['respuesta_valor'];

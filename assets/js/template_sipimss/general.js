@@ -450,3 +450,10 @@ function  crear_estructura_modal() {
             '</div>' +
             '</div>';
 }
+
+function decode64(str){
+    return atob(str);
+}
+function encode64(str){
+    return btoa(str);
+}

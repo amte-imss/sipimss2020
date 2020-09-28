@@ -105,12 +105,12 @@ echo js('docente/campo_year.js');
                             $value['aux_array_componente'] = $aux_array_componente;
                             $value['string_values'] = $string_values;
                             $value['controlador'] = $controlador;
-                            $value['value'] = $value;
                             $value['_POST'] = $_POST;
+                            $value['value'] = $value;
                     ?>
                     
                     <?php if($value['is_linea_completa'] && $value['nom_tipo_campo'] == 'custom'  ){?>
-                            <?php $this->load->view('docente/componente_custom.php', $aux_array_componente, FALSE);?>
+                            <?php $this->load->view('docente/componente_custom.php', $value, FALSE);?>
                         <?php }else if($value['nom_tipo_campo'] == 'custom'){ ?>    
                             <?php $this->load->view('docente/layout_secundario_una_linea.php', $value, FALSE);?>
                     <?php }else{ ?>
