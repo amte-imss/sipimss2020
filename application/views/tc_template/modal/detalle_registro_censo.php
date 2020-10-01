@@ -46,11 +46,12 @@ $controlador = $this->uri->rsegment(1);
                         $br_ = '<br>';
                     }
                 }
+                //pr($value['nom_tipo_campo']);
                 switch ($value['nom_tipo_campo']) {//Valida el tipo de campo
                     case 'file'://Tipo de campo file
                         ?>
                         <div  id="div_<?php echo $value['id_censo'] . '_' . $value['nombre_campo']; ?>" class="col-md-6 goleft <?php echo 'c_' . $value['nombre_campo'] ?>">
-                            <p><label class="pull-left bold-label <?php echo $value['nombre_campo']; ?>"><?php echo $value['lb_campo']; ?></label>
+                            <p><label class="pull-left bold-label <?php echo $value['nombre_campo']; ?>"><?php echo $value['lb_campo']; ?></label>&nbsp;
 
                                 <?php
                                 $file = (isset($value['respuesta_valor'])) ? encrypt_base64($value['respuesta_valor']) : '';
@@ -69,7 +70,7 @@ $controlador = $this->uri->rsegment(1);
                         }
                         ?>                        
                         <div  id="div_<?php echo $value['id_censo'] . '_' . $value['nombre_campo']; ?>" class="col-md-6 goleft <?php echo 'c_' . $value['nombre_campo'] ?>">
-                            <p><label class=" pull-left bold-label"><?php echo $value['lb_campo']; ?></label>
+                            <p><label class=" pull-left bold-label"><?php echo $value['lb_campo']; ?></label>&nbsp;
                                 <?php echo  $imprime_date; ?>
                             </p>
 
@@ -77,11 +78,29 @@ $controlador = $this->uri->rsegment(1);
 
                         <?php
                         break;
+                        case 'custom':
+                        ?>
+                        <div  id="div_<?php echo $value['id_censo'] . '_' . $value['nombre_campo']; ?>" class="col-md-6 goleft <?php echo 'c_' . $value['nombre_campo'] ?>">
+                            <p>
+                                <label class="pull-left bold-label"><?php echo $value['lb_campo']; ?></label>&nbsp;
+                                <?php $dAux = json_decode($value['respuesta_valor'],true); $print = "";?>
+                                <?php foreach($dAux as $value){
+                                    $print .= "<br>Nombre del curso: " . $value['nombre_curso'] . " Número de Años: " . $value['anio'] ;                                    
+                                }
+                                echo $print; 
+                                ?>
+
+                            </p>
+                        </div>
+                        <?php
+                            
+                        break;
+
                     default ://Todo lo demás diferente
                         ?>
                         <div  id="div_<?php echo $value['id_censo'] . '_' . $value['nombre_campo']; ?>" class="col-md-6 goleft <?php echo 'c_' . $value['nombre_campo'] ?>">
                             <p>
-                                <label class="pull-left bold-label"><?php echo $value['lb_campo']; ?></label>
+                                <label class="pull-left bold-label"><?php echo $value['lb_campo']; ?></label>&nbsp;
                                 <?php echo $value['respuesta_valor']; ?>
 
                             </p>

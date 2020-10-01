@@ -285,8 +285,10 @@ class Core_secciones extends Informacion_docente {
                 $formulario = $this->get_campos_formulario($elemento_seccion); //Obtiene tosdos los campos de formulario
                 $propiedades_formulario = $this->fm->get_formulario(null, $id_censo); //Obtiene datos de formulario
                 $datos_files = $this->separa_files_post($data_post); //Obtiene datos de los archivos, y agrega nombre del archivo al post
-//                pr($this->input->post(null, true));
                 $rules = $this->get_rules_formulario($formulario, $data_post); //Obtiene tosdos los campos de formnulario
+                //pr($formulario);
+                //pr($rules);
+                
                 $this->form_validation->set_rules($rules);
                 if ($this->form_validation->run()) {
 //                    $ruta_directorio = base_url($this->config->item('upload_us')); //Carga la ruta del usuario
@@ -730,7 +732,7 @@ class Core_secciones extends Informacion_docente {
      * un nuevo registro del censo
      */
     protected function insert_datos_formulario_c($datos_post_formulario = null, $deficion_formulario = null, &$datos_files = null) {
-//        pr($datos_post_formulario);
+        //pr($datos_post_formulario);
 //        exit();
         $this->load->model('Formulario_model', 'fm');
         $array_result = $this->fm->insert_datos_formulario($datos_post_formulario, $deficion_formulario, $datos_files);
@@ -811,8 +813,8 @@ class Core_secciones extends Informacion_docente {
      */
     protected function get_rules_formulario($descripcion_formulario = null, $datos_post = null) {
         $reglas_validacion = NULL;
-//        pr('$rules-----------------');
-//        pr($descripcion_formulario);
+        //pr('$rules-----------------');
+        //pr($descripcion_formulario);
         if (!is_null($descripcion_formulario)) {
 //            pr($descripcion_formulario);
             $campos_dependientes = [];
@@ -830,28 +832,40 @@ class Core_secciones extends Informacion_docente {
                     }
                 }
             }
-
+//pr($campos_dependientes);
             foreach ($descripcion_formulario as $value) {
                 if (!is_null($value['rules']) and ! empty($value['rules'])) {//valida que exista una regla asociada al campo
                     $aplica_regla_validacion = TRUE;
                     if (isset($value['id_censo']) and $value['is_precarga_registro_sistema']) {//Valida que exista un registro de censo, y que el campo es no editable por ser de precarga
                         $aplica_regla_validacion = FALSE; //Indica que no se le aplique regla de validación, ya que el post por encontrarse bloqueado, no enviara nada pero existe información cargada
+                        //pr("No validar");
                     }
 
                     if ($aplica_regla_validacion) {
                         $decode_rules = json_decode($value['rules'], true); //Decódifica las reglas de validación json to array
                         if (!empty($decode_rules)) {
-//                            pr($decode_rules);
                             if (isset($campos_dependientes[$value['nom_campo']])) {//Valida que exista una dependencia de campo
-                                if (strpos('required', $decode_rules['rules']) > -1) {//Valida que sea un campo requerido
+                                //pr($decode_rules['rules']);
+                                //pr("contiene -> ".preg_match("/required/", 'numeric|rango_1_5'));
+                                //if (strpos('required', $decode_rules['rules']) > -1) {//Valida que sea un campo requerido //30092020 no funciono para todo
+                                if (preg_match("/required/", $decode_rules['rules']) == 1) {//30092020 se cambio por que aqui si encuentra el valo required con mas valores en la cadena
+                                    //pr($value['nom_campo'] ." Is requerido");
                                     $dependiente = $campos_dependientes[$value['nom_campo']];
                                     if (isset($datos_post[$dependiente['padre']])) {//Valida que exista el padre
                                         $padre_valor = $datos_post[$dependiente['padre']];
                                         if (strlen(trim($padre_valor)) > 0) {
                                             if (!empty($dependiente['elementos'])) {//Aplica para todos
+                                                //pr($padre_valor);
+                                                //pr($dependiente['elementos']);
                                                 $encontro_valor = in_array($padre_valor, $dependiente['elementos']);
+                                                //pr($encontro_valor);
                                                 if (!$encontro_valor) {//Si no encuentra el valor, quitar validación de requerido
-                                                    $decode_rules['rules'] = str_replace('required', "", $decode_rules['rules']); //Elimina requerido por que no selecciono nada el padre
+                                                    //$decode_rules['rules'] = str_replace('required', "", $decode_rules['rules']); //Elimina requerido por que no selecciono nada el padre
+                                                    $decode_rules['rules'] = "";
+                                                    /*if(strlen($decode_rules['rules'])> 0 && preg_match("/\^|/", $decode_rules['rules']) == 1){
+                                                        $decode_rules['rules'] ;
+                                                        pr("existe");
+                                                    }*/
                                                 }
                                             }
                                         } else {

@@ -34,16 +34,17 @@ function grid_cursos_experiencia_doc() {
                 },
                 insertItem: function(item) {
                     console.log(item);
-                    //var data = $(nameGrid).jsGrid("option", "data");                    
-                    //var id = (isNaN(data)) ? -1 : data.length * (-1);
-                    var valor_pos_curso_exp = document.getElementById(name_campo_curso_experiencia).value;
+                    var data = $(nameGrid).jsGrid("option", "data");                    
                     
+                    var valor_pos_curso_exp = document.getElementById(name_campo_curso_experiencia).value;
+                    var id = 1;
+                                        
                     if(valor_pos_curso_exp.length>0){
                         valor_pos_curso_exp = $.parseJSON(decode64(valor_pos_curso_exp));
+                        id = getId(valor_pos_curso_exp); 
                     }else{
                         valor_pos_curso_exp = [];                        
                     }
-                    var id = (valor_pos_curso_exp.length == 0) ? -1 : (valor_pos_curso_exp.length + 1) * (-1);
                     item['id_curso_exp_docente'] = id;
                      
                     valor_pos_curso_exp.push(item);  
@@ -93,11 +94,28 @@ function grid_cursos_experiencia_doc() {
             fields: [
                 {name: "id_curso_exp_docente", title:"identificador", type: "number", visible: false },
                 {name: "nombre_curso", title:"Nombre del curso", type: "text", width: 150, visible: true },
-                {name: "anio", title:"Numero de años", type: "number", width: 50, visible: true }, 
+                {name: "anio", title:"Número de años", type: "number", width: 50, visible: true }, 
                 { type: "control" }
             ]
         });
 
     });
+
+}
+
+function getId(data){
+    var id = data.length + 1;
+    var is_ocupado = true;
+    while(is_ocupado){
+        is_ocupado = false;
+        for (const property in data) {
+            if(data[property]['id_curso_exp_docente'] == id ){
+                id++;
+                is_ocupado = true;
+                break;
+            }
+        }
+    }
+    return id;
 
 }

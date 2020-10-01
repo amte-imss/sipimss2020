@@ -18,7 +18,8 @@ class Formulario_model extends MY_Model {
             TIPO_CAMPO_RADIO_BUTTON = 6,
             TIPO_CAMPO_HIDDEN = 7,
             TIPO_CAMPO_CHECKBOX = 8,
-            TIPO_CAMPO_DATE = 9
+            TIPO_CAMPO_DATE = 9,
+            TIPO_CUSTOM = 11
 
     ;
     const KEY_OTHER_CAMPO = "keyother_";
@@ -459,20 +460,30 @@ class Formulario_model extends MY_Model {
                         'id_censo' => $id_censo,
                     );
                     //Valida que sea un catálogo con capacidad de agregar un nuevo registro del tipo "dropdown_otro"
-                    if (Formulario_model::TIPO_CAMPO_DROPDOWN_OTRO == $value['id_tipo_campo']) {
-                        if (strpos($dato_valor, Formulario_model::KEY_OTHER_CAMPO) !== FALSE) {
-                            $prop_post_otro = explode("_", $dato_valor);
-                            if (!empty($prop_post_otro) and isset($datos_post_formulario[$value['nom_campo'] . Formulario_model::KEY_OTHER_CAMPO_AUXILIAR])) {//Valida que el json no este vacio y que existan las llaves solicitadas
-//                            if (!empty($json_decode_catalogo_otro) and isset($json_decode_catalogo_otro[Formulario_model::KEY_OTHER_CAMPO]) and isset($json_decode_catalogo_otro['value_other'])) {//Valida que el json no este vacio y que existan las llaves solicitadas
-//                                $forma_palabra = preg_replace('/( ){2,}/u', ' ', str_replace("_", " ", $json_decode_catalogo_otro['value_other']));
-                                $forma_palabra = $datos_post_formulario[$value['nom_campo'] . Formulario_model::KEY_OTHER_CAMPO_AUXILIAR];
-                                $catalogos_nuevos[$value['nom_campo']] = array(
-                                    'catalogo_id' => $prop_post_otro[1],
-                                    'valor_elemento_catalogo' => $forma_palabra,
-                                );
+                    switch($value['id_tipo_campo']){
+                        case Formulario_model::TIPO_CAMPO_DROPDOWN_OTRO:
+                            if (strpos($dato_valor, Formulario_model::KEY_OTHER_CAMPO) !== FALSE) {
+                                $prop_post_otro = explode("_", $dato_valor);
+                                if (!empty($prop_post_otro) and isset($datos_post_formulario[$value['nom_campo'] . Formulario_model::KEY_OTHER_CAMPO_AUXILIAR])) {//Valida que el json no este vacio y que existan las llaves solicitadas
+        //                            if (!empty($json_decode_catalogo_otro) and isset($json_decode_catalogo_otro[Formulario_model::KEY_OTHER_CAMPO]) and isset($json_decode_catalogo_otro['value_other'])) {//Valida que el json no este vacio y que existan las llaves solicitadas
+        //                                $forma_palabra = preg_replace('/( ){2,}/u', ' ', str_replace("_", " ", $json_decode_catalogo_otro['value_other']));
+                                    $forma_palabra = $datos_post_formulario[$value['nom_campo'] . Formulario_model::KEY_OTHER_CAMPO_AUXILIAR];
+                                    $catalogos_nuevos[$value['nom_campo']] = array(
+                                        'catalogo_id' => $prop_post_otro[1],
+                                        'valor_elemento_catalogo' => $forma_palabra,
+                                    );
+                                }
                             }
-                        }
+                        break;
+                        case Formulario_model::TIPO_CUSTOM://ya que se envia en base 64
+                            pr($array_datos[$value['nom_campo']]);
+                            $array_datos[$value['nom_campo']]['valor'] = base64_decode($dato_valor);
+                            pr($array_datos[$value['nom_campo']]);
+                            
+                        break;
+
                     }
+                    
                     $json_censo_info[$value['nom_campo']] = $dato_valor; //Guarda el valor que tendrá el JSON del registro censo.censo
                 }
             }
@@ -525,24 +536,32 @@ class Formulario_model extends MY_Model {
 //                    }
 //                }
 //            }
-            //Valida que sea un catálogo con capacidad de agregar un nuevo registro del tipo "dropdown_otro"
-            if (Formulario_model::TIPO_CAMPO_DROPDOWN_OTRO == $value_df['id_tipo_campo'] and isset($datos_post_formulario[$value_df['nom_campo']])) {
-                $str_post_data = $datos_post_formulario[$value_df['nom_campo']];
-                if (strpos($str_post_data, Formulario_model::KEY_OTHER_CAMPO) !== FALSE) {
-                    $prop_post_otro = explode("_", $str_post_data);
-                    //pr($prop_post_otro);
-                    if (!empty($prop_post_otro) and isset($datos_post_formulario[$value_df['nom_campo'] . Formulario_model::KEY_OTHER_CAMPO_AUXILIAR])) {//Valida que el json no este vacio y que existan las llaves solicitadas
-//                            if (!empty($json_decode_catalogo_otro) and isset($json_decode_catalogo_otro[Formulario_model::KEY_OTHER_CAMPO]) and isset($json_decode_catalogo_otro['value_other'])) {//Valida que el json no este vacio y que existan las llaves solicitadas
-//                                $forma_palabra = preg_replace('/( ){2,}/u', ' ', str_replace("_", " ", $json_decode_catalogo_otro['value_other']));
-                        $forma_palabra = $datos_post_formulario[$value_df['nom_campo'] . Formulario_model::KEY_OTHER_CAMPO_AUXILIAR];
-                        $catalogos_nuevos[$value_df['nom_campo']] = array(
-//                            'catalogo_id' => base64_decode($prop_post_otro[1]),//Antes el catalogo se codificaba, actualmente ya no
-                            'catalogo_id' => $prop_post_otro[1],
-                            'valor_elemento_catalogo' => $forma_palabra,
-                        );
-                    }
+                switch($value_df['id_tipo_campo']){
+                    case Formulario_model::TIPO_CAMPO_DROPDOWN_OTRO:
+                        $str_post_data = $datos_post_formulario[$value_df['nom_campo']];
+                                if (strpos($str_post_data, Formulario_model::KEY_OTHER_CAMPO) !== FALSE) {
+                                    $prop_post_otro = explode("_", $str_post_data);
+                                    //pr($prop_post_otro);
+                                    if (!empty($prop_post_otro) and isset($datos_post_formulario[$value_df['nom_campo'] . Formulario_model::KEY_OTHER_CAMPO_AUXILIAR])) {//Valida que el json no este vacio y que existan las llaves solicitadas
+                //                            if (!empty($json_decode_catalogo_otro) and isset($json_decode_catalogo_otro[Formulario_model::KEY_OTHER_CAMPO]) and isset($json_decode_catalogo_otro['value_other'])) {//Valida que el json no este vacio y que existan las llaves solicitadas
+                //                                $forma_palabra = preg_replace('/( ){2,}/u', ' ', str_replace("_", " ", $json_decode_catalogo_otro['value_other']));
+                                        $forma_palabra = $datos_post_formulario[$value_df['nom_campo'] . Formulario_model::KEY_OTHER_CAMPO_AUXILIAR];
+                                        $catalogos_nuevos[$value_df['nom_campo']] = array(
+                //                            'catalogo_id' => base64_decode($prop_post_otro[1]),//Antes el catalogo se codificaba, actualmente ya no
+                                            'catalogo_id' => $prop_post_otro[1],
+                                            'valor_elemento_catalogo' => $forma_palabra,
+                                        );
+                                    }
+                                }
+                    break;
+                    case Formulario_model::TIPO_CUSTOM://ya que se envia en base 64
+                        $datos_post_formulario[$value_df['nom_campo']] = base64_decode($datos_post_formulario[$value_df['nom_campo']]); 
+                        
+                    break;
+
                 }
-            }
+            //Valida que sea un catálogo con capacidad de agregar un nuevo registro del tipo "dropdown_otro"
+            
         }
 //        unset($datos_guardados_deficion_formulario['mod']);
 //        unset($datos_post_formulario['ins_avala']);

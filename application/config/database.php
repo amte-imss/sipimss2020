@@ -83,7 +83,7 @@ $db['default'] = array(
     'password' => 'nPgEoXCqd/?gV.,',
     'database' => 'sipimss_test',
 */
-    'dsn' => 'pgsql:host=localhost;port=5432;dbname=sipimss_0920',
+    'dsn' => 'pgsql:host=localhost;port=5432;dbname=sipimss_0920_pruebas',
     'hostname' => 'localhost',
     'username' => 'innovaedu',
     'password' => 'innovaedu',
@@ -129,7 +129,7 @@ $db['bitacoras'] = array(
     'password' => 'nPgEoXCqd/?gV.,',
     'database' => 'sipimss_test',
 */
-    'dsn' => 'pgsql:host=localhost;port=5432;dbname=sipimss_0920',
+    'dsn' => 'pgsql:host=localhost;port=5432;dbname=sipimss_0920_pruebas',
     'hostname' => 'localhost',
     'username' => 'innovaedu',
     'password' => 'innovaedu',
