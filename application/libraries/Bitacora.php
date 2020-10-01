@@ -6,7 +6,7 @@
  * Lo siento.
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
-define('TABLE_BITACORA', 'sistema.bitacora_sipimss');
+define('TABLE_BITACORA', 'bitacora.bitacora_sipimss');
 define('BD_BITACORA_CONFIG', 'bitacoras');
 
 /**
@@ -49,15 +49,20 @@ class Bitacora
             'ip' => $ip,
             'url' => $uri
         );
-
-        $this->db->insert(TABLE_BITACORA, $insert);
+        $result_insert = $this->db->insert(TABLE_BITACORA, $insert);
+        //pr($this->db->insert(TABLE_BITACORA, $insert));
+        //pr($this->db);
+        //pr($result_insert);
         if ($this->db->trans_status() === FALSE)
         {
+            //pr("Aqui fue falso");
             $this->db->trans_rollback();
         } else
         {
+            //pr("Aqui fue verdadero");
             $this->db->trans_commit();
         }
+        //pr($this->db->last_query());
         $this->db->flush_cache();
         $this->db->reset_query();
     }

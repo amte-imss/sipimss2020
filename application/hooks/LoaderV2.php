@@ -19,7 +19,7 @@ class LoaderV2
     function load()
     {
         $this->superadmin = false;
-        // pr('Hola yo soy el quien decide quien es digno de pasar, muestrame tu valor');
+         //pr('Hola yo soy el quien decide quien es digno de pasar, muestrame tu valor');
         $this->CI = & get_instance(); //Obtiene la insatancia del super objeto en codeigniter para su uso directo
         $ds = $this->CI->get_datos_sesion();
         if(isset($ds['id_usuario']))
