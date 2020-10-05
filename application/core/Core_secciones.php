@@ -68,7 +68,17 @@ class Core_secciones extends Informacion_docente {
             }
             $data['is_seccion_static'] = $seccion[0]['is_seccion_static'];//22092020
             $data['config'] = json_decode($seccion[0]['config'], true);//25092020
-            $parametros_boton_agregar_seccion['config'] = json_decode($seccion[0]['config'], true);//25092020
+            if(isset($data['config']['staticForm']) && $data['config']['staticForm'] == 1){
+                $registros = $this->getCensoEstatico($seccion[0]['id_seccion']);
+                if(!empty($registros)){
+                    $registros = $registros[0];
+                    $data['config']['censo_static'] = encrypt_base64($registros['id_censo']);
+                }
+                //pr($data);
+                
+
+            }
+            $parametros_boton_agregar_seccion['config'] = $data['config'];//25092020
         }
         $data['seccion'] = '';
         $parametros_boton_agregar_seccion = array_merge($this->template->getParametrorBoton(),$parametros_boton_agregar_seccion); //Obtiene todos los parametros del botón            
@@ -84,6 +94,31 @@ class Core_secciones extends Informacion_docente {
 //        $this->output->enable_profiler(TRUE);
         $this->output->parse_exec_vars = TRUE;
         //$this->output->append_output($this->benchmark->memory_usage());
+    }
+
+    private function getCensoEstatico($id_seccion){
+        $id_docente = $this->get_datos_sesion('id_docente');
+        $this->load->model('Catalogo_model', 'cm');
+        $join = array(
+        ['table' => 'ui.formulario f',
+        'condition' => 'f.id_formulario = a.id_formulario',
+        'type' => 'join'
+        ],
+        ['table' =>'catalogo.elementos_seccion e',
+        'condition' =>'e.id_elemento_seccion = f.id_elemento_seccion',
+        'type' => 'join'
+        ]
+        );
+        $params['select'] = 'formulario_registros , e.id_elemento_seccion, a.id_censo';
+        $params['join'] = $join;
+        $params['where'] = ['a.activo'=>true,
+        'e.id_seccion'=>$id_seccion,
+        'f.activo'=>true,
+        'a.id_docente'=>$id_docente
+        ];
+        $result = $this->cm->get_registros("censo.censo a", $params);
+        
+        return $result;
     }
 
     /**
@@ -277,7 +312,8 @@ class Core_secciones extends Informacion_docente {
             $id_docente = $datos_sesion[En_datos_sesion::ID_DOCENTE];
             $id_censo = null; //En algun punto debe existir la variable, aquí únicamente se define
             $data_post = $this->input->post(null, true);
-//            pr($data_post);
+            
+  //          pr($data_post);
 //            exit();
             if ($this->input->post()) {
                 $opciones_extra_catalogo_otro = array();

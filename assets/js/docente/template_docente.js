@@ -10,7 +10,8 @@ $(document).ready(function () {
         
         //console.log(properties);
         if(properties.staticForm==1 || properties.staticForm=='1'){            
-            $("#btn_agregar").trigger("click");            
+            $("#btn_agregar").trigger("click");   
+                     
         }
         
 
@@ -193,6 +194,10 @@ function funcion_actualizar_actividad(element) {
                                     $(div_respuesta).html('');
                                     reinicia_monitor();//Reinicia el monitor
                                     actaliza_data_table(url_actualiza_tabla);
+                                    if(properties.staticForm==1 || properties.staticForm=='1'){            
+                                        $("#btn_agregar").trigger("click");   
+                                                 
+                                    }
                                 } else {
                                     $(div_respuesta).html(resp.html);
                                 }

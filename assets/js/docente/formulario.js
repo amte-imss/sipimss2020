@@ -8,6 +8,16 @@ $(document).ready(function () {//Ejecuta al final de la página
 
 function actualiza_campos_dependientes(element, lanzar) {
     var objeto_this = $(element);
+    var componentType = element.type;
+    //select-one
+    if(componentType === 'checkbox'){
+        if (objeto_this.prop('checked') ) {
+            element.value = 1;
+            
+        }else{            
+            element.value = 0;
+        }
+    }
     if (typeof array_padres_dependientes !== 'undefined' && typeof array_padres_dependientes[element.name] !== 'undefined') {
         var configuracion = array_padres_dependientes[element.name];
         Object.keys(configuracion.campos).forEach(function (index) {
@@ -15,6 +25,9 @@ function actualiza_campos_dependientes(element, lanzar) {
             console.log("Recorre campos " + dependientes);
             console.log("Dependientes " + dependientes);
             console.log("Configuracion " + configuracion.elementos[dependientes]);
+            console.log("value " + objeto_this.val());
+            document.getElementById(dependientes).value = 1;
+
             if (document.getElementById(dependientes)) {//Valida que exista una dependencia por identificacor
                 if (typeof configuracion.elementos[dependientes] !== 'undefined') {//Valida que exista una dependencia por identificacor
                     var opciones = configuracion.elementos[dependientes];

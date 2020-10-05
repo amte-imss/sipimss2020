@@ -1,9 +1,19 @@
 <?php
 $evento = '';
+$censo = '';
 if (isset($tipo_evento_js) and ! is_null($tipo_evento_js) and isset($funcion_js) and ! is_null($funcion_js)) {
     $evento = $tipo_evento_js . ' = ' . $funcion_js;
 }
-$ruta = '/' . $this->uri->rsegment(1) . '/carga_seccion/';
+//pr($config);
+if(isset($config['censo_static'])){
+    //pr('Esta es la configuracion');
+    $ruta = 'data-rutaeditar="/' . $this->uri->rsegment(1) . '/carga_actividad/"';
+    $censo = 'data-censo="'.$config['censo_static'].'"';
+    $evento = $tipo_evento_js . ' = ' . '"cargar_actividad(this);"';
+}else{
+    $ruta = 'data-ruta="/' . $this->uri->rsegment(1) . '/carga_seccion/"';
+    
+}
 //pr($seccion);
 $text_seccion = '';
 if (isset($seccion)) {
@@ -17,7 +27,8 @@ if (!empty($config) && isset($config['btnAgregarNuevo']) && $config['btnAgregarN
 ?>
 
 <button id="<?php echo $id_btn; ?>" name="save" type="button" class="btn btn-lg btnverde" <?php echo $evento; ?>
-        data-ruta="<?php echo $ruta; ?>"
+        <?php echo $ruta; ?>        
+        <?php echo $censo; ?>        
         <?php echo $display; ?>        
         <?php echo $text_seccion; ?>
 >

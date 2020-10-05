@@ -59,12 +59,14 @@
         </script>
         <?php
     }
-    //    pr($value_result);
+        //pr($value_result);
+       // if(isset=1)
+        $checked = 'checked';
     $optiones = ''; //Opciones, (diseño actual, no lo maneja)
     $llave_catalogo = $value['id_campo'] . $value['id_catalogo']; //Llave para obtener el catálogo disponible
 
     $create_element = array('id' => $value['nom_campo'], 'type' => $value['nom_tipo_campo'],       
-        'value' => $value_result,
+        'value' => 1,
         //                'value' => (isset($value['valor'])) ? $value['valor'] : '',
         'attributes' => $atributos,
     );

@@ -50,6 +50,7 @@ function recarga_secciones_dropdown(){
                 //console.log('selecciona key select ' + token_seccion);
                 recarga_catalogo_secciones_actividad_docente(result.catalogo_secciones_actividad_docente, token_seccion);
 //                    carga_grid_actividad_docente(result, this.token_seccion);
+                console.log("Aquipasa algo ?");
             });
 }
 
@@ -94,6 +95,7 @@ function carga_grid_actividad_docente(datos, seccion) {
                 //console.log(filter);
                 var d = $.Deferred();
                 //var result = null;
+               
                 var res = $.grep(datos.datos_actividad_docente, function (registro) {
                     var result = true;
                     var namec;
@@ -112,6 +114,7 @@ function carga_grid_actividad_docente(datos, seccion) {
                             }
                         }
                     }
+                
                     return result;
                 });
                 d.resolve(res);
@@ -158,10 +161,11 @@ function recarga_catalogo_secciones_actividad_docente(actividades_docente, token
                 var seccion_tmp_stat = properties.id_elementoSeccionDefault;
                 
                 document.getElementById('secciones_datatable').value = seccion_tmp_stat;
-                
+                console.log(document.getElementById('secciones_datatable').text);
             }   
         }
     } else {//desaparece
+        //console.log("Esto es cero");
         secciones_datatable.css("display", "none");
     }
     secciones_datatable.trigger("onchange");
@@ -242,7 +246,7 @@ function genera_acciones(value, item) {
     var link_detalle = '';
     var link_eliminar = '';
     if (item.acciones.editar === true) {
-        link_editar = '<a class="opcion" href="#"'
+        link_editar = '<a class="opcion statico_update" href="#"'
                 + 'onclick="cargar_actividad(this);"'
                 + 'data-censo="' + value + '"'
                 + 'data-rutaeditar="' + ruta + '/carga_actividad"'
