@@ -573,6 +573,11 @@ function carga_hijos_elemento_catalogo(catalogo_padre, elemento_catalogo_padre, 
 //            $("#" + dropdawn_resultado).html("");
 //        var select = document.getElementById(dropdawn_resultado);
 //        var this_elemento = $(select);
+//console.log(key_selecciona);
+//console.log(catalogo_hijo);
+//console.log(regla_catalogo);
+//console.log(dropdawn_resultado);
+//console.log("<<<<<>>>>");
         var select = $('#' + dropdawn_resultado + " option");
         $.each(select, function (i, v) {
             if (i > 0) {

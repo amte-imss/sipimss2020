@@ -10,23 +10,25 @@ function actualiza_campos_dependientes(element, lanzar) {
     var objeto_this = $(element);
     var componentType = element.type;
     //select-one
-    if(componentType === 'checkbox'){
-        if (objeto_this.prop('checked') ) {
-            element.value = 1;
-            
-        }else{            
-            element.value = 0;
+    if(typeof lanzar === 'undefined'){
+        if(componentType === 'checkbox'){
+            if (objeto_this.prop('checked') ) {
+                element.value = 1;            
+            }else{            
+                element.value = 0;
+            }
         }
     }
     if (typeof array_padres_dependientes !== 'undefined' && typeof array_padres_dependientes[element.name] !== 'undefined') {
         var configuracion = array_padres_dependientes[element.name];
+        //console.log(memoria_values);
         Object.keys(configuracion.campos).forEach(function (index) {
             var dependientes = configuracion.campos[index];
-            console.log("Recorre campos " + dependientes);
-            console.log("Dependientes " + dependientes);
-            console.log("Configuracion " + configuracion.elementos[dependientes]);
-            console.log("value " + objeto_this.val());
-            document.getElementById(dependientes).value = 1;
+            //console.log("Recorre campos " + dependientes);
+            //console.log("Dependientes " + dependientes);
+            //console.log("Configuracion " + configuracion.elementos[dependientes]);
+            //console.log("value " + objeto_this.val());
+            //document.getElementById(dependientes).value = 1;
 
             if (document.getElementById(dependientes)) {//Valida que exista una dependencia por identificacor
                 if (typeof configuracion.elementos[dependientes] !== 'undefined') {//Valida que exista una dependencia por identificacor
@@ -94,6 +96,8 @@ function control_dependientes(nombre_elemento_dependiente, catalogo_padre, value
 
         }
         if (typeof catalogo_hijo !== 'undefined') {//Aplica regla de catálogos, por que el elemento es un catalogo
+            //console.log(catalogo_hijo);
+            //console.log(regla_catalogo);
             if (regla_catalogo !== 'undefined' && regla_catalogo != null && regla_catalogo.toString() != "") {
                 console.log('cargando elementos');
                 carga_hijos_elemento_catalogo(catalogo_padre, value_padre, nombre_elemento_dependiente, elemento_dependiente.data("ruta"), memoria_values[nombre_elemento_dependiente], regla_catalogo, catalogo_hijo);

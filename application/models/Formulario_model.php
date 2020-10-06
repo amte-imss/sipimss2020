@@ -476,9 +476,9 @@ class Formulario_model extends MY_Model {
                             }
                         break;
                         case Formulario_model::TIPO_CUSTOM://ya que se envia en base 64
-                            pr($array_datos[$value['nom_campo']]);
+                            //pr($array_datos[$value['nom_campo']]);
                             $array_datos[$value['nom_campo']]['valor'] = base64_decode($dato_valor);
-                            pr($array_datos[$value['nom_campo']]);
+                            //pr($array_datos[$value['nom_campo']]);
                             
                         break;
 

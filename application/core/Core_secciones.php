@@ -313,7 +313,7 @@ class Core_secciones extends Informacion_docente {
             $id_censo = null; //En algun punto debe existir la variable, aquí únicamente se define
             $data_post = $this->input->post(null, true);
             
-  //          pr($data_post);
+            //pr($data_post);
 //            exit();
             if ($this->input->post()) {
                 $opciones_extra_catalogo_otro = array();
@@ -881,7 +881,7 @@ class Core_secciones extends Informacion_docente {
                         $decode_rules = json_decode($value['rules'], true); //Decódifica las reglas de validación json to array
                         if (!empty($decode_rules)) {
                             if (isset($campos_dependientes[$value['nom_campo']])) {//Valida que exista una dependencia de campo
-                                //pr($decode_rules['rules']);
+                                //pr($decode_rules['rules'] . " -> " . $value['nom_campo']);
                                 //pr("contiene -> ".preg_match("/required/", 'numeric|rango_1_5'));
                                 //if (strpos('required', $decode_rules['rules']) > -1) {//Valida que sea un campo requerido //30092020 no funciono para todo
                                 if (preg_match("/required/", $decode_rules['rules']) == 1) {//30092020 se cambio por que aqui si encuentra el valo required con mas valores en la cadena
@@ -894,6 +894,8 @@ class Core_secciones extends Informacion_docente {
                                                 //pr($padre_valor);
                                                 //pr($dependiente['elementos']);
                                                 $encontro_valor = in_array($padre_valor, $dependiente['elementos']);
+                                                //pr($dependiente['padre'] . " -> " . $padre_valor . " -> " . $encontro_valor ); 
+                                                //pr($dependiente['elementos'] ); 
                                                 //pr($encontro_valor);
                                                 if (!$encontro_valor) {//Si no encuentra el valor, quitar validación de requerido
                                                     //$decode_rules['rules'] = str_replace('required', "", $decode_rules['rules']); //Elimina requerido por que no selecciono nada el padre
@@ -918,6 +920,7 @@ class Core_secciones extends Informacion_docente {
                             if (!isset($decode_rules['label']) || empty($decode_rules['label'])) {
                                 $decode_rules['label'] = $value['lb_campo'];
                             }
+                            //pr($decode_rules);
                             $reglas_validacion[] = $decode_rules;
                         }
                     }

@@ -802,7 +802,7 @@ if ( ! function_exists('set_checkbox'))
 		// Form inputs are always strings ...
 		$value = (string) $value;
 		$input = $CI->input->post($field, FALSE);
-
+//printf($field);
 		if (is_array($input))
 		{
 			// Note: in_array('', array(0)) returns TRUE, do not use it
@@ -817,12 +817,12 @@ if ( ! function_exists('set_checkbox'))
 			return '';
 		}
 
+		
 		// Unchecked checkbox and radio inputs are not even submitted by browsers ...
 		if ($CI->input->method() === 'post')
 		{
 			return ($input === $value) ? ' checked="checked"' : '';
 		}
-
 		return ($default === TRUE) ? ' checked="checked"' : '';
 	}
 }

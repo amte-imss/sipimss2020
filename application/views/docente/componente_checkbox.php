@@ -65,11 +65,17 @@
     $optiones = ''; //Opciones, (diseño actual, no lo maneja)
     $llave_catalogo = $value['id_campo'] . $value['id_catalogo']; //Llave para obtener el catálogo disponible
 
+    if(empty($_POST)){
+        if(!empty($value['valor'])&&intval($value['valor'])>0){
+        $atributos['checked']='checked';
+        }
+    }
     $create_element = array('id' => $value['nom_campo'], 'type' => $value['nom_tipo_campo'],       
-        'value' => 1,
+        'value' => $value['valor'],
         //                'value' => (isset($value['valor'])) ? $value['valor'] : '',
         'attributes' => $atributos,
     );
+
     if (isset($catalogos[$llave_catalogo])) {//Valida que exista el catálogo en el formulario
         $atributos_catalogo = array(
             'id' => 'id_elemento_catalogo', //Identificador del catalogo a mostrar

@@ -163,6 +163,7 @@ class Form_complete {
                     break;
                 case 'checkbox':
                     $checked = (set_checkbox($name, $value)) ? array('checked' => 'checked') : array();
+                    //pr($value);
                     $elemento = form_checkbox(array_merge(array('id' => $element['id'], 'name' => $name, 'value' => $value), $attributes, $checked));
                     break;
                 case 'dropdown':
@@ -318,7 +319,9 @@ class Form_complete {
     private function selected_option_element_valido($element, $value, &$options, $llave_select, $valor_select, $llave_valido = 'is_validado') {
         $selected = array();
         $options_auxiliar = array();
-
+//pr($value);
+//pr($valor_select);
+//pr($element);
         foreach ($options as $key_options => $option) {
             $seleccionado = FALSE;
             if (set_select($element, $option[$llave_select])) {//Compara con el post, si existe algo precargado

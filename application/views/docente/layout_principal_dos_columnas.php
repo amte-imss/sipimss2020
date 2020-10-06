@@ -25,6 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     $this->load->view('docente/componente_files.php', $aux_array_componente, FALSE);
                                     break;
                                 case 'checkbox':
+                                    //pr($aux_array_componente);
                                     $this->load->view('docente/componente_checkbox.php', $aux_array_componente, FALSE);
                                     break;
                                 case 'date':
@@ -38,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     $value_result = "";
 //                                    pr((isset($_POST[$value['nom_campo']])) ? $_POST[$value['nom_campo']] : "");
                                     if (isset($_POST[$value['nom_campo']]) /* and ! empty($_POST[$value['nom_campo']]) */) {//Recargar post
-//        pr($value['nom_campo']);
+       // pr($value['nom_campo']. ' -> ' . $_POST[$value['nom_campo']]);
                                         ?>
                                         <script >
                                             /* Guarda los datos de configuración para el uso de ajax en javascript */
@@ -54,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </script>
                                         <?php
                                     }
-//                                    pr($value_result);
+                                    //pr($value_result);
 
                                     $aux_array_componente['controlador'] = $controlador;
                                     $aux_array_componente['value_result'] = $value_result;
