@@ -204,6 +204,22 @@ function muestra_grid_reglas_dependencias(db_campos_formulario)
         pageNavigatorPrevText: "...",
         noDataContent: "No se encontraron datos",
         data: db_campos_formulario.campos,
+        controller: {
+                loadData: function(filter) {
+                    //console.log(filter);
+                var d = $.Deferred();
+                //var result = null;
+               
+                var res = $.grep(db_campos_formulario.campos, function (registro) {
+                    var result = true;
+                    
+                   result = (!filter.campo || (registro.campo !== null && registro.campo.toLowerCase().indexOf(filter.campo.toString().toLowerCase()) > -1))
+                    return result;
+                });
+                d.resolve(res);
+                return d.promise();
+                },
+            },
         fields: [
                     {name: 'id_campos_formulario', title: "#", visible: false},
                     {name: 'id_campo', title: "#", visible: false},

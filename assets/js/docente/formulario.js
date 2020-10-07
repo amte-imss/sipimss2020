@@ -4,6 +4,11 @@ $(document).ready(function () {//Ejecuta al final de la página
 //        console.log(this);
         actualiza_campos_dependientes(this, false);
     });
+    if(typeof properties !== 'undefined'){
+        if((typeof properties.staticForm !== 'undefined' && properties.staticForm==1 || properties.staticForm=='1') || (typeof properties.id_elementoSeccionDefault !== 'undefined' && properties.id_elementoSeccionDefault>0)){                   
+            $("#div_arbol_seccion").css({'display':'none'});                 
+        }
+    }
 });
 
 function actualiza_campos_dependientes(element, lanzar) {
@@ -99,7 +104,7 @@ function control_dependientes(nombre_elemento_dependiente, catalogo_padre, value
             //console.log(catalogo_hijo);
             //console.log(regla_catalogo);
             if (regla_catalogo !== 'undefined' && regla_catalogo != null && regla_catalogo.toString() != "") {
-                console.log('cargando elementos');
+                //console.log('cargando elementos');
                 carga_hijos_elemento_catalogo(catalogo_padre, value_padre, nombre_elemento_dependiente, elemento_dependiente.data("ruta"), memoria_values[nombre_elemento_dependiente], regla_catalogo, catalogo_hijo);
             }
         }

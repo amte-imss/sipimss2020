@@ -9,8 +9,8 @@ $(document).ready(function () {
     if(typeof properties !== 'undefined'){
         
         //console.log(properties);
-        if(properties.staticForm==1 || properties.staticForm=='1'){            
-            $("#btn_agregar").trigger("click");   
+        if(typeof properties.staticForm !== 'undefined' && properties.staticForm==1 || properties.staticForm=='1'){            
+            $("#btn_agregar").trigger("click");
                      
         }
         
@@ -118,6 +118,11 @@ function funcion_guardar_actividad(element) {//ajaxFileUpload
                                     $(div_respuesta).html('');
                                     reinicia_monitor();
                                     actaliza_data_table(url_actualiza_tabla);
+                                    
+                                    if(typeof properties !== 'undefined' && typeof properties.staticForm !== 'undefined' && properties.staticForm==1 || properties.staticForm=='1'){            
+                                        //$("#btn_agregar").trigger("click"); 
+                                        location.reload();                                                   
+                                    }
                                 } else {
                                     $(div_respuesta).html(resp.html);
                                 }
@@ -186,6 +191,8 @@ function funcion_actualizar_actividad(element) {
                 }
             })
                     .done(function (data) {
+                        console.log("Que rayos");
+                        console.log(data);
                         try {//Cacha el error
                             $(div_respuesta).empty();
                             var resp = $.parseJSON(data);
@@ -194,9 +201,9 @@ function funcion_actualizar_actividad(element) {
                                     $(div_respuesta).html('');
                                     reinicia_monitor();//Reinicia el monitor
                                     actaliza_data_table(url_actualiza_tabla);
-                                    if(properties.staticForm==1 || properties.staticForm=='1'){            
+                                    if(typeof properties !== 'undefined' && typeof properties.staticForm !== 'undefined' && properties.staticForm==1 || properties.staticForm=='1'){       
                                         $("#btn_agregar").trigger("click");   
-                                                 
+                                        //location.reload();       
                                     }
                                 } else {
                                     $(div_respuesta).html(resp.html);
@@ -371,8 +378,8 @@ function carga_hijo_seccion(element) {
                     $('#seccion_formulario').html('');//Limpia el icono cargando
                     
                     if(typeof properties !== 'undefined'){    
-                        //console.log("Value: " + properties.id_elementoSeccionDefault);
-                        if(properties.id_elementoSeccionDefault>-1 || properties.id_elementoSeccionDefault!='-1'){                            
+                        //console.log("Value: " + properties.id_elementoSeccionDefault);                        
+                        if(typeof properties.id_elementoSeccionDefault !== 'undefined' && (properties.id_elementoSeccionDefault>-1 || properties.id_elementoSeccionDefault!='-1')){                            
                             data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado, elementosDespuesSeccion, null, properties.id_elementoSeccionDefault); 
                         }else{
                             data_ajax(site_url + ruta_ + seccion, null, '#' + elemnto_resultado);

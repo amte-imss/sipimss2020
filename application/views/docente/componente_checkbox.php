@@ -64,14 +64,22 @@
         $checked = 'checked';
     $optiones = ''; //Opciones, (diseño actual, no lo maneja)
     $llave_catalogo = $value['id_campo'] . $value['id_catalogo']; //Llave para obtener el catálogo disponible
-
+    //pr($_POST);
+    
+    $value_check = 0;
     if(empty($_POST)){
-        if(!empty($value['valor'])&&intval($value['valor'])>0){
-        $atributos['checked']='checked';
+        if( !empty($value['valor'])&&intval($value['valor'])>0){
+            $atributos['checked']='checked';
+            $value_check = $value['valor'];
+        
+        }
+    }else{        
+        if(isset($_POST[$value['nom_campo']])){
+            $value_check = $_POST[$value['nom_campo']];
         }
     }
     $create_element = array('id' => $value['nom_campo'], 'type' => $value['nom_tipo_campo'],       
-        'value' => $value['valor'],
+        'value' => $value_check,
         //                'value' => (isset($value['valor'])) ? $value['valor'] : '',
         'attributes' => $atributos,
     );

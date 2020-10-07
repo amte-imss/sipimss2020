@@ -38,7 +38,7 @@ echo js('docente/campo_year.js');
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <?php if (isset($arbol_secciones)) { ?>
-                <div class="row">
+                <div class="row" id="div_arbol_seccion">
                     <div class="col-md-12 ">
                         <label class="text-left" style="font-size:16px" for="lbl_arbol_seccion" class="">
                             <?php echo $arbol_secciones; ?>

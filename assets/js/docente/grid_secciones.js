@@ -157,7 +157,7 @@ function recarga_catalogo_secciones_actividad_docente(actividades_docente, token
         secciones_datatable.val(token_seccion);
         //Recarga de secciones con una opcion
         if(typeof properties !== 'undefined'){
-            if(properties.id_elementoSeccionDefault>-1 || properties.id_elementoSeccionDefault!='-1'){
+            if(typeof properties.id_elementoSeccionDefault !== 'undefined' && properties.id_elementoSeccionDefault>-1 || properties.id_elementoSeccionDefault!='-1'){
                 var seccion_tmp_stat = properties.id_elementoSeccionDefault;
                 
                 document.getElementById('secciones_datatable').value = seccion_tmp_stat;
@@ -181,6 +181,7 @@ function recarga_grid(elemento) {
 function genera_filds(data, elemento_seccion) {
     var f = new Array();
     var d_extra;
+    var mostrar_extras_por_properties = true;
     columnas = new Array();
 //    console.log(data);
     if (typeof elemento_seccion !== 'undefined' && elemento_seccion.toString() != '') {
@@ -204,19 +205,26 @@ function genera_filds(data, elemento_seccion) {
             }
         });
     }
-    if (typeof data.textos_extra !== 'undefined') {
-        Object.keys(data.textos_extra).forEach(function (key) {
-            d_extra = data.textos_extra[key];
-            columnas.push(d_extra.nombre);//Columnas del grid
-            switch (d_extra.nom_tipo_campo) {
-                case "select":
-                    f.push({name: key, type: d_extra.nom_tipo_campo, title: d_extra.label, items: data[d_extra.nombre], valueField: 'id', textField: 'label'});
-                    break;
-                default :
-                    f.push({name: key, type: d_extra.nom_tipo_campo, title: d_extra.label});
-            }
-        });
+
+    if(typeof properties !== 'undefined'){
+        if(typeof properties.visible_textos_extras_table_seccion !== 'undefined' && properties.visible_textos_extras_table_seccion==0 || properties.visible_textos_extras_table_seccion=='0'){                   
+            mostrar_extras_por_properties = false;            
+        }    
     }
+
+        if (typeof data.textos_extra !== 'undefined' && mostrar_extras_por_properties) {
+            Object.keys(data.textos_extra).forEach(function (key) {
+                d_extra = data.textos_extra[key];
+                columnas.push(d_extra.nombre);//Columnas del grid
+                switch (d_extra.nom_tipo_campo) {
+                    case "select":
+                        f.push({name: key, type: d_extra.nom_tipo_campo, title: d_extra.label, items: data[d_extra.nombre], valueField: 'id', textField: 'label'});
+                        break;
+                        default :
+                        f.push({name: key, type: d_extra.nom_tipo_campo, title: d_extra.label});
+                    }
+                });
+            }
 //    f = [
 //        {name: "nom_elemento_seccion", type: "text", title: "Nombre elemento sección"},
 //        {name: "tipo_curso", type: "text", title: "Tipo de curso"},

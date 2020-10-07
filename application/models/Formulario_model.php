@@ -485,6 +485,18 @@ class Formulario_model extends MY_Model {
                     }
                     
                     $json_censo_info[$value['nom_campo']] = $dato_valor; //Guarda el valor que tendrá el JSON del registro censo.censo
+                }else{
+                    switch($value['id_tipo_campo']){
+                        case Formulario_model::TIPO_CAMPO_CHECKBOX:
+                            $dato_valor = 0;
+                            $array_datos[$value['nom_campo']] = array(
+                                'id_campos_formulario' => $value['id_campos_formulario'],
+                                'valor' => $dato_valor,
+                                'id_censo' => $id_censo,
+                            );
+                            $json_censo_info[$value['nom_campo']] = $dato_valor; //Guarda el valor que tendrá el JSON del registro censo.censo
+                        break;
+                    }
                 }
             }
             $json_censo_info['id_formulario'] = $deficion_formulario[0]['id_formulario'];
@@ -557,6 +569,11 @@ class Formulario_model extends MY_Model {
                     case Formulario_model::TIPO_CUSTOM://ya que se envia en base 64
                         $datos_post_formulario[$value_df['nom_campo']] = base64_decode($datos_post_formulario[$value_df['nom_campo']]); 
                         
+                    break;
+                    case Formulario_model::TIPO_CAMPO_CHECKBOX:                    
+                        if(!isset($datos_post_formulario[$value_df['nom_campo']])){
+                            $datos_post_formulario[$value_df['nom_campo']] = 0;
+                        }                                                                
                     break;
 
                 }

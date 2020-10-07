@@ -313,7 +313,7 @@ class Core_secciones extends Informacion_docente {
             $id_censo = null; //En algun punto debe existir la variable, aquí únicamente se define
             $data_post = $this->input->post(null, true);
             
-            //pr($data_post);
+           // pr($data_post);
 //            exit();
             if ($this->input->post()) {
                 $opciones_extra_catalogo_otro = array();
