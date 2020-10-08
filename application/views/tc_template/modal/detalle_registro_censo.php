@@ -22,7 +22,7 @@ $controlador = $this->uri->rsegment(1);
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
     </div>
     <div class="col-md-12 col-sm-12 mb">
-        <div class="col-md-6 goleft">
+        <div class="col-md-6 goleft inf_extra_censo">
             <p><label class="pull-left bold-label"><?php echo $string_value['estado_validacion']; ?></label>
                 <?php echo $detalle_censo['nombre_validacion']; ?>
             </p>
@@ -126,6 +126,9 @@ if (!empty($propiedades_formulario) and ! is_null($propiedades_formulario[0]['ru
 
 <script type="text/javascript">
     $(document).ready(function () {
+        if(typeof properties.visible_textos_extras_table_seccion !== 'undefined' && properties.visible_textos_extras_table_seccion==0 || properties.visible_textos_extras_table_seccion=='0'){
+            $(".inf_extra_censo").css("display", "none");
+        }
         //                $('[data-toggle="popover"]').popover();
 //                $('.datepicker').datepicker();
 <?php if (empty($notificaciones)) { ?>

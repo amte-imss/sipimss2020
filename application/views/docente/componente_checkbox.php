@@ -49,7 +49,8 @@
     $json = json_decode($value['campos_dependientes'], true);
     if (!empty($json['campos'])) {//Valida que campos dependientes sea diferente de vacio
 //            $atributos['data-dependientes'] = $campos_dependientes; //Forma un array con los campos dependientes
-        $atributos['onchange'] = "actualiza_campos_dependientes(this);"; //Forma un array con los campos dependientes
+        //$atributos['onchange'] = "actualiza_campos_dependientes(this);"; //Forma un array con los campos dependientes
+        $atributos['onclick'] = "actualiza_campos_dependientes(this);"; //Forma un array con los campos dependientes
         $atributos['class'] = $atributos['class'] . ' ctr_dependientes';
         //Agraga en la variabe hasttable "array_padres_dependientes" el nombre del campo padre como llave y como valor los campos que dependen, es decir, que se van a recargar dependiendo de lo que contenga
 //            pr($value['campos_dependientes']);

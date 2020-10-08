@@ -317,12 +317,12 @@ class Formulario extends MY_Controller {
 
             $crud->set_table('campos_formulario');
             $crud->set_subject('Campos formulario');
-            $crud->set_primary_key('id_campos_formulario');
-            $crud->set_relation('id_campo', 'ui.campo', 'label');
+            $crud->set_primary_key('id_campos_formulario');            
+            $crud->set_relation('id_campo', 'ui.campo', '*');
             $crud->set_relation('id_catalogo', 'catalogo.catalogo', 'descripcion');
             $crud->where('id_formulario', $id_formulario);
 
-            $crud->columns('id_campos_formulario', 'id_campo', 'id_catalogo', 'activo', 'tooltip', 'orden');
+            $crud->columns('id_campos_formulario', 'nombre', 'label','id_catalogo', 'activo', 'tooltip', 'orden');
 
             $crud->change_field_type('activo', 'true_false', array(0 => 'No', 1 => 'Si'));
 

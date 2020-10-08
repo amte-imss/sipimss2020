@@ -191,8 +191,8 @@ function funcion_actualizar_actividad(element) {
                 }
             })
                     .done(function (data) {
-                        console.log("Que rayos");
-                        console.log(data);
+                        //console.log("Que rayos");
+                        //console.log(data);
                         try {//Cacha el error
                             $(div_respuesta).empty();
                             var resp = $.parseJSON(data);

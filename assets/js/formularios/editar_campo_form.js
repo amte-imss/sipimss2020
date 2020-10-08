@@ -209,11 +209,22 @@ function muestra_grid_reglas_dependencias(db_campos_formulario)
                     //console.log(filter);
                 var d = $.Deferred();
                 //var result = null;
-               
+                
                 var res = $.grep(db_campos_formulario.campos, function (registro) {
+                    //console.log(filter.campo_dependiente);
                     var result = true;
-                    
-                   result = (!filter.campo || (registro.campo !== null && registro.campo.toLowerCase().indexOf(filter.campo.toString().toLowerCase()) > -1))
+                    var select_campo_dependiente = false;
+                    var aplicaFiltro_dependiente = false;
+                     
+                    if (typeof filter.campo_dependiente === 'undefined'){
+                        aplicaFiltro_dependiente = true;                            
+                    }else{
+                        if(json_campos_dependientes.campos.indexOf(registro.nombre)>-1){
+                            var select_campo_dependiente = true;
+                        }
+                    }
+                   result = (!filter.campo || (registro.campo !== null && registro.campo.toLowerCase().indexOf(filter.campo.toString().toLowerCase()) > -1)) 
+                   && (aplicaFiltro_dependiente || (select_campo_dependiente == filter.campo_dependiente))
                     return result;
                 });
                 d.resolve(res);
@@ -226,7 +237,7 @@ function muestra_grid_reglas_dependencias(db_campos_formulario)
                     {name: 'id_formulario', title: "#", visible: false},
                     {name: 'nombre', title: "#", visible: false},
                     {name: 'campo', title: "Campo", type:'text'},
-                    {title:'Es campo dependiente', itemTemplate:function(value, item){
+                    {name: 'campo_dependiente', title:'Es campo dependiente', type:"checkbox", itemTemplate:function(value, item){
                         var elemento = $('<input type="checkbox" class="campos_dependientes_info" name="ch_'+item.nombre+'">');
                         if(json_campos_dependientes.campos.indexOf(item.nombre)>-1){
                             elemento.attr('checked',true);

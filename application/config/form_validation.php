@@ -48,7 +48,7 @@ $config = array(
         array(
             'field' => 'email',
             'label' => 'correo electrónico',
-            'rules' => 'required'
+            'rules' => 'required|valida_correo_electronico'
         ),
         array(
             'field' => 'telefono_particular',

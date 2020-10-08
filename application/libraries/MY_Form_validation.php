@@ -19,6 +19,7 @@ class MY_Form_validation extends CI_Form_validation {
 
     public function alpha_accent_space($str) {
         $exp = '/^[\p{L}- ]*$/u';
+        
         return (!preg_match($exp, $str)) ? FALSE : TRUE;
     }
 
@@ -28,14 +29,14 @@ class MY_Form_validation extends CI_Form_validation {
     }
 
     public function alpha_numeric_accent_space_dot($str) {
-        $exp = '/^[\p{L}-0123456789,. \s]*$/u';
+        $exp = '/^[\p{L}-0123456789\,\. \s]*$/u';
         return (!preg_match($exp, $str)) ? FALSE : TRUE;
     }
 
     /**/
 
     public function alpha_accent_space_dot_quot($str) {
-        $exp = '/^[\p{L}-,.\s]*$/u';
+        $exp = '/^[\p{L}\-,.\s]*$/u';
         return (!preg_match($exp, $str)) ? FALSE : TRUE;
     }
 
@@ -50,8 +51,8 @@ class MY_Form_validation extends CI_Form_validation {
     }
 
     public function alpha_numeric_accent_space_dot_double_quot($str) {
-        $exp = '/^[\p{L}-0123456789,.:\(\)\/\s]*$/u';
-        //$exp = '/^[\p{L}-0123456789,.:;\'\"\(\)\/\s]*$/u';
+        //$exp = '/^[\p{L}-0123456789,.:\(\)\/\s]*$/u';
+        $exp = '/^[\p{L}-0123456789,.:\'\"\(\)\/\s]*$/u';
         return (!preg_match($exp, $str)) ? FALSE : TRUE;
     }
 

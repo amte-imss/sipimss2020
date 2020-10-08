@@ -141,6 +141,7 @@ class Informacion_imss extends Informacion_docente {
 //Reglas de validación
                 $this->config->load('form_validation'); //Cargar archivo con validaciones
                 $rules_datos_generales = $this->config->item('datos_generales');
+                //pr($rules_datos_generales);
                 $this->form_validation->set_rules($rules_datos_generales);
                 if ($this->form_validation->run()) {//Valida reglas de validación
                     $result = $this->dm->update_datos_generales($id_docente, $data_post);

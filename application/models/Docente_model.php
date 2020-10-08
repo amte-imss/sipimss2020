@@ -123,7 +123,7 @@ class Docente_model extends MY_Model {
             //'num_empleos_fuera' => $datos_docente['num_empleos_fuera'],
             'telefono_particular' => $datos_docente['telefono_particular'],
             'telefono_laboral' => $datos_docente['telefono_laboral'],
-            'id_estado_civil' => $datos_docente['estado_civil'],
+            //'id_estado_civil' => $datos_docente['estado_civil'],
             'email' => $datos_docente['email'],
         );
 
