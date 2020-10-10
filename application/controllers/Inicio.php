@@ -267,4 +267,11 @@ class Inicio extends MY_Controller
         $output = [];
         $this->load->view('404.tpl.php', $output);
     }
+    
+    public function registro_docente()
+    {
+    
+    
+    }
 }
+        

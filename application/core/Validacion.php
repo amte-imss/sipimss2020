@@ -17,4 +17,17 @@ class Validacion extends Informacion_docente {
     public function index() {
     }
 
+    public function detalle_censo_docente($idCenso = null){
+
+    }
+
+    public function listado_docentes(){
+
+    }
+ 
+    public function valida_censo(){
+
+    }
+
+
 }
