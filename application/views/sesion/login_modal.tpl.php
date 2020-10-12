@@ -59,7 +59,7 @@
                                     <?php
                                 }
                                 ?>
-                                <!--<div class="form-group" style="text-align:center;">
+                                <div class="form-group" style="text-align:center;">
                                     <label for="pass" class="pull-left"><span class="glyphicon glyphicon-text-width"></span> Escribe el texto de la imagen:</label>
                                     <input id="captcha"
                                            name="captcha"
@@ -76,7 +76,7 @@
                                             <span class="glyphicon glyphicon-refresh"></span>
                                         </a>
                                     </div>
-                                </div>-->
+                                </div>
                                 <br>
                                 <div class="">
                                     <input type="submit" class="btn btn-success btn-block" value="Iniciar sesión">
