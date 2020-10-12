@@ -65,6 +65,37 @@ $controlador = $this->uri->rsegment(1);
                             </div>
                             <?php
                             break;*/
+                            case 'checkbox':
+                                if($value['respuesta_valor']=="1" || $value['respuesta_valor']==1){
+                                ?>
+                                    <div  id="div_<?php echo $id_censo . '_' . $key_c; ?>" class="col-md-6 goleft <?php echo 'c_' . $key_c; ?>">
+                                    <p> <label class="bold-label"><?php echo $value['lb_campo']; ?></label>
+                                    <?php echo $value['respuesta_valor']; ?>
+                                        </p>
+                                    </div>
+                                <?php
+                                }
+                            break;
+                                case 'custom':
+                                    if((strlen($value['respuesta_valor']))>0){
+                                        $decode  = json_decode($value['respuesta_valor'], true);
+                                        if(!empty($decode)){
+                                            foreach ($decode as $key_cust => $value_custom){
+                                    ?>
+                                            <div  id="div_<?php echo $id_censo . '_' . $key_c; ?>" class="col-md-6 goleft <?php echo 'c_' . $key_cust; ?>">
+                                            <p> 
+                                                <label class="bold-label"><?php echo "Nombre curso: ";//Asociar con textos de lenguaje ?></label><?php echo $value_custom['nombre_curso']; ?>
+                                            </p>
+                                            <p> 
+                                                <label class="bold-label"><?php echo "Años: ";//Asociar con textos de lenguaje ?></label><?php echo $value_custom['anio']; ?>
+                                            </p>
+                                            </div>  
+                                    <?php
+                                        }
+                                    }
+                                }
+                            break;
+
                         default :
                             ?>
                             <div  id="div_<?php echo $id_censo . '_' . $key_c; ?>" class="col-md-6 goleft <?php echo 'c_' . $key_c; ?>">

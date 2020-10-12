@@ -42,16 +42,17 @@ $lang['informacion_general'] = array(
     'lbl_numero_empleos_imss' => 'N&uacute;mero de empleos fuera del IMSS',
     'lbl_status_imss' => 'Status',
     'lbl_estado_civil' => 'Estado civil',
-    'lbl_clave_delegacional'=>'Delegación',
+    'lbl_clave_delegacional'=>'OOAD',
     'lbl_clave_unidad'=>'Clave de unidad',
     'lbl_clave_categoria'=>'Categoría',
     'lbl_clave_departamental'=>'Departamento',
+    'lbl_clave_adscripcion'=>'Adscripción',
     'lbl_unidad'=>'Unidad',
     'lbl_region'=>'Región',
     'lbl_cargar_imagen'=>'Cargar imagen',
     'btn_guardar_cambios'=>'Guardar cambios',
     'btn_actualiza_datos_imss'=>'Actualizar datos',
-    'resp_siap_no_se_encontro_info'=>'Por favor verifique la delegación actual, no se encontro información',
+    'resp_siap_no_se_encontro_info'=>'Por favor verifique la OOAD actual, no se encontro información',
     'update_ultimo_registro_historico_falling'=>'No fue posible la actualización de los datos. Intentelo nuevamente',
     'update_ultimo_registro_historico_succes'=>'La información se actualizo correctamente',
     'lbl_curp'=>'CURP',
@@ -64,6 +65,7 @@ $lang['informacion_general'] = array(
     'r_nivel_atencion_2' => 'Segundo',
     'r_nivel_atencion_3' => 'Tercero',
     'btn_eliminar_imagen' => 'Eliminar foto',
+    'info_siap' => 'Información proporcionada por SIAP',
 );
 
 //$lang['interface_registro_profesor'] = 'Impresión de texto prueba';

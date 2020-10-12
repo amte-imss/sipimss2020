@@ -119,6 +119,17 @@ class Inicio extends MY_Controller
     }
 
     public function inicio(){
+        //pr($this->get_roles_usuario());
+        $roles = $this->get_roles_usuario();
+        
+        if(!is_null($roles)){
+            $datos_inicio_por_rol = $this->get_inicio_rol($roles);
+            if(count($datos_inicio_por_rol)>0){
+                $url = $datos_inicio_por_rol[0]['url'];
+                redirect($url);
+            }
+        }
+        
         $output = [];
         // $wf = $this->sesion->get_info_convocatoria($this->get_datos_sesion('id_docente'));
         // pr($wf);
@@ -127,7 +138,7 @@ class Inicio extends MY_Controller
         // pr($this->sesion->get_info_convocatoria($this->get_datos_sesion('id_docente')));
         // $this->valida_info_siap($this->get_datos_sesion()); //solo pruebas
         $u_siap = $this->session->flashdata('die_sipimss_siap');
-        // pr($u_siap);
+        /// pr($u_siap);
         if(!is_null($u_siap) && $u_siap == 0)
         {
             $output['usuario'] = $this->get_datos_sesion();
@@ -137,6 +148,39 @@ class Inicio extends MY_Controller
         $main_content = $this->load->view('sesion/index.tpl.php', $output, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
+    }
+
+    private function get_inicio_rol($array_roles){
+        $id_docente = $this->get_datos_sesion('id_docente');
+        $this->load->model('Catalogo_model', 'cm');
+        $join = array(
+        ['table' => 'sistema.modulos mo',
+        'condition' => 'mo.clave_modulo = rm.clave_modulo',
+        'type' => 'join'
+        ],
+        ['table' =>'sistema.roles r',
+        'condition' =>'r.clave_rol = rm.clave_rol',
+        'type' => 'join'
+        ],
+        ['table' =>'sistema.inicio_rol_modulo irm',
+        'condition' =>'irm.clave_modulo = rm.clave_modulo and irm.clave_rol = rm.clave_rol',
+        'type' => 'join'
+        ],
+        
+        );
+        $params['select'] = array('irm.id_inicio', 'rm.clave_rol', 'rm.clave_modulo', 'mo.clave_configurador_modulo' , 
+        'mo.url', 'mo.nombre modulo', 'r.nombre rol');
+        $params['join'] = $join;
+        $params['where'] = ['irm.activo'=>true,
+        'mo.activo'=>true,
+        ];
+        $params['where_in'] = [
+        'r.clave_rol'=>$array_roles
+        ];
+        $params['order'] = 'irm.orden';
+        $result = $this->cm->get_registros("sistema.roles_modulos rm", $params);
+        
+        return $result;
     }
 
     function captcha()

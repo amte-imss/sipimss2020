@@ -184,7 +184,7 @@ function genera_filds(data, elemento_seccion) {
     var mostrar_extras_por_properties = true;
     columnas = new Array();
 //    console.log(data);
-    if (typeof elemento_seccion !== 'undefined' && elemento_seccion.toString() != '') {
+    if (typeof elemento_seccion !== 'undefined' && elemento_seccion != null && elemento_seccion.toString() != '') {
 //        console.log(data.campos_mostrar_datatable.length);
 //        if (typeof data.campos_mostrar_datatable !== 'undefined' && data.campos_mostrar_datatable.length > 0) {
 //        console.log(data.campos_mostrar_datatable);

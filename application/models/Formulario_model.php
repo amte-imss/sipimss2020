@@ -1492,6 +1492,8 @@ class Formulario_model extends MY_Model {
         $select = 'distinct json_array_elements(f.ruta_file_js::json)::text as elementos';
         $this->db->select($select);
         $this->db->where('c.id_docente', $id_docente, FALSE);
+        $this->db->where('ruta_file_js is not null', null);
+        $this->db->where('length(ruta_file_js)>0',null);
         $this->db->join('censo.censo c', 'c.formulario_registros->>\'id_formulario\' = f.id_formulario::text', 'inner', FALSE);
         $res = $this->db->get('ui.formulario f');
 //        pr($this->db->last_query());

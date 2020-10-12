@@ -409,6 +409,11 @@ class Catalogo_model extends MY_Model {
                 $this->db->where($key, $value);
             }
         }
+        if (isset($params['where_in'])) {
+            foreach ($params['where'] as $key => $value) {
+                $this->db->where_in($key, $value);
+            }
+        }
         if (isset($params['like'])) {
             foreach ($params['like'] as $key => $value) {
                 $this->db->like($key, $value);
@@ -420,7 +425,9 @@ class Catalogo_model extends MY_Model {
         } else if (isset($params['limit']) && !isset($params['total'])) {
             $this->db->limit($params['limit']);
         }
-
+        if (isset($params['order'])) {
+            $this->db->order_by($params['order']);
+        }
         $query = $this->db->get($nombre_tabla);
         $salida = $query->result_array();
         $query->free_result();
