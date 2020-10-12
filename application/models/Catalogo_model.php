@@ -410,7 +410,7 @@ class Catalogo_model extends MY_Model {
             }
         }
         if (isset($params['where_in'])) {
-            foreach ($params['where'] as $key => $value) {
+            foreach ($params['where_in'] as $key => $value) {
                 $this->db->where_in($key, $value);
             }
         }

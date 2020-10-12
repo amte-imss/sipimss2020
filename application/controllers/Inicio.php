@@ -121,14 +121,15 @@ class Inicio extends MY_Controller
     public function inicio(){
         //pr($this->get_roles_usuario());
         $roles = $this->get_roles_usuario();
-        
+        //Para el inicio del rol. la tabla que configura es : sistema.inicio_rol_modulo
         if(!is_null($roles)){
             $datos_inicio_por_rol = $this->get_inicio_rol($roles);
             if(count($datos_inicio_por_rol)>0){
-                $url = $datos_inicio_por_rol[0]['url'];
+                $url = $datos_inicio_por_rol[0]['url'];                
                 redirect($url);
             }
         }
+        exit();
         
         $output = [];
         // $wf = $this->sesion->get_info_convocatoria($this->get_datos_sesion('id_docente'));
