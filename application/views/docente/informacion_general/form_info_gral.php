@@ -337,6 +337,79 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
         <div class="col-md-1">
         </div>
 
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="paterno" class="pull-right control-label">
+                    <b class="rojo">*</b>
+                        <?php echo "¿Es docente de carrera?";?></label>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="fa fa-mobile"> </span>
+                        </span>
+                        <?php
+                        echo $this->form_complete->create_element(
+                            array(
+                                'id' => 'carrera_docente',
+                                'name' => 'carrera_docente',
+                                'type' => 'dropdown',
+                                'options' => $carrera_docente,
+                                'first' => array('' => 'Selecciona opción'),
+                                'value' => (!is_null($docente['id_docente_carrera']))? 1:2,
+                                'attributes' => array(
+                                    'class' => 'form-control',
+                                    'title' => 'Carrera docente',
+                                    'onchange' => 'dependencia_carrera(this);'
+                                )
+                            )
+                        );
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <?php echo form_error_format('carrera_docente'); ?>
+        </div>
+        <div id="div_fase_carrera_docente" class="col-md-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="" class="pull-right control-label">
+                        <b class="rojo">*</b>
+                        <?php echo "¿En que fase de encuentra?";?></label>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="fa fa-users"> </span>
+                            </span>
+                            <?php
+                        echo $this->form_complete->create_element(
+                            array(
+                                'id' => 'fase_carrera_docente',
+                                'name' => 'fase_carrera_docente',
+                                'type' => 'dropdown',
+                                'options' => $fase_carrera_docente,
+                                'value' => $docente['id_docente_carrera'],
+                                'first' => array('' => 'Selecciona opción'),
+                                'attributes' => array(
+                                    'class' => 'form-control',
+                                    'title' => 'Fase carrera docente',
+                                    
+                                )
+                                )
+                            );
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <?php echo form_error_format('carrera_docente'); ?>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+
 
 
     </div><br>
@@ -353,3 +426,24 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
 
 </form>
 <br>
+
+<script>
+
+    $(document).ready(function () {         
+        $("#carrera_docente").trigger("change");                                
+    });
+
+    function dependencia_carrera(element){
+        var component = $(element);
+        var dependiente = $('#div_fase_carrera_docente');
+        if(component.val()==1){
+            dependiente.css("display", "none");
+            
+        }else{
+            dependiente.css("display", "block");
+            
+            
+        }
+        dependiente.toggle("slow");//Evento, forma de salida
+    }
+</script>

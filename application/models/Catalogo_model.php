@@ -65,6 +65,25 @@ class Catalogo_model extends MY_Model {
         return $resultado->result_array();
     }
 
+
+    /**
+     * @author LEAS
+     * @fecha 18/05/2017
+     * @return catálogo del estado civil de una  persona
+     */
+    public function get_fase_carrera_docente() {
+
+        $select = array(
+            'id_docente_carrera', 'descripcion'
+        );
+        $this->db->select($select);
+        $this->db->where('activo', true);
+
+        $resultado = $this->db->get('censo.docente_carrera');
+//            pr($this->db->last_query());
+        return $resultado->result_array();
+    }
+
     public function opciones_combos($combo, $idcombo, $base) {
         /* select id_elemento_seccion, nombre from catalogo.elementos_seccion where id_seccion=1 and id_catalogo_elemento_padre=5 */
 

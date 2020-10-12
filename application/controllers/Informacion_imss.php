@@ -103,6 +103,7 @@ class Informacion_imss extends Informacion_docente {
         $data_formulario = $this->dm->get_historico_datos_generales($id_docente);
 //        pr($data_formulario);
         $data_formulario['delegaciones'] = dropdown_options($this->cm->get_delegaciones(), 'clave_delegacional', 'nombre');
+
         $data['formulario_imss'] = $this->load->view('docente/informacion_general/detalle_info_imss.php', $data_formulario, TRUE);
         $output['docente'] = $this->dm->get_datos_generales($id_docente);
         //Cálcula la edad del docente
@@ -110,6 +111,9 @@ class Informacion_imss extends Informacion_docente {
         $output['docente']['edad'] = $this->curp->getEdad();
         $this->load->model("Catalogo_model", "cm");
         $output['estado_civil'] = dropdown_options($this->cm->get_estado_civil(), 'id_estado_civil', 'estado_civil');
+        $output['fase_carrera_docente'] = dropdown_options($this->cm->get_fase_carrera_docente(), 'id_docente_carrera', 'descripcion');
+        $output['carrera_docente'] = dropdown_options([['id_cuenta_carrera'=>1,'value'=>'Si'], ['id_cuenta_carrera'=>2,'value'=>'No']], 'id_cuenta_carrera', 'value');
+
         $data['formulario_general'] = $this->load->view('docente/informacion_general/form_info_gral.php', $output, TRUE);
         $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GENERAL));
         if (isset($output['docente']['fecha'])) {

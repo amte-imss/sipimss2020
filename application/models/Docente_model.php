@@ -12,10 +12,12 @@ class Docente_model extends MY_Model {
     public function get_datos_generales($id_docente) {
         $usuario = null;
         $this->db->flush_cache();
-        $this->db->reset_query();
+        $this->db->reset_query();        
+        $this->db->select('*, dc.id_docente_carrera');        
         $this->db->where('d.id_docente', $id_docente);
         $this->db->join('censo.historico_datos_docente hdd', 'hdd.id_docente = d.id_docente and hdd.actual = 1', 'left');
         $this->db->join('catalogo.estado_civil ec', 'ec.id_estado_civil = d.id_estado_civil', 'left');
+        $this->db->join('censo.docente_carrera  dc', 'dc.id_docente_carrera = d.id_docente_carrera', 'left');
         $resultado = $this->db->get('censo.docente d')->result_array();
         if ($resultado) {
             $usuario = $resultado[0];
