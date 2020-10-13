@@ -127,6 +127,7 @@ class Docente_model extends MY_Model {
             'telefono_laboral' => $datos_docente['telefono_laboral'],
             //'id_estado_civil' => $datos_docente['estado_civil'],
             'email' => $datos_docente['email'],
+            'id_docente_carrera' => $datos_docente['fase_carrera_docente'],
         );
 
         $this->db->update('censo.docente', $array_update); //Actualiza el último a false

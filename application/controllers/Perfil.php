@@ -127,6 +127,7 @@ class Perfil extends Informacion_docente {
             $this->load->model("Docente_model", "dm");
             /* carga datos generales */
             $datos_generales = $this->dm->get_datos_generales($id_docente);
+            //pr($datos_generales);
             if (!empty($datos_generales)) {
                 $this->load->library('curp', array('curp' => $datos_generales['curp'])); //Ingresa datos del curp
                 $datos_generales['edad'] = $this->curp->getEdad(); //Calcula la edad del usuario

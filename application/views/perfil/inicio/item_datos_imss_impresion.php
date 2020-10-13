@@ -70,6 +70,25 @@
                     </p>
                 </div>
             <?php } ?>
+            <?php //if(isset($elementos_seccion['id_docente_carrera'])){ ?>
+                <div class="col-md-12 goleft">
+                    <p>
+                        <?php $is_carrera_docente =  ($elementos_seccion['id_docente_carrera'] == 1); ?>
+                        <label class="bold-label">
+                            <?php echo $string_value['docente_carrera_docente']; ?>
+                        </label>
+                        <?php echo ($is_carrera_docente)?"Si":"No"; ?>
+                        <?php if($is_carrera_docente){?>
+                            <br>
+                            <label class="bold-label">                            
+                                <?php echo $string_value['fase_docente_carrera']; ?>
+                            </label>
+                            <?php echo $elementos_seccion['descripcion']; ?>
+                        <?php }?>
+                        
+                    </p>
+                </div>
+            <?php //} ?>
 
             <div class="col-md-12 goleft">
                 <p>

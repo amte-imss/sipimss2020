@@ -390,7 +390,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                                 'name' => 'fase_carrera_docente',
                                 'type' => 'dropdown',
                                 'options' => $fase_carrera_docente,
-                                'value' => $docente['id_docente_carrera'],
+                                'value' => (isset($data_post['fase_carrera_docente']))? $data_post['fase_carrera_docente'] : $docente['id_docente_carrera'],
                                 'first' => array('' => 'Selecciona opción'),
                                 'attributes' => array(
                                     'class' => 'form-control',
@@ -403,7 +403,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                     </div>
                 </div>
             </div>
-            <?php echo form_error_format('carrera_docente'); ?>
+            <?php echo form_error_format('fase_carrera_docente'); ?>
         </div>
     </div><br>
     <div class="row">
@@ -440,9 +440,8 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
             dependiente.css("display", "none");
             
         }else{
-            dependiente.css("display", "block");
-            
-            
+            $('#fase_carrera_docente').val("");
+            dependiente.css("display", "block");            
         }
         dependiente.toggle("slow");//Evento, forma de salida
     }

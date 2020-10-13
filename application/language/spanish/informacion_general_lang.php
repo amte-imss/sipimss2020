@@ -66,6 +66,8 @@ $lang['informacion_general'] = array(
     'r_nivel_atencion_3' => 'Tercero',
     'btn_eliminar_imagen' => 'Eliminar foto',
     'info_siap' => 'Información proporcionada por SIAP',
+    'docente_carrera_docente' => '¿Es docente de carrera?',
+    'fase_docente_carrera' => 'Fase de carrera docente',
 );
 
 //$lang['interface_registro_profesor'] = 'Impresión de texto prueba';

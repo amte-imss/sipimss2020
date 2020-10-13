@@ -60,6 +60,11 @@ $config = array(
             'label' => 'teléfono',
             'rules' => 'numeric'
         ),
+        array(
+            'field' => 'fase_carrera_docente',
+            'label' => 'Fase de carrera docente',
+            'rules' => 'required'
+        ),
     ),
 );
 

@@ -127,9 +127,9 @@ class Inicio extends MY_Controller
             if(count($datos_inicio_por_rol)>0){
                 $url = $datos_inicio_por_rol[0]['url'];                
                 redirect($url);
+                exit();
             }
         }
-        exit();
         
         $output = [];
         // $wf = $this->sesion->get_info_convocatoria($this->get_datos_sesion('id_docente'));

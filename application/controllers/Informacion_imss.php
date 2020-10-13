@@ -140,22 +140,38 @@ class Informacion_imss extends Informacion_docente {
                 $datos_sesion = $this->get_datos_sesion(); //Obtiene datos de la session
                 $id_docente = $datos_sesion[En_datos_sesion::ID_DOCENTE];
                 $data_post = $this->input->post(null, true);
+                
                 $this->load->model("Catalogo_model", "cm");
                 $output['estado_civil'] = dropdown_options($this->cm->get_estado_civil(), 'id_estado_civil', 'estado_civil');
+                $output['fase_carrera_docente'] = dropdown_options($this->cm->get_fase_carrera_docente(), 'id_docente_carrera', 'descripcion');
+                $output['carrera_docente'] = dropdown_options([['id_cuenta_carrera'=>1,'value'=>'Si'], ['id_cuenta_carrera'=>2,'value'=>'No']], 'id_cuenta_carrera', 'value');
 //Reglas de validación
                 $this->config->load('form_validation'); //Cargar archivo con validaciones
                 $rules_datos_generales = $this->config->item('datos_generales');
+                if(isset($data_post['carrera_docente']) && $data_post['carrera_docente'] == 2){
+                    //pr($rules_datos_generales[array_key_last($rules_datos_generales)]);
+                    unset($rules_datos_generales[array_key_last($rules_datos_generales)]);
+                    
+                    $data_post['fase_carrera_docente'] = null;
+                }
+                
+                //pr($data_post);
+                //pr($rules_datos_generales);
+                
                 //pr($rules_datos_generales);
                 $this->form_validation->set_rules($rules_datos_generales);
                 if ($this->form_validation->run()) {//Valida reglas de validación
                     $result = $this->dm->update_datos_generales($id_docente, $data_post);
-//Recarga la información de la actualización
+                    //Recarga la información de la actualización
                     $output['docente'] = $this->dm->get_datos_generales($id_docente);
+                    
+                    
                     $result['html'] = $this->load->view('docente/informacion_general/form_info_gral.php', $output, TRUE);
                     echo json_encode($result); //Códifica en JSON
                     exit();
                 }
 
+                $output['data_post'] = $data_post;
                 $output['docente'] = $this->dm->get_datos_generales($id_docente);
                 $this->load->view('docente/informacion_general/form_info_gral.php', $output, FALSE);
             }
