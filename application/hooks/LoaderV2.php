@@ -37,7 +37,7 @@ class LoaderV2
         {
             $filtros['where'] = array('url' => $modulo);
             $modulo = $this->CI->modulo->get_modulos($filtros, false);
-        //    pr($modulo);
+            //pr($modulo);
             if(empty($modulo)){
                 show_404();
                 // pr('error 404');

@@ -12,7 +12,7 @@ class Normativo extends Validacion {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('Normativo_model', 'normativo');
+        
     }
 
     function index(){

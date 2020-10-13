@@ -122,6 +122,7 @@ class Inicio extends MY_Controller
         //pr($this->get_roles_usuario());
         $roles = $this->get_roles_usuario();
         //Para el inicio del rol. la tabla que configura es : sistema.inicio_rol_modulo
+        //pr($roles);
         if(!is_null($roles)){
             $datos_inicio_por_rol = $this->get_inicio_rol($roles);
             if(count($datos_inicio_por_rol)>0){
