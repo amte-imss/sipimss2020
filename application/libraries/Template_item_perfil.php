@@ -12,6 +12,7 @@ class Template_item_perfil {
 
     private $elementos;
     private $registros_censo;
+    private $grupos_informacion_campos;
     private $campos_elemento_seccion;
     private $campos_seccion;
     private $files_js_formularios;
@@ -47,15 +48,20 @@ class Template_item_perfil {
     private function generaCampos($registros){
         $this->campos_elemento_seccion = [];
         $this->campos_seccion = [];    
+        $this->grupos_informacion_campos = [];
         $config_secciones = $this->get_configuracion_secciones();    
         
-
+//pr($registros);
         foreach($registros as $keys => $values){
             foreach($values['campos'] as $key_c => $values_c){
+                //pr($values_c);
                 $this->campos_elemento_seccion[$values['id_elemento_seccion']][$key_c] = $values_c['lb_campo'] ;
                 $this->campos_seccion[$values['id_seccion']][$key_c] = $values_c['lb_campo'] ;
+                $this->grupos_informacion_campos[$values['id_seccion']][$values_c['grupo_informacion_campo']][$key_c] = $values_c;
             }
+            
         }
+        //pr($this->grupos_informacion_campos);
         //pr($this->campos_elemento_seccion);
         //pr($this->campos_seccion);
     }
@@ -273,7 +279,8 @@ class Template_item_perfil {
             //Configuraciones de seccion
             $array_elemento_seccion[$value['id_seccion']]['pinta_elemento_seccion'] = false;
                 if(!is_null($secciones_config[$value['id_seccion']]['config']) && isset($secciones_config[$value['id_seccion']]['config']['is_personalizado']) &&  $secciones_config[$value['id_seccion']]['config']['is_personalizado'] == 1){                    
-                    $seccion_name = $secciones_config[$value['id_seccion']]['nombre'];
+                    $seccion_name = $secciones_config[$value['id_seccion']]['nombre'];                    
+                    $value['campos_agrupados'] = $this->grupos_informacion_campos[$value['id_seccion']];
                     $array_elemento_seccion[$value['id_seccion']]['view'] .= $this->CI->load->view($tpl_item.'_'.$seccion_name, $value, TRUE); //Concatena los items dentro del carrusel
                 }else{
                     $value['pinta_elemento_seccion'] = false; 
@@ -320,6 +327,11 @@ class Template_item_perfil {
         $tmp_resultado['main_content'] = $resul_view_tab;
         return $tmp_resultado;
     }
+
+    private function get_grupos_informacion($value){
+
+    }
+
     /**
      * @author LEAS
      * @fecha 13/06/2018

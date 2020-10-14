@@ -755,7 +755,7 @@ class Formulario_model extends MY_Model {
             'F.label lb_formulario', 'F.ruta_file_js',
             'CF.orden',
             'CF.regla_notificacion',
-            'CF.mostrar_datatable',
+            'CF.mostrar_datatable', 'CF.grupo_informacion_campo',
             'CM.id_campo', 'CM.nombre nombre_campo',
             'CM.label lb_campo', 'CF.nueva_linea',
             'CASE
@@ -997,6 +997,7 @@ class Formulario_model extends MY_Model {
                 'respuesta_valor' => $value['respuesta_valor'],
                 'nueva_linea' => $value['nueva_linea'],
                 'nom_tipo_campo' => $value['nom_tipo_campo'], //Agrega el tipo de campo
+                'grupo_informacion_campo' => $value['grupo_informacion_campo'], //Agrega el tipo de campo
             );
         }
         foreach ($array_campos as $key_c => $value_c) {//Hace merge los redsultados generales
