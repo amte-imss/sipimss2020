@@ -54,4 +54,5 @@ INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo,
 INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo, id_catalogo_elemento_padre, activo, "label", orden, nivel, is_validado) VALUES('inst_edu_unison','UNIVERSIDAD DE SONORA',56,'',null,true,'UNIVERSIDAD DE SONORA',null,1, true);
 
 --Ya en base final -------
+table ui.campos_formulario add column grupo_informacion_campo int DEFAULT 1;
 
