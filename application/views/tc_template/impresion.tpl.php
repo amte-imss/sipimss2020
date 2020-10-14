@@ -56,7 +56,7 @@
         <script src="scripts/placeholder.js"></script>
         <![endif]-->
         <footer >
-            &copy; <a href="#" target="_blank">SIPIMSS 2017</a>
+            &copy; <a href="#" target="_blank">IMSS 2020</a>
         </footer>
     </body></html>
 

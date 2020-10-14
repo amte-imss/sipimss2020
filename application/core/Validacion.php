@@ -79,10 +79,10 @@ class Validacion extends Informacion_docente {
         }
 //        $this->output->set_profiler_sections($sections);
 //        $this->output->enable_profiler(TRUE);
-        $this->benchmark->mark('code_end');
-        echo $this->benchmark->elapsed_time('code_start', 'code_end');
-        $this->output->parse_exec_vars = TRUE;
-        $this->output->append_output($this->benchmark->memory_usage());
+        //$this->benchmark->mark('code_end');
+        //echo $this->benchmark->elapsed_time('code_start', 'code_end');
+        //$this->output->parse_exec_vars = TRUE;
+        //$this->output->append_output($this->benchmark->memory_usage());
     }
 
     public function listado_docentes(){

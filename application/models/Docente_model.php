@@ -24,6 +24,7 @@ class Docente_model extends MY_Model {
         if ($resultado) {
             $usuario = $resultado[0];
         }
+        //pr($this->db->last_query());
         //pr($usuario==null?'1':'0');
         return $usuario;
     }
@@ -148,6 +149,8 @@ class Docente_model extends MY_Model {
             //'id_estado_civil' => $datos_docente['estado_civil'],
             'email' => $datos_docente['email'],
             'id_docente_carrera' => $datos_docente['fase_carrera_docente'],
+            'email_personal' => $datos_docente['email_personal'],
+            'ext_tel_laboral' => (strlen($datos_docente['ext_tel_laboral'])> 0)? $datos_docente['ext_tel_laboral'] : null
         );
 
         $this->db->update('censo.docente', $array_update); //Actualiza el último a false

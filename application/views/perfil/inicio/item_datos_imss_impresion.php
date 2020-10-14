@@ -3,6 +3,23 @@
  //pr($string_value); 
 ?>
         <div class="row">
+        
+            <div class="col-md-12 goleft">
+                <p>
+                    <label class="bold-label">
+                        <i><?php echo $string_value['info_siap']; ?>:</i>
+                    </label>
+                </p>
+            </div>
+            <div class="col-md-12 goleft">
+                <p>
+                    <label class="bold-label">
+                        <?php echo $string_value['fecha_ultima_actualizacion']; ?>:
+                    </label>
+                    <?php echo (isset($elementos_seccion['echa_ultima_actualizacion'])) ? get_date_formato($elementos_seccion['echa_ultima_actualizacion'], 'd-m-Y') : ''; ?>
+                </p>
+            </div>
+            
             <div class="col-md-12 goleft">
                  <p>
                     <label class="bold-label">
@@ -73,7 +90,7 @@
             <?php //if(isset($elementos_seccion['id_docente_carrera'])){ ?>
                 <div class="col-md-12 goleft">
                     <p>
-                        <?php $is_carrera_docente =  ($elementos_seccion['id_docente_carrera'] == 1); ?>
+                        <?php $is_carrera_docente =  (!is_null($elementos_seccion['id_docente_carrera'])); ?>
                         <label class="bold-label">
                             <?php echo $string_value['docente_carrera_docente']; ?>
                         </label>
@@ -90,27 +107,7 @@
                 </div>
             <?php //} ?>
 
-            <div class="col-md-12 goleft">
-                <p>
-                    <label class="bold-label"><br><br>
-                    </label>
-                </p>
-            </div>
-            <div class="col-md-12 goleft">
-                <p>
-                    <label class="bold-label">
-                        <i><?php echo $string_value['info_siap']; ?>:</i>
-                    </label>
-                </p>
-            </div>
-            <div class="col-md-12 goleft">
-                <p>
-                    <label class="bold-label">
-                        <?php echo $string_value['fecha_ultima_actualizacion']; ?>:
-                    </label>
-                    <?php echo (isset($elementos_seccion['echa_ultima_actualizacion'])) ? get_date_formato($elementos_seccion['echa_ultima_actualizacion'], 'd-m-Y') : ''; ?>
-                </p>
-            </div>
+          
         </div>
 
 

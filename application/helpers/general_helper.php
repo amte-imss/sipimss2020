@@ -648,6 +648,8 @@ if (!function_exists('get_date_formato')) {
      * String de las fechas si parametros es un array
      */
     function get_date_formato($fecha, $formato = 'd-m-Y') {
+        //pr($fecha);
+        //pr(date($formato, strtotime(str_replace("/", "-", $fecha))));
         return date($formato, strtotime(str_replace("/", "-", $fecha)));
     }
 

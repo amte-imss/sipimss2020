@@ -24,7 +24,7 @@
                         <?php echo $string_value['lbl_correo']; ?>:
                     </label>
                 <ul>
-                    <li>Laboral :   <?php echo ""; ?> </li>                    
+                    <li>Laboral :   <?php echo $elementos_seccion['email_personal']; ?> </li>                    
                     <li>Particular : <?php echo $elementos_seccion['email']; ?></li>
                 </ul>
                 </p>
@@ -37,6 +37,7 @@
                     </label>
                 <ul>
                     <li>Laboral :   <?php echo $elementos_seccion['telefono_laboral']; ?> </li>
+                    <li>Extensión :   <?php echo $elementos_seccion['ext_tel_laboral']; ?> </li>
                     <li>Particular : <?php echo $elementos_seccion['telefono_particular']; ?></li>
                 </ul>
                 </p>

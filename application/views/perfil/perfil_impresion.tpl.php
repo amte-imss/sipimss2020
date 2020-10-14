@@ -11,21 +11,22 @@
 </header>
 <section role="main" class="container_16 clearfix">
 	<div class="grid_16">
-		<!-- A propos -->
-		<div class="grid_8 loisirs">
-			<h3>Información Personal</h3>
-			<?php
-            if ($informacion_general) {
-                echo $informacion_general;
-            }
-            ?>
-		</div>
+		
 		<!-- Compétences -->
 		<div class="grid_8 competences">
 			<h3>Información IMSS</h3>
 			<?php
             if ($informacion_imss) {
                 echo $informacion_imss;
+            }
+            ?>
+		</div>
+		<!-- A propos -->
+		<div class="grid_8 loisirs">
+			<h3>Información Personal</h3>
+			<?php
+            if ($informacion_general) {
+                echo $informacion_general;
             }
             ?>
 		</div>

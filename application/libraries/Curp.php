@@ -42,8 +42,8 @@ class Curp {
         // pr($year);
         //echo date("Y");
         $f = "{$year}/{$month}/{$day}";
-        // pr($f);
-        $this->fecha_nac = strtotime($f);
+         //pr($f);
+        $this->fecha_nac = $f;
         // pr($this->fecha_nac);
         $date1=date_create(date('Y-m-d'));
         $date2=date_create($f);

@@ -181,7 +181,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                 <div class="col-md-8">
                     <div class="input-group">
                         <span class="input-group-addon">
-                            <span class="fa fa-user-o"> </span>
+                            <span class="fa fa-envelope"> </span>
                         </span>
                         <?php
                         echo $this->form_complete->create_element(
@@ -257,7 +257,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                                 'value' => (isset($docente['edad'])) ? $docente['edad'] : '',
                                 'attributes' => array(
                                     'class' => 'form-control',
-                                    'title' => 'Apellido Paterno',
+                                    'title' => '',
                                     'readonly' => 'readonly',
                                 )
                             )
@@ -266,6 +266,69 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                     </div>
                 </div>
             </div>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="ext_tel_laboral" class="pull-right control-label">    
+                        Extensión:</label>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="fa fa-phone"> </span>
+                        </span>
+                        <?php
+                        echo $this->form_complete->create_element(
+                            array(
+                                'id' => 'ext_tel_laboral',
+                                'type' => 'textbox',
+                                'value' => $docente['ext_tel_laboral'],
+                                'attributes' => array(
+                                    'class' => 'form-control',
+                                    'title' => '',
+                                )
+                            )
+                        );
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <?php echo form_error_format('ext_tel_laboral'); ?>
+        </div>
+        <div class="col-md-5" id="div_correo">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="email_personal" class="pull-right control-label">                        
+                        Correo electrónico personal:</label>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="fa fa-envelope"> </span>
+                        </span>
+                        <?php
+                        echo $this->form_complete->create_element(
+                            array(
+                                'id' => 'email_personal',
+                                'type' => 'textbox',
+                                'value' => (isset($docente['email_personal'])) ? $docente['email_personal'] : '',
+                                'attributes' => array(
+                                    'class' => 'form-control',
+                                    'title' => 'Correo electrónico',
+                                )
+                            )
+                        );
+                        ?>
+
+                    </div>
+                </div>
+            </div>
+            <?php echo form_error_format('email_personal'); ?>
         </div>
     </div><br>
     <div class="row">
@@ -347,7 +410,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                 <div class="col-md-8">
                     <div class="input-group">
                         <span class="input-group-addon">
-                            <span class="fa fa-mobile"> </span>
+                            <span class="fa fa-book"> </span>
                         </span>
                         <?php
                         echo $this->form_complete->create_element(
@@ -381,7 +444,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                     <div class="col-md-8">
                         <div class="input-group">
                             <span class="input-group-addon">
-                                <span class="fa fa-users"> </span>
+                                <span class="fa fa-area-chart"> </span>
                             </span>
                             <?php
                         echo $this->form_complete->create_element(

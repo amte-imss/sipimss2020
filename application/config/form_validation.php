@@ -51,6 +51,11 @@ $config = array(
             'rules' => 'required|valida_correo_electronico'
         ),
         array(
+            'field' => 'email_personal',
+            'label' => 'correo electrónico',
+            'rules' => 'valida_correo_electronico'
+        ),
+        array(
             'field' => 'telefono_particular',
             'label' => 'teléfono',
             'rules' => 'numeric'
@@ -58,6 +63,11 @@ $config = array(
         array(
             'field' => 'telefono_laboral',
             'label' => 'teléfono',
+            'rules' => 'numeric'
+        ),
+        array(
+            'field' => 'ext_tel_laboral',
+            'label' => 'extensión',
             'rules' => 'numeric'
         ),
         array(

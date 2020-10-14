@@ -55,4 +55,7 @@ INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo,
 
 --Ya en base final -------
 table ui.campos_formulario add column grupo_informacion_campo int DEFAULT 1;
+alter table censo.docente add column email_personal varchar(255) null;
+alter table censo.docente add column ext_tel_laboral int null;
+
 
