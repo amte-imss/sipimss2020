@@ -116,6 +116,7 @@ function funcion_guardar_actividad(element) {//ajaxFileUpload
                             if (typeof resp.html !== 'undefined') {
                                 if (resp.tp_msg === 'success') {
                                     $(div_respuesta).html('');
+                                    $('#seccion_seccion').html('');
                                     reinicia_monitor();
                                     actaliza_data_table(url_actualiza_tabla);
                                     
