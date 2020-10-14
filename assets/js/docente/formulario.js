@@ -24,12 +24,12 @@ function actualiza_campos_dependientes(element, lanzar) {
             }
         }
     }
-    console.log(element.name);
-    console.log(componentType);
+    //console.log(element.name);
+    //console.log(componentType);
     if (typeof array_padres_dependientes !== 'undefined' && typeof array_padres_dependientes[element.name] !== 'undefined') {
         var configuracion = array_padres_dependientes[element.name];
         //console.log(memoria_values);
-        console.log(configuracion);
+        //console.log(configuracion);
         Object.keys(configuracion.campos).forEach(function (index) {
             var dependientes = configuracion.campos[index];
             console.log("dependientes");
@@ -46,11 +46,11 @@ function actualiza_campos_dependientes(element, lanzar) {
                     console.log(configuracion.elementos);
                     console.log(dependientes);*/
                     if (opciones.length > 0) {
-                        console.log(document.getElementById(dependientes).name);
+                        //console.log(document.getElementById(dependientes).name);
                         var no_aplico_opciones = 1;
                         for (var i = 0; i < opciones.length; i++) {
                             if (objeto_this.val().toString() === opciones[i].toString()) {//
-                                console.log(objeto_this.val().toString()  + " -> " + opciones[i].toString())
+                                //console.log(objeto_this.val().toString()  + " -> " + opciones[i].toString())
                                 control_dependientes(dependientes, objeto_this.data('catalogo'), objeto_this.val(), 1,lanzar);//Ejecuta cambio en el control
                                 no_aplico_opciones = 0;
                                 break;//Sale del ciclo

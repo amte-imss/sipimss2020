@@ -119,7 +119,7 @@ function funcion_guardar_actividad(element) {//ajaxFileUpload
                                     reinicia_monitor();
                                     actaliza_data_table(url_actualiza_tabla);
                                     
-                                    if(typeof properties !== 'undefined' && typeof properties.staticForm !== 'undefined' && properties.staticForm==1 || properties.staticForm=='1'){            
+                                    if(typeof properties !== 'undefined' && typeof properties.staticForm !== 'undefined' && (properties.staticForm==1 || properties.staticForm=='1')){            
                                         //$("#btn_agregar").trigger("click"); 
                                         location.reload();                                                   
                                     }

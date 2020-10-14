@@ -919,7 +919,7 @@ class Formulario_model extends MY_Model {
                 case 'date':
                     $val_aux = $value['respuesta_valor'];
                     if($value['nom_tipo_dato'] == 'date'){
-                        get_date_formato($value['respuesta_valor']);
+                        $val_aux = get_date_formato($value['respuesta_valor']);
                     }
                     $array_campos[$llave_cross][$value['nombre_campo']] = $val_aux;
                     break;
