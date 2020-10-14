@@ -904,12 +904,20 @@ class Formulario_model extends MY_Model {
                 );
             }
             if ($value['mostrar_datatable']) {
-                $array_campos_mostrar_datatable[$value['nombre_campo']] = array(
-                    'label' => $value['lb_campo'],
-                    'nom_tipo_campo' => $value['nom_tipo_campo'],
-                    'id_elemento_seccion' => $value['id_elemento_seccion'],
-                    'nombre' => $value['nombre_campo'],
-                );
+                //pr($value['nombre_campo'] .' -> ' . $value['id_elemento_seccion']);
+                if(!isset($array_campos_mostrar_datatable[$value['nombre_campo']])){
+
+                    $array_campos_mostrar_datatable[$value['nombre_campo']] = array(
+                        'label' => $value['lb_campo'],
+                        'nom_tipo_campo' => $value['nom_tipo_campo'],
+                        'id_elemento_seccion' => $value['id_elemento_seccion'],
+                        'nombre' => $value['nombre_campo'],
+                    );
+                    $array_campos_mostrar_datatable[$value['nombre_campo']]['ids_elemento_seccion'][$value['id_elemento_seccion']] = $value['id_elemento_seccion'];
+                }else{
+                    $array_campos_mostrar_datatable[$value['nombre_campo']]['ids_elemento_seccion'][$value['id_elemento_seccion']] = $value['id_elemento_seccion'];
+                }
+
             }
             $array_general[$llave_cross]['mostrar_datatable'] = $value['mostrar_datatable'];
             
@@ -927,6 +935,8 @@ class Formulario_model extends MY_Model {
                     $array_campos[$llave_cross][$value['nombre_campo']] = $value['respuesta_valor'];
             }
         }
+        //pr($array_campos_mostrar_datatable);
+        //exit();
         foreach ($array_campos as $key_c => $value_c) {//Hace merge los redsultados generales
             $array_result[] = array_merge($array_general[$key_c], $value_c);
         }

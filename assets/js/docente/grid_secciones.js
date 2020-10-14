@@ -190,9 +190,12 @@ function genera_filds(data, elemento_seccion) {
     if (typeof elemento_seccion !== 'undefined' && elemento_seccion != null && elemento_seccion.toString() != '') {//Para opciones de la tabla
 //        console.log(data.campos_mostrar_datatable.length);
 //        if (typeof data.campos_mostrar_datatable !== 'undefined' && data.campos_mostrar_datatable.length > 0) {
+    //console.log("Elemento seccion: "+elemento_seccion);
+    //console.log(data.campos_mostrar_datatable);
     Object.keys(data.campos_mostrar_datatable).forEach(function (key) {
         d_extra = data.campos_mostrar_datatable[key];
-        if (d_extra.id_elemento_seccion == elemento_seccion) {
+        //console.log(d_extra);
+        if (typeof d_extra.ids_elemento_seccion[elemento_seccion] !== "undefined") {
             columnas.push(d_extra.nombre);//Columnas del grid
             //                console.log(d_extra.nombre_tipo_campo);
             switch (d_extra.nombre_tipo_campo) {
