@@ -336,4 +336,23 @@ INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo,
 --Definición de sede académica 
 update catalogo.unidades_instituto set sede_academica=false;
 update catalogo.unidades_instituto set sede_academica=true where id_tipo_unidad is not null and anio=2020;
-update catalogo.unidades_instituto set sede_academica=true where anio=2020 and (clave_unidad like '__UC%' or clave_unidad like '__UJ%' or clave_unidad like '__UM%' or clave_unidad like '__UN%' or clave_unidad like '__UL%')
+update catalogo.unidades_instituto set sede_academica=true where anio=2020 and (clave_unidad like '__UC%' or clave_unidad like '__UJ%' or clave_unidad like '__UM%' or clave_unidad like '__UN%' or clave_unidad like '__UL%');
+
+
+--   n uevos
+CREATE TABLE "sistema"."control_registro_usuarios" (
+
+"id_usuario_registra" int4 NOT NULL,
+
+"id_usuario_registrado" int4 NOT NULL,
+
+"active" bool DEFAULT true,
+
+PRIMARY KEY ("id_usuario_registra", "id_usuario_registrado")
+
+);
+
+ALTER TABLE "sistema"."control_registro_usuarios" ADD CONSTRAINT "pk_usuario_registra" FOREIGN KEY ("id_usuario_registra") REFERENCES "sistema"."usuarios" ("id_usuario");
+
+ALTER TABLE "sistema"."control_registro_usuarios" ADD CONSTRAINT "pk_usuario_registrado" FOREIGN KEY ("id_usuario_registrado") REFERENCES "sistema"."usuarios" ("id_usuario");
+

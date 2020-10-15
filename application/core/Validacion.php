@@ -37,7 +37,7 @@ class Validacion extends Informacion_docente {
             $this->template_item_perfil->set_registro_censo($datos_elemento_seccion); //Agrega registros
             $datos_files_js = $this->get_files_js_formularios_c($id_docente);
             $this->template_item_perfil->set_files_js_formularios($datos_files_js);
-
+            
             $this->load->model("Docente_model", "dm");
             /* carga datos generales */
             $datos_generales = $this->dm->get_datos_generales($id_docente);
@@ -45,9 +45,14 @@ class Validacion extends Informacion_docente {
             if (!empty($datos_generales)) {
                 $this->load->library('curp', array('curp' => $datos_generales['curp'])); //Ingresa datos del curp
                 $datos_generales['edad'] = $this->curp->getEdad(); //Calcula la edad del usuario
-                $this->template_item_perfil->set_datos_generales($datos_generales); //Información general del docente 
-            }
-            /* Cargar imagen de perfil */
+                 if(is_null($datos_generales['fecha_nacimiento'])){
+                     //pr($datos_generales['fecha_nacimiento']);
+                     $datos_generales['fecha_nacimiento'] = $this->curp->getFechaNac();
+                     //pr( $datos_generales['fecha_nacimiento']);
+                    }
+                    $this->template_item_perfil->set_datos_generales($datos_generales); //Información general del docente 
+                }
+                /* Cargar imagen de perfil */
             $datos_imagen_docente = $this->dm->get_imagen_perfil($id_docente); //Obtener imagen del docente
             $this->template_item_perfil->set_datos_imagen($datos_imagen_docente);
             /* carga datos imss */
@@ -56,13 +61,13 @@ class Validacion extends Informacion_docente {
                     array('matricula' => $datos_generales['matricula'])); //Información IMSS
             //Ejecutar datos de registro de perfil
             /*$vista = $this->template_item_perfil->get_template_registro(
-                    $this->template_item_perfil->get_vistas_regisatros_censo(null, 'perfil/item_ficha_actividad_impresion.php', 
+                $this->template_item_perfil->get_vistas_regisatros_censo(null, 'perfil/item_ficha_actividad_impresion.php', 
                     '/perfil/item_datos_generales_impresion.php', 'perfil/item_datos_imss_impresion.php', 
                     '/perfil/item_carrusel_impresion.php', 'perfil/tab_perfil_impresion.php'), 
                     '/perfil/inicio/inicio_docente.tpl.php'
                     //$this->template_item_perfil->get_vistas_regisatros_censo(), 'perfil/perfil_impresion.tpl.php'
                     , null
-            );*/
+                );*/
             $vista = $this->template_item_perfil->get_template_registro(
                 $this->template_item_perfil->get_vistas_regisatros_censo_inicio(null, 
                 '/perfil/inicio/item_ficha_actividad_impresion', 
@@ -71,20 +76,20 @@ class Validacion extends Informacion_docente {
                 '/perfil/inicio/inicio_docente.tpl.php',                
                 null                
                 
-        );
+            );
             //pr($vista);
             $this->template->setMainContent($vista);
             //$this->template->getTemplate(true, 'tc_template/impresion.tpl.php');
             $this->template->getTemplate();
         }
-//        $this->output->set_profiler_sections($sections);
+        //        $this->output->set_profiler_sections($sections);
 //        $this->output->enable_profiler(TRUE);
         //$this->benchmark->mark('code_end');
         //echo $this->benchmark->elapsed_time('code_start', 'code_end');
         //$this->output->parse_exec_vars = TRUE;
         //$this->output->append_output($this->benchmark->memory_usage());
     }
-
+    
     public function listado_docentes(){
         $output['catalogos']['result_delegacional'] = $this->normativo->get_delegacional();
         array_unshift($output['catalogos']['result_delegacional'], ['clave_delegacional'=>'',"nombre"=>'Selecciona OOAD']); 
@@ -98,22 +103,63 @@ class Validacion extends Informacion_docente {
     
     public function docentes(){
         $OOAD = null;
+        $datos_sesion = $this->get_datos_sesion();
+        //pr($datos_sesion);
+        $data_post = null;
         if($this->input->post()){
-            $data_post = $this->input->post(null, true);
-            //pr($data_post);
-            if(!empty($data_post['clave_delegacional'])){
-                $OOAD = $data_post['clave_delegacional'];
-                //pr($OOAD);
-            }
+            $data_post = $this->input->post(null, true);                        
         }
-        $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, $OOAD, true);
+        $rol_aplica = $this->get_rol_aplica($datos_sesion,$data_post);
+        //pr($rol_aplica);
+        $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
         //pr($output['datos_docentes']);
         header('Content-Type: application/json; charset=utf-8;');
         echo json_encode($output);
-
+        
     }
- 
-     public function valida_censo(){
+    
+
+    
+    private function get_rol_aplica($datos_sesion, $data_post = null){
+        $claves_rol = $this->get_roles_usuario(2);
+        $conf=['rol_aplica'=>null, 'filtros'=>null];
+        if(isset($claves_rol[LNiveles_acceso::Normativo])){
+            $conf['rol_aplica'] = LNiveles_acceso::Normativo;             
+            if(!empty($data_post['clave_delegacional'])){
+                $conf['filtros']['where']['d.clave_delegacional'] = $data_post['clave_delegacional'];
+            }
+        }else if(isset($claves_rol[LNiveles_acceso::Validador2])){
+            $conf['rol_aplica'] = LNiveles_acceso::Validador2;      
+            $conf['filtros']['where']['d.clave_delegacional'] = $datos_sesion['clave_delegacional']; 
+            
+
+        }else if(isset($claves_rol[LNiveles_acceso::Validador1])){
+            $conf['rol_aplica'] = LNiveles_acceso::Validador1;
+            //$where['d.clave_delegacional'] =  
+            $conf['filtros']['where']['u.clave_unidad'] = $datos_sesion['clave_unidad']; 
+            $ids_usuario_registrados = $this->get_usuarios_registro_validador($datos_sesion[En_datos_sesion::ID_USUARIO]);
+            if(!empty($ids_usuario_registrados)){
+                $conf['filtros']['or_where_in']['doc.id_usuario'] = $ids_usuario_registrados; 
+            }                     
+        }
+        return $conf;
+    }
+
+    private function get_usuarios_registro_validador($id_user_sesion){
+        $this->load->model('Catalogo_model', 'cm');        
+        $params['select'] = array('id_usuario_registrado');
+        $params['where'] = ['cru.id_usuario_registra'=>$id_user_sesion, 'cru.active'=>true];
+        $result = $this->cm->get_registros("sistema.control_registro_usuarios cru", $params);
+        $idsUserResult = [];
+        if(!empty($result)){
+            foreach($result as $val){
+                $idsUserResult[] = $val['id_usuario_registrado'];
+            }
+        }
+        return $idsUserResult;
+    }
+
+    public function valida_censo(){
 
     }
 

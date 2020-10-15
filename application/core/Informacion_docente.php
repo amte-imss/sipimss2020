@@ -14,6 +14,7 @@ class Informacion_docente extends MY_Controller {
         parent::__construct();
         $this->load->library('form_complete');
         $this->load->library('form_validation');
+        $this->load->library('LNiveles_acceso');
         date_default_timezone_set('America/Mexico_City');
     }
 

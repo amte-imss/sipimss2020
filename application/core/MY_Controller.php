@@ -127,19 +127,31 @@ class MY_Controller extends CI_Controller {
      * date: 10/10/2020
      * author: LEAS
      */
-    public function get_roles_usuario($claves_rol = true) {
+    public function get_roles_usuario($tipo_claves_rol = 1) {
         if(isset($this->session->userdata('die_sipimss')['usuario']['niveles_acceso'])){
 
             $roles = $this->session->userdata('die_sipimss')['usuario']['niveles_acceso'];
-            if($claves_rol){
-                $roles_clave = [];
-                foreach ($roles as $key => $values) {
-                    $roles_clave[] = $values['clave_rol']; 
-                }
-                return $roles_clave;
-            }else{
+            switch($tipo_claves_rol){
+                case 1:
+                    $roles_clave = [];
+                    foreach ($roles as $key => $values) {
+                        $roles_clave[] = $values['clave_rol']; 
+                    }
+                    return $roles_clave;
+                break;
+                case 2:                    
+                    $roles_clave = [];
+                    foreach ($roles as $key => $values) {
+                        $roles_clave[$values['clave_rol']] = $values; 
+                    }
+                    return $roles_clave;
+                break;
+                break;
+                default:
                 return $roles;
+
             }
+            
         }
         return null;
     }

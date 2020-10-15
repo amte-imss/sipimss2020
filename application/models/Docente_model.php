@@ -35,7 +35,7 @@ class Docente_model extends MY_Model {
      * @param type $id_docente
      * @return type
      */
-    public function get_historico_datos_generales($id_docente = null, $OOAD = null , $datos_docente = false) {
+    public function get_historico_datos_generales($id_docente = null, $OOAD = null , $parametros_docente =[]) {
         $select = array(
             "dd.id_historico_docente", "dd.fecha echa_ultima_actualizacion"
             , "dd.id_departamento_instituto", "di.clave_departamental", "concat(di.nombre,' (',di.clave_departamental,')' ) departamento"
@@ -46,7 +46,7 @@ class Docente_model extends MY_Model {
             "r.id_region", "r.nombre region",
             "cc.id_categoria", "cc.clave_categoria", "concat(cc.nombre, ' (', cc.clave_categoria, ')') categoria"
         );
-        if($datos_docente){
+        if(!empty($parametros_docente)){
             $select_p = ["doc.id_docente", "doc.matricula", "doc.curp", "doc.email", "concat(doc.nombre, ' ', doc.apellido_p, ' ', doc.apellido_m) nombre_docente", "doc.telefono", 
             "doc.telefono_laboral", "doc.telefono_particular", "doc.id_docente_carrera", "dca.descripcion fase_carrera"];
             $select = array_merge($select, $select_p);
@@ -67,16 +67,21 @@ class Docente_model extends MY_Model {
         $this->db->join('catalogo.tipos_unidades tu', 'tu.id_tipo_unidad = u.id_tipo_unidad', 'left');
         $this->db->join('catalogo.regiones r', 'r.id_region = d.id_region', 'left');
         $this->db->join('catalogo.tipo_contratacion tc', 'tc.cve_tipo_contratacion = dd.cve_tipo_contratacion', 'left');
-        if($datos_docente){
+        if(!empty($parametros_docente)){
             $this->db->join('censo.docente doc', 'doc.id_docente = dd.id_docente', 'left');
             $this->db->join('censo.docente_carrera  dca', 'dca.id_docente_carrera = doc.id_docente_carrera', 'left');
-            $this->db->where('doc.activo', true);
-
+            if (isset($parametros_docente['filtros']) && !is_null($parametros_docente['filtros'])) {
+                foreach ($parametros_docente['filtros'] as $key => $value) {
+                    foreach($value as $keyApp => $valApp){
+                        $this->db->{$key}($keyApp, $valApp);
+                    }
+                }
+            }            
         }
         $result = $this->db->get('censo.historico_datos_docente dd');
         $array_result = $result->result_array();
         //pr($this->db->last_query());
-        if (!empty($array_result) && !$datos_docente) {
+        if (!empty($array_result) && empty($parametros_docente)) {
             return $array_result[0]; //retorna un array con los datos del historico o del docente
         }
         return $array_result;
