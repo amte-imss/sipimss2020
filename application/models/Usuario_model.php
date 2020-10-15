@@ -14,6 +14,7 @@ class Usuario_model extends MY_Model {
     public function nuevo(&$parametros = null, $tipo = Usuario_model::SIAP) {
         $salida['msg'] = 'Error';
         $salida['result'] = false;
+        //pr("Aqui");
         switch($tipo){
             case Usuario_model::SIAP:
                 $this->nuevo_siap($parametros, $salida);
@@ -117,7 +118,8 @@ class Usuario_model extends MY_Model {
         $token = $this->seguridad->folio_random(10, TRUE);
         $pass = $this->seguridad->encrypt_sha512($token . $parametros['password'] . $token);
         $usuario = $this->empleados_siap->buscar_usuario_siap($parametros['delegacion'], $parametros['matricula'])['empleado'];
-//        pr($usuario);
+        //pr('$usuario');
+        //pr($usuario);
         $params['where'] = array(
             'username' => $parametros['matricula']
         );

@@ -113,8 +113,51 @@ class Validacion extends Informacion_docente {
 
     }
  
-    public function valida_censo(){
+     public function valida_censo(){
 
+    }
+
+    public function registro_docente(){
+        $output["texts"] = $this->lang->line('formulario'); //textos del formulario
+        //pr($this->input->post());
+        if($this->input->post()){
+            $this->config->load('form_validation'); //Cargar archivo con validaciones
+            $validations = $this->config->item('form_registro_usuario'); //Obtener validaciones de archivo general
+            unset($validations[array_key_last($validations)]);
+            $this->form_validation->set_rules($validations); //Añadir validaciones
+            //pr($validations);
+
+            if ($this->form_validation->run() == TRUE)
+            {
+                $this->load->model('Administracion_model', 'administracion');
+                $data = array(
+                    'matricula' => $this->input->post('reg_usuario', TRUE),
+                    'delegacion' => $this->input->post('id_delegacion', TRUE),
+                    'email' => $this->input->post('reg_email', true),
+                    'password' => $this->input->post('reg_password', TRUE),
+                    'grupo' => Administracion_model::DOCENTE,
+                    'registro_usuario' => true
+                );
+                $this->load->library('empleados_siap');
+                $this->load->library('seguridad');
+                $this->load->model('Usuario_model', 'usuario');
+                $output['registro_valido'] = $this->usuario->nuevo($data, Usuario_model::NO_SIAP);
+                //pr($data);
+            }else{
+                // pr(validation_errors());;
+            }
+        }
+        $this->load->model('Catalogo_model', 'catalogo');
+        $output['delegaciones'] = dropdown_options($this->catalogo->get_delegaciones(null, array('oficinas_centrales' => true)), 'clave_delegacional', 'nombre');
+        $main_content = $this->load->view("docente/registro/registro_docente.tpl.php", $output, true);
+       
+        
+        $this->template->setMainContent($main_content);
+        $this->template->getTemplate();
+    }
+
+    public function registro(){
+      
     }
 
 
