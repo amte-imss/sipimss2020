@@ -138,7 +138,7 @@ class Validacion extends Informacion_docente {
                     'password' => $this->input->post('reg_password', TRUE),
                     'grupo' => Administracion_model::DOCENTE,
                     'registro_usuario' => true,
-                    'id_usuario_sesion' = $is_user;
+                    'id_usuario_sesion' => $is_user
 
                 );
                 $this->load->library('empleados_siap');
