@@ -313,6 +313,8 @@ class Core_secciones extends Informacion_docente {
             $id_censo = null; //En algun punto debe existir la variable, aquí únicamente se define
             $data_post = $this->input->post(null, true);
             
+            //pr(base64_decode($data_post['curso_experiencia_docente']));
+            
            // pr($data_post);
 //            exit();
             if ($this->input->post()) {
@@ -533,6 +535,7 @@ class Core_secciones extends Informacion_docente {
             $opciones_extra_catalogo_otro = array();
             if ($this->input->post()) {
                 $data_post = $this->input->post(null, true);
+                //pr(base64_decode($data_post['curso_experiencia_docente']));
                 $id_censo = decrypt_base64($data_post['censo_regstro']); //Desencripta censo
                 $detalle_censo = $this->get_detalle_censo_c($id_censo); //Obtiene detalle del censo
                 $formulario = $this->get_campos_formulario(null, $id_censo); //Obtiene tosdos los campos de formulario

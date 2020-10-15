@@ -211,30 +211,39 @@ function genera_filds(data, elemento_seccion) {
         });
     }else{//Cuando no cargo ninguna opcion 
         //Aplicar un filtro para que no fucione los registros de campos iguales
-        
-        //Carga datos del formulario
-        //var cat_secciones = getElementoSeccionName(data.catalogo_secciones_actividad_docente);
+        if(typeof properties !== 'undefined'){
+           
+            if(typeof properties.id_elementoSeccionDefault === 'undefined' ){                                   
+                f.push({name: "id_elemento_seccion", type: 'select', items:data.catalogo_secciones_actividad_docente, valueField:"id_elemento_seccion", textField:"label",title: "Formulario" , filtering:false});            
+            }else{
+                if(properties.id_elementoSeccionDefault.length == 0 || properties.id_elementoSeccionDefault < 1 ){    
+                    f.push({name: "id_elemento_seccion", type: 'select', items:data.catalogo_secciones_actividad_docente, valueField:"id_elemento_seccion", textField:"label",title: "Formulario" , filtering:false});            
+                }
+            }
+        }else{            
+            f.push({name: "id_elemento_seccion", type: 'select', items:data.catalogo_secciones_actividad_docente, valueField:"id_elemento_seccion", textField:"label",title: "Formulario" , filtering:false});
+        }
+            //Carga datos del formulario
+            //var cat_secciones = getElementoSeccionName(data.catalogo_secciones_actividad_docente);
         //Agrega el elemento seccion
-        f.push({name: "id_elemento_seccion", type: 'select', items:data.catalogo_secciones_actividad_docente, valueField:"id_elemento_seccion", textField:"label",title: "Formulario" , filtering:false});
-        Object.keys(data.campos_mostrar_datatable).forEach(function (key) {
-            d_extra = data.campos_mostrar_datatable[key];
-            //console.log(data);
-            
-                columnas.push(d_extra.nombre);//Columnas del grid
+            Object.keys(data.campos_mostrar_datatable).forEach(function (key) {
+                d_extra = data.campos_mostrar_datatable[key];
+                //console.log(data);                
+                    columnas.push(d_extra.nombre);//Columnas del grid
+                    
+                    //                console.log(d_extra.nombre_tipo_campo);
+                    switch (d_extra.nombre_tipo_campo) {
+                        case "dropdown":
+                            //                        f.push({name: key, type: d_extra.nombre_tipo_campo, title: d_extra.label, items: data[key], valueField: 'id', textField: 'label'});
+                            f.push({name: d_extra.nombre, type: 'text', title: d_extra.label});
+                            break;
+                            default :
+                            //                        f.push({name: key, type: d_extra.nom_tipo_campo, title: d_extra.label});
+                            f.push({name: key, type: 'text', title: d_extra.label});
+                        }
+                        
+                    });
                 
-                //                console.log(d_extra.nombre_tipo_campo);
-                switch (d_extra.nombre_tipo_campo) {
-                    case "dropdown":
-                        //                        f.push({name: key, type: d_extra.nombre_tipo_campo, title: d_extra.label, items: data[key], valueField: 'id', textField: 'label'});
-                        f.push({name: d_extra.nombre, type: 'text', title: d_extra.label});
-                        break;
-                        default :
-                        //                        f.push({name: key, type: d_extra.nom_tipo_campo, title: d_extra.label});
-                        f.push({name: key, type: 'text', title: d_extra.label});
-                    }
-                
-            });
-
     }
 
 

@@ -477,7 +477,11 @@ class Formulario_model extends MY_Model {
                         break;
                         case Formulario_model::TIPO_CUSTOM://ya que se envia en base 64
                             //pr($array_datos[$value['nom_campo']]);
-                            $array_datos[$value['nom_campo']]['valor'] = base64_decode($dato_valor);
+                            $decode_custom = base64_decode($dato_valor);                            
+                            $aux_custom = json_decode($decode_custom, true);
+                            $decode_custom = (is_array($aux_custom) && !empty($aux_custom)) ? $decode_custom: '';
+                        
+                            $array_datos[$value['nom_campo']]['valor'] = $decode_custom;
                             //pr($array_datos[$value['nom_campo']]);
                             
                         break;
@@ -567,7 +571,10 @@ class Formulario_model extends MY_Model {
                                 }
                     break;
                     case Formulario_model::TIPO_CUSTOM://ya que se envia en base 64
-                        $datos_post_formulario[$value_df['nom_campo']] = base64_decode($datos_post_formulario[$value_df['nom_campo']]); 
+                        $decode_custom = base64_decode($datos_post_formulario[$value_df['nom_campo']]); 
+                        $aux_custom = json_decode($decode_custom, true);
+                        $decode_custom = (is_array($aux_custom) && !empty($aux_custom)) ? $decode_custom: '';
+                        $datos_post_formulario[$value_df['nom_campo']] = $decode_custom; 
                         
                     break;
                     case Formulario_model::TIPO_CAMPO_CHECKBOX:                    
