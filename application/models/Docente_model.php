@@ -70,6 +70,12 @@ class Docente_model extends MY_Model {
         if(!empty($parametros_docente)){
             $this->db->join('censo.docente doc', 'doc.id_docente = dd.id_docente', 'left');
             $this->db->join('censo.docente_carrera  dca', 'dca.id_docente_carrera = doc.id_docente_carrera', 'left');
+            
+            $this->db->join('sistema.usuario_rol  urol', 'urol.id_usuario = doc.id_usuario and urol.activo');
+            $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol');            
+            if(isset($parametros_docente['rol_docente'])){
+                $this->db->where('rol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
+            }
             if (isset($parametros_docente['filtros']) && !is_null($parametros_docente['filtros'])) {
                 foreach ($parametros_docente['filtros'] as $key => $value) {
                     foreach($value as $keyApp => $valApp){

@@ -102,7 +102,6 @@ class Validacion extends Informacion_docente {
     }
     
     public function docentes(){
-        $OOAD = null;
         $datos_sesion = $this->get_datos_sesion();
         //pr($datos_sesion);
         $data_post = null;
@@ -111,6 +110,7 @@ class Validacion extends Informacion_docente {
         }
         $rol_aplica = $this->get_rol_aplica($datos_sesion,$data_post);
         //pr($rol_aplica);
+        
         $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
         //pr($output['datos_docentes']);
         header('Content-Type: application/json; charset=utf-8;');
@@ -122,10 +122,12 @@ class Validacion extends Informacion_docente {
     
     private function get_rol_aplica($datos_sesion, $data_post = null){
         $claves_rol = $this->get_roles_usuario(2);
-        $conf=['rol_aplica'=>null, 'filtros'=>null];
+        $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente];
+        $conf['rol_docente']=LNiveles_acceso::Docente;
         if(isset($claves_rol[LNiveles_acceso::Normativo])){
             $conf['rol_aplica'] = LNiveles_acceso::Normativo;             
             if(!empty($data_post['clave_delegacional'])){
+                $conf['filtros']['where']['d.clave_delegacional'] = $data_post['clave_delegacional'];
                 $conf['filtros']['where']['d.clave_delegacional'] = $data_post['clave_delegacional'];
             }
         }else if(isset($claves_rol[LNiveles_acceso::Validador2])){
@@ -136,11 +138,14 @@ class Validacion extends Informacion_docente {
         }else if(isset($claves_rol[LNiveles_acceso::Validador1])){
             $conf['rol_aplica'] = LNiveles_acceso::Validador1;
             //$where['d.clave_delegacional'] =  
-            $conf['filtros']['where']['u.clave_unidad'] = $datos_sesion['clave_unidad']; 
             $ids_usuario_registrados = $this->get_usuarios_registro_validador($datos_sesion[En_datos_sesion::ID_USUARIO]);
             if(!empty($ids_usuario_registrados)){
-                $conf['filtros']['or_where_in']['doc.id_usuario'] = $ids_usuario_registrados; 
-            }                     
+                $stringIds = implode(',',$ids_usuario_registrados);
+                $auxFiltro = '(u.clave_unidad=\'' . $datos_sesion['clave_unidad'].'\' or doc.id_usuario IN(' . $stringIds . '))';
+                $conf['filtros']['where'][$auxFiltro] = null;                
+            }else{                
+                $conf['filtros']['where']['u.clave_unidad'] = $datos_sesion['clave_unidad']; 
+            }
         }
         return $conf;
     }
