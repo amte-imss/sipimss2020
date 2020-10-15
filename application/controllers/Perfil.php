@@ -78,7 +78,13 @@ class Perfil extends Informacion_docente {
             if (!empty($datos_generales)) {
                 $this->load->library('curp', array('curp' => $datos_generales['curp'])); //Ingresa datos del curp
                 $datos_generales['edad'] = $this->curp->getEdad(); //Calcula la edad del usuario
+                if(is_null($datos_generales['fecha_nacimiento'])){
+                    //pr($datos_generales['fecha_nacimiento']);
+                    $datos_generales['fecha_nacimiento'] = $this->curp->getFechaNac();
+                    //pr( $datos_generales['fecha_nacimiento']);
+                }
                 $this->template_item_perfil->set_datos_generales($datos_generales); //Información general del docente 
+
             }
             /* Cargar imagen de perfil */
             $datos_imagen_docente = $this->dm->get_imagen_perfil($id_docente); //Obtener imagen del docente
