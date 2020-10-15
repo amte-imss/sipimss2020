@@ -11,7 +11,8 @@ $controlador = '/' . $this->uri->rsegment(1).'/registro_docente';
                             echo html_message($registro_valido['msg'], $tipo);
                         }
                         ?>
-                        <div id="area_registro" class="form">
+                        <div class="col-lg-3 col-md-2"></div>
+                        <div id="area_registro" class="form col-lg-6 col-md-8 ">
                             <?php echo form_open($controlador, array('id' => 'registro_form', 'autocomplete' => 'off')); ?>
                             <div class="sign-in-htm">
                                 <div class="form-group">
@@ -94,6 +95,7 @@ $controlador = '/' . $this->uri->rsegment(1).'/registro_docente';
                             </div>
                             <?php echo form_close(); ?>
                         </div>
+                        <div class="col-lg-3 col-md-2"></div>
                     </div>
 </div>
 

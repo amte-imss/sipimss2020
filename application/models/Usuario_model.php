@@ -281,6 +281,10 @@ class Usuario_model extends MY_Model {
         return $resultado;
     }
 
+    public function save_control_registro_usuarios($data){
+        $this->db->insert('sistema.control_registro_usuarios', $data); //nombre de la tabla en donde se insertaran
+    }
+
     private function get_docente($matricula = '')
     {
         $this->db->flush_cache();

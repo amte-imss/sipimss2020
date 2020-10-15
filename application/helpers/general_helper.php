@@ -670,4 +670,14 @@ if (!function_exists('remove_accents')) {
 
 }
 
+if (! function_exists("array_key_last")) {
+    function array_key_last($array) {
+        if (!is_array($array) || empty($array)) {
+            return NULL;
+        }
+       
+        return array_keys($array)[count($array)-1];
+    }
+}
+
 /* End of file general_helper.php */

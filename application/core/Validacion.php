@@ -192,6 +192,13 @@ class Validacion extends Informacion_docente {
                 $this->load->model('Usuario_model', 'usuario');
                 $output['registro_valido'] = $this->usuario->nuevo($data, Usuario_model::SIAP);
                 //pr($data);
+                $data = array(
+                    'id_usuario_registra' => $is_user,
+                    'id_usuario_registrado' => $output['registro_valido']['id_usuario'],
+                );
+                //pr($data);
+                $this->usuario->save_control_registro_usuarios($data);
+                //pr($data);
             }else{
                 // pr(validation_errors());;
             }

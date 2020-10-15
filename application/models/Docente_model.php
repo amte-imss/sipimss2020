@@ -80,7 +80,7 @@ class Docente_model extends MY_Model {
         }
         $result = $this->db->get('censo.historico_datos_docente dd');
         $array_result = $result->result_array();
-        //pr($this->db->last_query());
+        //pr($this->db->last_query()); exit();
         if (!empty($array_result) && empty($parametros_docente)) {
             return $array_result[0]; //retorna un array con los datos del historico o del docente
         }

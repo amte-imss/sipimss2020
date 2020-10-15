@@ -119,7 +119,7 @@ class Usuario extends MY_Controller
                         $filtros['E.nombre'] = $value;
                         break;
                     case 'nombre':
-                        $filtros['nombre'] = $value;
+                        $filtros['concat(docentes.nombre, $$ $$, docentes.apellido_p, $$ $$, apellido_m)'] = $value;
                         break;
                     default:
                         # code...
