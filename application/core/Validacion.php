@@ -126,22 +126,25 @@ class Validacion extends Informacion_docente {
             unset($validations[array_key_last($validations)]);
             $this->form_validation->set_rules($validations); //Añadir validaciones
             //pr($validations);
-
+            
             if ($this->form_validation->run() == TRUE)
             {
                 $this->load->model('Administracion_model', 'administracion');
+                $is_user = $this->get_datos_sesion(En_datos_sesion::ID_USUARIO);
                 $data = array(
                     'matricula' => $this->input->post('reg_usuario', TRUE),
                     'delegacion' => $this->input->post('id_delegacion', TRUE),
                     'email' => $this->input->post('reg_email', true),
                     'password' => $this->input->post('reg_password', TRUE),
                     'grupo' => Administracion_model::DOCENTE,
-                    'registro_usuario' => true
+                    'registro_usuario' => true,
+                    'id_usuario_sesion' = $is_user;
+
                 );
                 $this->load->library('empleados_siap');
                 $this->load->library('seguridad');
                 $this->load->model('Usuario_model', 'usuario');
-                $output['registro_valido'] = $this->usuario->nuevo($data, Usuario_model::NO_SIAP);
+                $output['registro_valido'] = $this->usuario->nuevo($data, Usuario_model::SIAP);
                 //pr($data);
             }else{
                 // pr(validation_errors());;
