@@ -356,3 +356,5 @@ ALTER TABLE "sistema"."control_registro_usuarios" ADD CONSTRAINT "pk_usuario_reg
 
 ALTER TABLE "sistema"."control_registro_usuarios" ADD CONSTRAINT "pk_usuario_registrado" FOREIGN KEY ("id_usuario_registrado") REFERENCES "sistema"."usuarios" ("id_usuario");
 
+---Eliminar not null de campo apellido_m
+ALTER TABLE censo.docente ALTER COLUMN apellido_m DROP NOT NULL;
