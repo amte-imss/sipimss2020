@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title><?php echo isset($texts["title"]) ? $texts["title"] . "::" : ""; ?> SIPIMSS</title>
     <link rel="shortcut icon" href="http://educacionensalud.imss.gob.mx/sites/all/themes/ces/favicon.ico" type="image/vnd.microsoft.icon">
-    <meta name="description" content="Censo de profesores Coordinación de Educación en Salud">
+    <meta name="description" content="Censo de docentes Coordinación de Educación en Salud">
     <?php echo css('bootstrap.css'); ?>
     <?php echo css('style_login.css'); ?>
     <script type="text/javascript">
@@ -225,7 +225,7 @@
                     <ul class="nav navbar-nav">
                         <li class=""><a href="<?php echo site_url(); ?>">INICIO</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#login-modal">INICIO DE SESIÓN</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#registro-modal">REGISTRAR</a></li>
+                        <!--li><a href="#" data-toggle="modal" data-target="#registro-modal">REGISTRAR</a></li-->
                         <li>
                             <a href="#" data-toggle="modal" data-target="#mesa-ayuda-modal">MESA DE AYUDA</a>
                             <!-- </ul> -->
@@ -326,7 +326,7 @@
     <div class="clearfix"></div>
     <div class="col-md-14 text-justify">
         <div class="col-md-2"></div>
-        <div class="col-md-4">El Sistema de Información de Profesores del Instituto Mexicano del Seguro Social, que tiene como propósito, concentrar la información profesional actualizada y confiable del personal de salud con actividad docente en el IMSS, lo que permite realizar una mejor programación, toma de decisiones y evaluación.</div>
+        <div class="col-md-4">El Sistema de Información de Docentes del Instituto Mexicano del Seguro Social, que tiene como propósito, concentrar la información profesional actualizada y confiable del personal de salud con actividad docente en el IMSS, lo que permite realizar una mejor programación, toma de decisiones y evaluación.</div>
         <div class="col-md-4"><img class="img-responsive" src="<?php echo asset_url(); ?>img/ditto/IMG-20201008-WA0025.jpg" alt="Eleva tu reconocimiento profesional actualizando tu información personal, profesional, tus actividades docentes y de investigación en el IMSS"></div>
         <!-- <div class="col-md-2"><h4>TUTORIALES</h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent quis ante sed tortor condimentum consectetur. </div>
         <div class="col-md-2"><img class="img-responsive" src="<?php echo asset_url(); ?>img/ditto/SIPIMSS_carrusel03.jpg" alt="Eleva tu reconocimiento profesional actualizando tu información personal, profesional, tus actividades docentes y de investigación en el IMSS"></div> -->
@@ -354,7 +354,7 @@
                 <div class="modal-body" style="padding:40px 50px;">
                     <div class="login-page">
                         <p>¿Tienes alguna duda? Comunícate con nosotros:</p>
-                        <p><strong>Teléfono:</strong> ???<br><strong>Email:</strong> <a href="mailto:???">???</a><br><strong>Horario:</strong>&nbsp;de lunes a&nbsp;viernes, de&nbsp;8h&nbsp;a 16h</p>
+                        <p><!--strong>Teléfono:</strong> ???<br><strong-->Correo electrónico:</strong> <a href="mailto:genaro.sanchez@imss.gob.mx">genaro.sanchez@imss.gob.mx</a><br><strong>Horario:</strong>&nbsp;de lunes a&nbsp;viernes, de&nbsp;8h&nbsp;a 16h</p>
                     </div>
                 </div>
             </div>

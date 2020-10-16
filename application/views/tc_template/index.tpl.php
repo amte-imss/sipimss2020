@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>
         <?php echo (!is_null($title)) ? "{$title}&nbsp;|" : "" ?>
-        <?php echo (!is_null($main_title)) ? $main_title : "Sistema de Información de Profesores del IMSS" ?>
+        <?php echo (!is_null($main_title)) ? $main_title : "Sistema de Información de Docentes del IMSS" ?>
     </title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -292,10 +292,10 @@
         <b>Mesa de ayuda</b>
         <br>
         ¿Tienes alguna duda? Comunícate con nosotros:
+        <!--br>
+        <b>Teléfono:</b> ???-->
         <br>
-        <b>Teléfono:</b> ???
-        <br>
-        <b>Email:</b> ???
+        <b>Correo electrónico:</b> genaro.sanchez@imss.gob.mx
         <br>
         <b>Horario:</b> de lunes a viernes, de 8h a 16h
     </div>

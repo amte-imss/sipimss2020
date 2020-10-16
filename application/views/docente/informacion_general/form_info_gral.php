@@ -176,7 +176,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                 <div class="col-md-4">
                     <label for="paterno" class="pull-right control-label">
                         <b class="rojo">*</b>
-                        Correo electrónico:</label>
+                        Correo electrónico institucional:</label>
                 </div>
                 <div class="col-md-8">
                     <div class="input-group">
@@ -370,7 +370,7 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
                 <div class="col-md-4">
                     <label for="" class="pull-right control-label">
                         <b class="rojo">*</b>
-                        Sexo:</label>
+                        Género:</label>
                 </div>
                 <div class="col-md-8">
                     <div class="input-group">
