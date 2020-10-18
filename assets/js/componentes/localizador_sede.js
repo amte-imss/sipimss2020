@@ -13,7 +13,7 @@ $(document).ready(function () {//Ejecuta al final de la página
         $("#" + element.name).trigger('onchange');
         var config = memoria_sede[element.name];//Componente de resultados
         //console.log("config de trigger ");
-        //console.log(config);
+        console.log(config);
         if (element.value.length > 0) {
             //Consulta
             //console.log("Es qui sin definir" );
@@ -27,6 +27,8 @@ $(document).ready(function () {//Ejecuta al final de la página
     });
     
 });
+
+
 
 function get_inicializa(config, element) {
 //    alert(config);

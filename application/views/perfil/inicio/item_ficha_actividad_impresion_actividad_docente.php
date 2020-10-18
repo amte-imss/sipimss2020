@@ -60,14 +60,14 @@ foreach ($campos_agrupados as $key_grupo => $value_agrupados) {
                 break;
                 default :
                 if($header==0){
-                    $item_data[$key_grupo]['header'] = '<div class="panel-heading">'. $value['lb_campo'] . '&nbsp;' . $value['respuesta_valor']. '</div>';
+                    $item_data[$key_grupo]['header'] = '<div class="panel-heading">'. $value['lb_campo'] . '&nbsp;<text class="l_'.$key_c.'">' . $value['respuesta_valor']. '</text></div>';
                     $header = 1;
                 }else{
                     if (preg_match("/Número de años/", $value['lb_campo']) == 1) {
                         $item_data[$key_grupo]['body'] .=  ' &nbsp;' . $value['lb_campo'].' &nbsp;' . $value['respuesta_valor'] .$br ;
 
                     }else{
-                        $item_data[$key_grupo]['body'] .= '<label>'.$value['lb_campo'].': </label>&nbsp;' . $value['respuesta_valor'] . $br ;
+                        $item_data[$key_grupo]['body'] .= '<label>'.$value['lb_campo'].': </label>&nbsp;<text class="l_'.$key_c.'">' . $value['respuesta_valor'] .'</text>' . $br ;
                     }
                     $br = '<br>';
                    

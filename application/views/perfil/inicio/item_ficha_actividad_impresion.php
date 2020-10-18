@@ -16,6 +16,7 @@ $controlador = $this->uri->rsegment(1);
                <?php
            }
             foreach ($campos_seccion as $key_c => $value_cs) {
+                if(isset($campos[$key_c])){
                 $value = $campos[$key_c];
                 //$campos_seccion
                 /* $value contiene las sigiente estructura
@@ -80,7 +81,7 @@ $controlador = $this->uri->rsegment(1);
                         default :
                             ?>
                             <td  id="div_<?php echo $id_censo . '_' . $key_c; ?>">
-                                <p><?php echo $value['respuesta_valor']; ?></p>
+                                <p class="l_<?php echo $key_c; ?>"><?php echo $value['respuesta_valor']; ?></p>
                             </td>
                         <?php
                     }
@@ -89,6 +90,7 @@ $controlador = $this->uri->rsegment(1);
                         <td  id="div_<?php echo $id_censo . '_' . $key_c; ?>"></td>
                     <?php
                 }
+            }
                 ?>
                 
                 <?php

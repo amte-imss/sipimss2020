@@ -51,4 +51,28 @@ if (!empty($files_js_render_formularios)) {
         echo js($aux); //Agrega archivos JS del formulario
     }
 }
+
 ?>
+<script type="text/javascript">
+    var consulta = '';
+    $(document).ready(function () {
+		//console.log("Qe ");
+$('.l_sede_academica').each(function (index, element) {
+        var label = $(element);
+        consulta =  site_url +"/rama_organica/get_detalle/unidad/"+label.text()+"/actual" ;
+        $.getJSON(consulta, {})
+        .done(function (data, textStatus, jqXHR) {
+            console.log(label.text());
+            console.log(data);
+                if (data[0] /*&& textStatus === 'success'*/) {
+                    label.text(data[0].unidad + "("+ data[0].clave_unidad+")");           
+                }
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                //get_mensaje_general_modal("Ocurrió un error durante el proceso, inténtelo más tarde.", textStatus, 5000);
+            });
+
+        console.log(label.text());
+    });
+});
+</script>

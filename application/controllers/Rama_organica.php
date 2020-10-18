@@ -24,7 +24,7 @@ class Rama_organica extends MY_Controller
         $this->config->load('general');
     }
 
-    public function get_detalle($tipo_elemento = Rama::UNIDAD, $clave = '', $periodo = 2017)
+    public function get_detalle($tipo_elemento = Rama::UNIDAD, $clave = '', $periodo = 2020)
     {
         $salida = [];
         if ($clave != '')

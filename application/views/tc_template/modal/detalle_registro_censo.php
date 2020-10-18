@@ -100,8 +100,8 @@ $controlador = $this->uri->rsegment(1);
                         ?>
                         <div  id="div_<?php echo $value['id_censo'] . '_' . $value['nombre_campo']; ?>" class="col-md-6 goleft <?php echo 'c_' . $value['nombre_campo'] ?>">
                             <p>
-                                <label class="pull-left bold-label"><?php echo $value['lb_campo']; ?></label>&nbsp;
-                                <?php echo $value['respuesta_valor']; ?>
+                                <label class="pull-left bold-label <?php echo "l_".$value['nombre_campo'];?>"><?php echo $value['lb_campo']; ?></label>&nbsp;
+                                <text class="<?php echo "l_".$value['nombre_campo'];?>"><?php echo $value['respuesta_valor']; ?></text>
 
                             </p>
                         </div>
@@ -116,6 +116,7 @@ $controlador = $this->uri->rsegment(1);
 <?php
 if (!empty($propiedades_formulario) and ! is_null($propiedades_formulario[0]['ruta_file_js'])) {
     $json_js_form = (array) json_decode($propiedades_formulario[0]['ruta_file_js']);
+    //pr($propiedades_formulario);
     if ($json_js_form) {
         foreach ($json_js_form as $v) {
             echo js($v); //Agrega archivos JS del formulario
@@ -138,5 +139,21 @@ if (!empty($propiedades_formulario) and ! is_null($propiedades_formulario[0]['ru
 
 <?php } ?>
 
+    $('.l_sede_academica').each(function (index, element) {
+        label = $(element);
+       var consulta =  site_url +"/rama_organica/get_detalle/unidad/"+label.text()+"/actual" ;
+        
+        $.getJSON(consulta, {})
+            .done(function (data, textStatus, jqXHR) {
+                if (data[0] /*&& textStatus === 'success'*/) {
+                    label.text(data[0].unidad + "("+ data[0].clave_unidad+")");           
+                }
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                //get_mensaje_general_modal("Ocurrió un error durante el proceso, inténtelo más tarde.", textStatus, 5000);
+            });
+
+        console.log(label.text());
     });
+});
 </script>
