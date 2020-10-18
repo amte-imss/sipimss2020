@@ -11,23 +11,25 @@ $config['email'] = Array(
     'charset'   => 'utf-8',
     'validate'  => false*/
 
- //   'host' => 'smtp.gmail.com',
- //   'port' => 587,
-    //'port' => 465,
-//    'crypt' => 'tls',
- //   'username' => "sied.ad.imss@gmail.com",
-  //  'password' => "s13d.4d.1mss",
-  //  'setFrom' => array('email'=>'sied.ad.imss@gmail.com', 'name'=>'SIPIMSS')
-    //'username' => "cenitluis.pumas@gmail.com",
-    //'password' => "el#:(vlaluna2vces",
-//    'setFrom' => array('email'=>'cenitluis.pumas@gmail.com', 'name'=>'SIPIMSS')
-
+    'host' => 'smtp.gmail.com',
+    //'port' => 587,
+    'port' => 465,
+    'crypt' => 'tls',
+    //'username' => "sied.ad.imss@gmail.com",
+    //'password' => "s13d.4d.1mss",
+    //'setFrom' => array('email'=>'sied.ad.imss@gmail.com', 'name'=>'SIPIMSS')
+    'username' => "cenitluis.pumas@gmail.com",
+    'password' => "L3@sc0m3P@l0m@s",
+    'setFrom' => array('email'=>'cenitluis.pumas@gmail.com', 'name'=>'Censo de profesores',
+    'name'=>'Censo de profesores'
+    )
 	//Correo IMSS
     // 'debug' => 1,
-    'host' => 'smtp.1and1.mx',
-    'port' => "587",
-    'crypt' => 'TLS',
-    'username' => "postmaster@kaliashop.me",
-    'password' => "Banana123.",
-    'setFrom' => array('email'=>'soporte.sipimss@gmail.com', 'name'=>'SIPIMSS')
+    //'host' => 'smtp.1and1.mx',
+    //'port' => "587",
+    //'crypt' => 'TLS',
+    //'username' => "postmaster@kaliashop.me",
+    //'password' => "Banana123.",
+    //'setFrom' => array('email'=>'soporte.sipimss@gmail.com', 'name'=>'SIPIMSS')
+    //'setFrom' => array('email'=>'soporte.sipimss@gmail.com', 'name'=>'SIPIMSS')
 );

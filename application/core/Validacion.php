@@ -202,7 +202,10 @@ class Validacion extends Informacion_docente {
                     'id_usuario_registrado' => $output['registro_valido']['id_usuario'],
                 );
                 //pr($data);
-                $this->usuario->save_control_registro_usuarios($data);
+                if(isset($output['registrado']) && $output['registrado']){
+                    $this->usuario->save_control_registro_usuarios($data);
+                    $this->envia_correo_electronico($data['email'], $data);
+                }
                 //pr($data);
             }else{
                 // pr(validation_errors());;
@@ -217,8 +220,26 @@ class Validacion extends Informacion_docente {
         $this->template->getTemplate();
     }
 
+
+    /**
+     *  
+      *            $datos =  'email'                     'matricula'
+      *              'nombre' ,                    'apellido_p',
+     *               'apellido_m' ,                    'curp' ,
+     *               'sexo' ,                    'rfc',
+     *               'status_siap'
+            
+     */
+    private function envia_correo_electronico($email, $datos){
+        $this->enviar_correo($email, $datos, 'Censo de profesores', '/docente/email/email_docente_censo.php');
+        //$this->load->model('Plantilla_model', 'plantilla');
+        //$this->plantilla->send_mail(Plantilla_model::BIENVENIDA_REGISTRO, $parametros);
+        //$this->plantilla->send_mail(Plantilla_model::BIENVENIDA_REGISTRO);
+    }
+
+
     public function registro(){
-      
+      $this->envia_correo_electronico('cenitluis_pumas@hotmail.com', ['nombre'=>'Luis eduardo']);
     }
 
 

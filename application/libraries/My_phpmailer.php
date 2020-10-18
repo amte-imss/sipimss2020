@@ -4,7 +4,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class My_phpmailer {
 	public function __construct() {
     	$this->CI =& get_instance();
-    	$this->CI->config->load('email');
+        $this->CI->config->load('email');
+        //pr(APPPATH.'third_party/phpmailer/Phpmailerautoload.php');
     	include APPPATH.'third_party/phpmailer/Phpmailerautoload.php';
     }
 

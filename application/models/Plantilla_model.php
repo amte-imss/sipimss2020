@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Plantilla_model extends MY_Model
 {
 
-    const P_DEFAULT = 0, BIENVENIDA_REGISTRO = 1, EMAIL_PRUEBA = 'zurgcom@gmail.com', 
+    const P_DEFAULT = 0, BIENVENIDA_REGISTRO = 1, EMAIL_PRUEBA = 'cenitluis.pumas@gmail.com', 
             SUBJECT_PRUEBA = 'Mensaje de prueba', CUERPO_PRUEBA = 'Hola mundo';
 
     public function __construct()

@@ -772,7 +772,7 @@ class PHPMailer
     public function addAddress($address, $name = '')
     {
         if(ENVIRONMENT == 'development'){
-            $address = 'soporte.sipimss@gmail.com';
+            //$address = 'jesusz.unam@gmail.com';
         }
         return $this->addAnAddress('to', $address, $name);
     }

@@ -123,7 +123,8 @@ class Usuario_model extends MY_Model {
         $params['where'] = array(
             'username' => $parametros['matricula']
         );
-        $usuario_db = count($this->get_usuarios($params)) == 0;
+        $getUsuarios = $this->get_usuarios($params);
+        $usuario_db = count($getUsuarios) == 0;
         // pr($parametros);
         // pr($this->db->last_query());
         if ($usuario && $usuario_db)
@@ -162,7 +163,9 @@ class Usuario_model extends MY_Model {
                 $salida = $this->insert_guardar($data, $parametros['grupo']);
                 if ($salida['result'] && isset($parametros['registro_usuario']))
                 {
-                    $this->load->model('Plantilla_model', 'plantilla');
+                    $salida['envia_correo'] = true;
+                    //$this->load->model('Plantilla_model', 'plantilla');
+                    //$this->plantilla->send_mail(Plantilla_model::BIENVENIDA_REGISTRO, $parametros);
                     //$this->plantilla->send_mail(Plantilla_model::BIENVENIDA_REGISTRO, $parametros);
                 }
                 $salida['siap'] = $data;

@@ -393,6 +393,34 @@ class MY_Controller extends CI_Controller {
         }
         return $salida;
     }
+
+    protected function enviar_correo($email, $datos, $subject, $view) {
+        $this->load->config('email');
+        $this->load->library('My_phpmailer');
+        $mailStatus = $this->my_phpmailer->phpmailerclass();
+
+        /*  $mailStatus->SMTPOptions = array(
+          'ssl' => array(
+          'verify_peer' => false,
+          'verify_peer_name' => false,
+          'allow_self_signed' => true
+          )
+          );*/
+          $mailStatus->SMTPAuth = false;
+          $emailStatus = $this->load->view($view, $datos, true);
+          //pr($emailStatus);
+          
+          
+          $mailStatus->addAddress($email);
+          $mailStatus->Subject = $subject;
+          $mailStatus->msgHTML($emailStatus);
+          //pr($mailStatus);
+        //pr("Envio correo ");
+        //pr($mailStatus->send());
+        //$mail->ClearAddresses();
+        //$mail->ClearAttachments();
+    }
+
 }
 
 include_once APPPATH . 'core/Informacion_docente.php';
