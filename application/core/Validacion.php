@@ -192,11 +192,12 @@ class Validacion extends Informacion_docente {
                     'id_usuario_sesion' => $is_user
 
                 );
+                $temp = $data['password'];
                 $this->load->library('empleados_siap');
                 $this->load->library('seguridad');
                 $this->load->model('Usuario_model', 'usuario');
+                //pr($data); exit();
                 $output['registro_valido'] = $this->usuario->nuevo($data, Usuario_model::SIAP);
-                //pr($data);
                 $data = array(
                     'id_usuario_registra' => $is_user,
                     'id_usuario_registrado' => $output['registro_valido']['id_usuario'],
@@ -204,6 +205,7 @@ class Validacion extends Informacion_docente {
                 //pr($data);
                 if(isset($output['registrado']) && $output['registrado']){
                     $this->usuario->save_control_registro_usuarios($data);
+                    $data['password'] = $temp;
                     $this->envia_correo_electronico($data['email'], $data);
                 }
                 //pr($data);
@@ -239,7 +241,7 @@ class Validacion extends Informacion_docente {
 
 
     public function registro(){
-      $this->envia_correo_electronico('cenitluis_pumas@hotmail.com', ['nombre'=>'Luis eduardo']);
+      $this->envia_correo_electronico('jesusz.unam@gmail.com', ['nombre'=>'Jesús Díaz']);
     }
 
 

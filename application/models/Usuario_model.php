@@ -159,7 +159,7 @@ class Usuario_model extends MY_Model {
                     'id_categoria' => $categoria['id_categoria'],
                     'id_departamento_instituto' => $unidad_instituto['id_departamento_instituto']
                 );
-                //pr($data);
+                //pr($data); exit();
                 $salida = $this->insert_guardar($data, $parametros['grupo']);
                 if ($salida['result'] && isset($parametros['registro_usuario']))
                 {

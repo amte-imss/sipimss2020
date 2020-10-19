@@ -13,11 +13,11 @@ class My_phpmailer {
     	$config_email = $this->CI->config->item('email');
 		// pr(ENVIRONMENT);
     	$mail = new PHPMailer();
-
+        //pr($config_email);
         //Tell PHPMailer to use SMTP
         $mail->isSMTP();
         $mail->SMTPDebug = isset($config_email['debug'])?$config_email['debug']:0;
-        $mail->SMTPAuth = true;
+        $mail->SMTPAuth = isset($config_email['auth'])?$config_email['auth']:false;
         //$mail->SMTPAuth = false;
         //$mail->SMTPKeepAlive = true; // SMTP connection will not close after each email sent, reduces SMTP overhead
         $mail->Debugoutput = 'html';
