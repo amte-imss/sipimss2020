@@ -96,6 +96,7 @@ function carga_grid_actividad_docente(datos, seccion) {
                 var d = $.Deferred();
                 //var result = null;
                //console.log(datos.datos_actividad_docente);
+               
                 var res = $.grep(datos.datos_actividad_docente, function (registro) {
                     var result = true;
                     var namec;
@@ -111,6 +112,7 @@ function carga_grid_actividad_docente(datos, seccion) {
                                 registro[namec] = '';
                             }                           
                             if (typeof namec !== "undefined" && !(!filter[namec] || (registro[namec] !== null && registro[namec].toString().toLowerCase().indexOf(filter[namec].toString().toLowerCase()) > -1))) {
+                                
                                 result = false;
                                 break;
                             }
@@ -147,6 +149,60 @@ function carga_grid_actividad_docente(datos, seccion) {
         ,
     });
 }
+
+function completa_campo(data){
+    //console.log(data);
+    Object.keys(data.datos_actividad_docente).forEach(function (key) {
+        d = data.datos_actividad_docente[key];
+        if(typeof d.sede_academica !== 'undefined' || typeof d.sede !== 'undefined'){
+            d.sede_academica
+            consulta =  site_url +"/rama_organica/get_detalle/unidad/"+d.sede_academica+"/actual" ;
+            $.getJSON(consulta, {})
+            .done(function (data, textStatus, jqXHR) {
+                //console.log(label.text());
+                //console.log(data);
+                    if (data[0] /*&& textStatus === 'success'*/) {
+                        d.sede_academica = data[0].unidad + "("+ data[0].clave_unidad+")";    
+                        $("#js_grid_registros_seccion").jsGrid("refresh");       
+                    }
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    //get_mensaje_general_modal("Ocurrió un error durante el proceso, inténtelo más tarde.", textStatus, 5000);
+                });
+        }     
+
+        console.log(d);
+    });
+    
+
+    /*switch(campo){
+        case 'sede':
+        case 'sede_academica':
+
+        break;
+        default:
+
+    }*/
+}
+
+function getSede(clave_sede){
+    var label = $(element);
+        consulta =  site_url +"/rama_organica/get_detalle/unidad/"+clave_sede+"/actual" ;
+        $.getJSON(consulta, {})
+        .done(function (data, textStatus, jqXHR) {
+            //console.log(label.text());
+            //console.log(data);
+                if (data[0] /*&& textStatus === 'success'*/) {
+                    var sede = data[0].unidad + "("+ data[0].clave_unidad+")";           
+                }
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                //get_mensaje_general_modal("Ocurrió un error durante el proceso, inténtelo más tarde.", textStatus, 5000);
+            });
+
+        
+}
+
 
 function recarga_catalogo_secciones_actividad_docente(actividades_docente, token_seccion) {
     //console.log("actividades_docente");
@@ -186,6 +242,7 @@ function genera_filds(data, elemento_seccion) {
     var d_extra;
     var mostrar_extras_por_properties = true;
     columnas = new Array();
+    completa_campo(data);
     //console.log(data);
     if (typeof elemento_seccion !== 'undefined' && elemento_seccion != null && elemento_seccion.toString() != '') {//Para opciones de la tabla
 //        console.log(data.campos_mostrar_datatable.length);

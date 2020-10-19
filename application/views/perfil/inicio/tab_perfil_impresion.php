@@ -62,8 +62,8 @@ $('.l_sede_academica').each(function (index, element) {
         consulta =  site_url +"/rama_organica/get_detalle/unidad/"+label.text()+"/actual" ;
         $.getJSON(consulta, {})
         .done(function (data, textStatus, jqXHR) {
-            console.log(label.text());
-            console.log(data);
+            //console.log(label.text());
+            //console.log(data);
                 if (data[0] /*&& textStatus === 'success'*/) {
                     label.text(data[0].unidad + "("+ data[0].clave_unidad+")");           
                 }
