@@ -203,11 +203,11 @@ class Validacion extends Informacion_docente {
                     'id_usuario_registrado' => $output['registro_valido']['id_usuario'],
                 );
                 //pr($data);
-                if(isset($output['registrado']) && $output['registrado']){
+                //if(isset($output['envia_correo']) && $output['envia_correo']){
                     $this->usuario->save_control_registro_usuarios($data);
                     $data['password'] = $temp;
                     $this->envia_correo_electronico($data['email'], $data);
-                }
+                //}
                 //pr($data);
             }else{
                 // pr(validation_errors());;
@@ -241,7 +241,7 @@ class Validacion extends Informacion_docente {
 
 
     public function registro(){
-      $this->envia_correo_electronico('jesusz.unam@gmail.com', ['nombre'=>'Jesús Díaz']);
+      $this->envia_correo_electronico('cenitluis.pumas@gmail.com', ['nombre'=>'Jesús Díaz', 'password'=>'AUSL880811BC6_NOW']);
     }
 
 
