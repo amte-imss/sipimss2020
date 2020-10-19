@@ -1506,13 +1506,25 @@ class Formulario_model extends MY_Model {
      * @param type $id_docente identificador del docente
      * @return type
      */
-    public function get_files_js_formularios($id_docente = null) {
+    /*public function get_files_js_formularios($id_docente = null) {
         $select = 'distinct json_array_elements(f.ruta_file_js::json)::text as elementos';
         $this->db->select($select);
         $this->db->where('c.id_docente', $id_docente, FALSE);
         $this->db->where('ruta_file_js is not null', null);
         $this->db->where('length(ruta_file_js)>0',null);
         $this->db->join('censo.censo c', 'c.formulario_registros->>\'id_formulario\' = f.id_formulario::text', 'inner', FALSE);
+        $res = $this->db->get('ui.formulario f');
+//        pr($this->db->last_query());
+        return $res->result_array();
+    }*/
+
+    public function get_files_js_formularios($id_docente = null) {
+        $select = 'distinct f.ruta_file_js as elementos';
+        $this->db->select($select, false);
+        $this->db->where('c.id_docente', $id_docente, FALSE);
+        $this->db->where('ruta_file_js is not null', null);
+        $this->db->where('length(ruta_file_js)>0',null);
+        $this->db->join('censo.censo c', 'c.id_formulario = f.id_formulario', 'inner', FALSE);
         $res = $this->db->get('ui.formulario f');
 //        pr($this->db->last_query());
         return $res->result_array();
