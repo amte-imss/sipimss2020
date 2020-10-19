@@ -5,6 +5,7 @@
 				<!-- <h2>Docente IMSS</h2> -->
 			</hgroup>
 			<figure>
+			
 				<img src="<?php echo $elementos_seccion['ruta_imagen_perfil']; ?>" alt="<?php echo $nombre_docente; ?>" title="<?php echo $nombre_docente; ?>">
 			</figure>
 	</div>

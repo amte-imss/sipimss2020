@@ -344,7 +344,7 @@ class Template_item_perfil {
      * @param type $tpl_item_imagen template view de imagen del docente
      * @return type
      */
-    public function get_template_registro($datos, $tpl = 'perfil/perfil.tpl.php', $tpl_item_imagen = 'perfil/perfil_imagen.php') {
+    public function get_template_registro($datos, $tpl = 'perfil/perfil.tpl.php', $tpl_item_imagen = 'perfil/perfil_imagen.php', $id_docente = null) {
         $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GENERAL));
 //        $datos = array('main_content' => $items);
         /* Template de imagen foto de perfil */
@@ -360,6 +360,9 @@ class Template_item_perfil {
 
         //Agrega imagen al template 
         $datos['titulo_seccion'] = $string_value['title_perfil'];
+        $datos['id_docente'] = $id_docente;
+        $datos['nombre_docente'] = $this->get_nombre_docente();
+        //pr($datos);
         $resultado = $this->CI->load->view($tpl, $datos, TRUE);
         return $resultado;
     }

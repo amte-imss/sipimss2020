@@ -72,7 +72,7 @@ $('.l_sede_academica').each(function (index, element) {
                 //get_mensaje_general_modal("Ocurrió un error durante el proceso, inténtelo más tarde.", textStatus, 5000);
             });
 
-        console.log(label.text());
+        //console.log(label.text());
     });
 });
 </script>

@@ -66,15 +66,16 @@ class Perfil extends Informacion_docente {
             }
             $datos_elemento_seccion = $this->get_detalle_registros_censo($id_docente);
             //JS para renderizar formularios e información del docente principalmente
-//        pr($datos_elemento_seccion);
+            //        pr($datos_elemento_seccion);
             $this->load->library('template_item_perfil');
             $this->template_item_perfil->set_registro_censo($datos_elemento_seccion); //Agrega registros
             $datos_files_js = $this->get_files_js_formularios_c($id_docente);
             $this->template_item_perfil->set_files_js_formularios($datos_files_js);
-
+            
             $this->load->model("Docente_model", "dm");
             /* carga datos generales */
             $datos_generales = $this->dm->get_datos_generales($id_docente);
+            //pr($datos_generales);
             if (!empty($datos_generales)) {
                 $this->load->library('curp', array('curp' => $datos_generales['curp'])); //Ingresa datos del curp
                 $datos_generales['edad'] = $this->curp->getEdad(); //Calcula la edad del usuario
@@ -110,7 +111,7 @@ class Perfil extends Informacion_docente {
                 '/perfil/inicio/item_datos_imss_impresion', 
                 '/perfil/inicio/item_carrusel_impresion', 
                 '/perfil/inicio/tab_perfil_impresion'),                 
-                'perfil/perfil_impresion.tpl.php'                                
+                'perfil/perfil_impresion.tpl.php',null, $id_docente                                
         );
 
             $this->template->setMainContent($vista);

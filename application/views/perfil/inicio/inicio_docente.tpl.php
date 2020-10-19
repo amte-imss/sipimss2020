@@ -11,7 +11,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     ?>
                     <h1 class="page-head-line">
                         <?php echo $titulo_seccion; ?>
-                        <a href="<?php echo site_url('perfil/perfil_impresion');?>" target="_blank"> <i class="fa fa-print"></i></a>
+                        <?php $docente_id = (!is_null($id_docente))?'/'.$id_docente:''; ?>
+                        <a href="<?php echo site_url('perfil/perfil_impresion'.$docente_id);?>" target="_blank"> <i class="fa fa-print"></i></a>
                     </h1>
                 <?php } ?>
             </div>

@@ -74,7 +74,7 @@ class Validacion extends Informacion_docente {
                 '/perfil/inicio/item_datos_generales_impresion', '/perfil/inicio/item_datos_imss_impresion', 
                 '/perfil/inicio/item_carrusel_impresion', '/perfil/inicio/tab_perfil_impresion'), 
                 '/perfil/inicio/inicio_docente.tpl.php',                
-                null                
+                null , $id_docente               
                 
             );
             //pr($vista);
