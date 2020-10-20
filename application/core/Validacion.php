@@ -192,20 +192,20 @@ class Validacion extends Informacion_docente {
                     'id_usuario_sesion' => $is_user
 
                 );
-                $temp = $data['password'];
+                //$temp = $data['password'];
                 $this->load->library('empleados_siap');
                 $this->load->library('seguridad');
                 $this->load->model('Usuario_model', 'usuario');
                 //pr($data); exit();
                 $output['registro_valido'] = $this->usuario->nuevo($data, Usuario_model::SIAP);
-                $data = array(
+                $data2 = array(
                     'id_usuario_registra' => $is_user,
                     'id_usuario_registrado' => $output['registro_valido']['id_usuario'],
                 );
                 //pr($data);
                 //if(isset($output['envia_correo']) && $output['envia_correo']){
-                    $this->usuario->save_control_registro_usuarios($data);
-                    $data['password'] = $temp;
+                    $this->usuario->save_control_registro_usuarios($data2);
+                    //$data['password'] = $temp;
                     $this->envia_correo_electronico($data['email'], $data);
                 //}
                 //pr($data);

@@ -7,6 +7,7 @@ if ( !is_null($result_delegacional) ){
     foreach ($result_delegacional as $key_ooad => $ooad) { 
         $html_ooad .= '<tr>
             <td>'.$ooad['nombre'].'</td>
+            <td>'.$ooad['total2'].'</td>
             <td>'.$ooad['total'].'</td>
         </tr>';
         $total_ooad += $ooad['total'];
@@ -21,6 +22,7 @@ if ( !is_null($result_umae) ){
     foreach ($result_umae as $key_umae => $umae) { 
         $html_umae .= '<tr>
             <td>'.$umae['nombre_unidad_principal'].'</td>
+            <td>'.$umae['total2'].'</td>
             <td>'.$umae['total'].'</td>
         </tr>';
         $total_umae += $umae['total'];
@@ -46,7 +48,8 @@ if ( !is_null($result_umae) ){
                         <thead class="thead-light">
                             <tr>
                                 <th>OOAD</th>
-                                <th># de registros</th>
+                                <th># de docentes registrados</th>
+                                <th># de docentes en proceso de registro de información</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,7 +62,8 @@ if ( !is_null($result_umae) ){
                         <thead class="thead-dark">
                             <tr>
                                 <th>UMAE</th>
-                                <th># de registros</th>
+                                <th># de docentes registrados</th>
+                                <th># de docentes en proceso de registro de información</th>
                             </tr>
                         </thead>
                         <tbody>

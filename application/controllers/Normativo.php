@@ -15,8 +15,8 @@ class Normativo extends Validacion {
         $this->load->model('Normativo_model', 'normativo');
     }
 
-    function index(){
-        
+    function index()
+    {        
         $output['result_delegacional'] = $this->normativo->get_delegacional();
         $output['result_umae'] = $this->normativo->get_umae();
         //pr($output);
