@@ -43,14 +43,16 @@ class Inicio extends MY_Controller
 
             if ($this->form_validation->run() == TRUE)
             {
-                $valido = $this->sesion->validar_usuario($post["usuario"], $post["password"]);
+                $datos_usuario = array('matricula'=>'', 'is_alias' => false);
+                $valido = $this->sesion->validar_usuario($post["usuario"], $post["password"], $datos_usuario);
                 $mensajes = $this->lang->line('mensajes');
                 switch ($valido)
                 {
                     case 1:
+                    case 4:
                         //redirect to home //load menu...etc etc
                         $params = array(
-                            'where' => array('username' => $post['usuario']),
+                            'where' => array('username' => $datos_usuario['matricula']),
                             'select' => array(
                                 'usuarios.id_usuario', 'coalesce(docentes.matricula, usuarios.username) matricula',
                                 'docentes.id_docente', 'docentes.nombre',
@@ -64,6 +66,7 @@ class Inicio extends MY_Controller
                             )
                         );
                         $die_sipimss['usuario'] = $this->usuario->get_usuarios($params)[0];
+                        $die_sipimss['usuario']['is_alias_sesion'] = $datos_usuario['is_alias'];
                         $die_sipimss['usuario']['niveles_acceso'] = $this->sesion->get_niveles_acceso($die_sipimss['usuario']['id_usuario']);
                         $die_sipimss['usuario']['workflow'] = $this->sesion->get_info_convocatoria($die_sipimss['usuario']['id_docente']);
                         $this->session->set_userdata('die_sipimss', $die_sipimss);

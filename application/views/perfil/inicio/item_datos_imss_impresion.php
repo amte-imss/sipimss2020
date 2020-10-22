@@ -25,7 +25,7 @@
                     <label class="bold-label">
                     <?php echo $string_value['lbl_matricula']; ?>:
                     </label>
-                    <?php echo $elementos_seccion['matricula']; ?>
+                    <?php echo ($elementos_seccion['mostrar_datos'])?$elementos_seccion['matricula']:$string_value['no_mostrar_datos_docente']; ?>
                  </p>
              </div>
             <div class="col-md-12 goleft">
@@ -58,7 +58,7 @@
                     <label class="bold-label">
                     <?php echo $string_value['lbl_clave_delegacional']; ?>:
                     </label>
-                    <?php echo $elementos_seccion['delegacion'];?>
+                    <?php echo ($elementos_seccion['mostrar_datos'])?$elementos_seccion['delegacion']:$string_value['no_mostrar_datos_docente'];?>
                  </p>
              </div>
             <div class="col-md-12 goleft">
@@ -66,7 +66,7 @@
                     <label class="bold-label">
                     <?php echo $string_value['lbl_clave_adscripcion']; ?>:
                     </label>
-                    <?php echo $elementos_seccion['departamento'];?>
+                    <?php echo ($elementos_seccion['mostrar_datos'])?$elementos_seccion['departamento']:$string_value['no_mostrar_datos_docente'];?>
                  </p>
              </div>
             <div class="col-md-12 goleft">
@@ -74,7 +74,7 @@
                     <label class="bold-label">
                         <?php echo $string_value['lbl_clave_categoria']; ?>:
                     </label>
-                    <?php echo (isset($elementos_seccion['categoria']) && $elementos_seccion['categoria'] != '()') ? $elementos_seccion['categoria'] : ''; ?>
+                    <?php echo ($elementos_seccion['mostrar_datos'])? ((isset($elementos_seccion['categoria']) && $elementos_seccion['categoria'] != '()') ? $elementos_seccion['categoria'] : '') : $string_value['no_mostrar_datos_docente']; ?>
                 </p>
             </div>           
             <?php if(isset($elementos_seccion['nom_unidad'])){ ?>
@@ -83,7 +83,7 @@
                         <label class="bold-label">
                             <?php echo $string_value['lbl_unidad']; ?>:
                         </label>
-                        <?php echo (isset($elementos_seccion['nom_unidad'])) ? $elementos_seccion['nom_unidad'].' ('.$elementos_seccion['clave_unidad'].')' : ''; ?>
+                        <?php echo ($elementos_seccion['mostrar_datos'])?((isset($elementos_seccion['nom_unidad'])) ? $elementos_seccion['nom_unidad'].' ('.$elementos_seccion['clave_unidad'].')' : ''):$string_value['no_mostrar_datos_docente']; ?>
                     </p>
                 </div>
             <?php } ?>

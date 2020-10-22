@@ -68,6 +68,8 @@ $lang['informacion_general'] = array(
     'info_siap' => 'Información proporcionada por SIAP',
     'docente_carrera_docente' => '¿Es docente de carrera?',
     'fase_docente_carrera' => 'Fase de carrera docente',
+    'username_alias' => 'Nombre de usuario (alias)',
+    'no_mostrar_datos_docente' => 'NA',
 );
 
 //$lang['interface_registro_profesor'] = 'Impresión de texto prueba';

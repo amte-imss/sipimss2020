@@ -185,29 +185,29 @@ class Validacion extends Informacion_docente {
                 $data = array(
                     'matricula' => $this->input->post('reg_usuario', TRUE),
                     'delegacion' => $this->input->post('id_delegacion', TRUE),
+                    'username_alias' => (!is_null($this->input->post('username_alias', TRUE)) && !empty($this->input->post('username_alias', TRUE)))?$this->input->post('username_alias', TRUE):null,
                     'email' => $this->input->post('reg_email', true),
                     'password' => $this->input->post('reg_password', TRUE),
                     'grupo' => Administracion_model::DOCENTE,
                     'registro_usuario' => true,
                     'id_usuario_sesion' => $is_user
 
-                );
-                //$temp = $data['password'];
+                );               
                 $this->load->library('empleados_siap');
                 $this->load->library('seguridad');
                 $this->load->model('Usuario_model', 'usuario');
                 //pr($data); exit();
                 $output['registro_valido'] = $this->usuario->nuevo($data, Usuario_model::SIAP);
+                //pr($output);
+                if(isset($output['registro_valido']['envia_correo']) && $output['registro_valido']['envia_correo']){
                 $data2 = array(
                     'id_usuario_registra' => $is_user,
                     'id_usuario_registrado' => $output['registro_valido']['id_usuario'],
                 );
                 //pr($data);
-                //if(isset($output['envia_correo']) && $output['envia_correo']){
-                    $this->usuario->save_control_registro_usuarios($data2);
-                    //$data['password'] = $temp;
+                    $this->usuario->save_control_registro_usuarios($data2);                    
                     $this->envia_correo_electronico($data['email'], $data);
-                //}
+                }
                 //pr($data);
             }else{
                 // pr(validation_errors());;
@@ -240,8 +240,12 @@ class Validacion extends Informacion_docente {
     }
 
 
-    public function registro(){
-      $this->envia_correo_electronico('cenitluis.pumas@gmail.com', ['nombre'=>'Jesús Díaz', 'password'=>'AUSL880811BC6_NOW']);
+    public function registro($correo = null){
+        if(is_null($correo)){
+            $this->envia_correo_electronico('cenitluis.pumas@gmail.com', ['nombre'=>'Jesús Díaz', 'password'=>'AUSL880811BC6_NOW']);
+        }else{
+            $this->envia_correo_electronico($correo, ['nombre'=>'Jesús Díaz', 'password'=>'AUSL880811BC6_NOW']);
+        }
     }
 
 

@@ -112,22 +112,52 @@ class Usuario_model extends MY_Model {
         }
     }
 
+    private function siap_prueba(){
+
+    }
+
     private function nuevo_siap(&$parametros, &$salida)
     {
         // pr($parametros);
         $token = $this->seguridad->folio_random(10, TRUE);
         $pass = $this->seguridad->encrypt_sha512($token . $parametros['password'] . $token);
         $usuario = $this->empleados_siap->buscar_usuario_siap($parametros['delegacion'], $parametros['matricula'])['empleado'];
+        /***Borrar al final ******************************/
+        
+        /*$usuario['adscripcion'][0] = '09NC012500';
+        $usuario['emp_keypue'][0] = 'Category';
+        $usuario['nombre'][0] = 'Pablito';
+        $usuario['paterno'][0] = 'Morales';
+        $usuario['materno'][0] = 'Martinez';
+        $usuario['curp'] = 'CURPTEST';
+        $usuario['sexo'] = 1; 
+        $usuario['rfc'][0] = 'RFCTEST';*/
+        /*** ************************ ********************/
         //pr('$usuario');
         //pr($usuario);
         $params['where'] = array(
             'username' => $parametros['matricula']
         );
+        //Si existe un alias 
+        if(isset($parametros['username_alias']) && !is_null($parametros['username_alias'])){
+            $params['or_where'] = array(
+                'username_alias' => $parametros['username_alias']
+            );
+        }
         $getUsuarios = $this->get_usuarios($params);
+        
+        //pr($getUsuarios);
+        //pr($parametros);
         $usuario_db = count($getUsuarios) == 0;
+        $is_diff_username_alias = true;
+        if(isset($parametros['username_alias']) && !is_null($parametros['username_alias'])){
+            if(!$usuario_db){
+               $is_diff_username_alias = (trim($getUsuarios[0]['username_alias']) != trim($parametros['username_alias']));
+            }
+        }
         // pr($parametros);
         // pr($this->db->last_query());
-        if ($usuario && $usuario_db)
+        if ($usuario && $usuario_db && $is_diff_username_alias)
         {
             $unidad_instituto = $this->get_unidad($usuario['adscripcion'][0]);
             $categoria = $this->get_categoria($usuario['emp_keypue'][0]);
@@ -140,16 +170,19 @@ class Usuario_model extends MY_Model {
                 $data['usuario'] = array(
                     'password' => $pass,
                     'token' => $token,
-                    'username' => $parametros['matricula'],
+                    'username' => $parametros['matricula'],                    
                     'email' => $parametros['email']
                 );
+                if(isset($parametros['username_alias'])){
+                    $data['usuario']['username_alias'] = $parametros['username_alias'];
+                }
                 $data['docente'] = array(
                     'email' => $parametros['email'],
                     'matricula' => $parametros['matricula'],
                     'nombre' => $usuario['nombre'][0],
                     'apellido_p' => $usuario['paterno'][0],
                     'apellido_m' => $usuario['materno'][0],
-                    'curp' => $usuario ['curp'],
+                    'curp' => $usuario['curp'],
                     'sexo' => $usuario['sexo'],
                     'rfc' => $usuario['rfc'][0],
                     'status_siap' => 1
@@ -173,6 +206,9 @@ class Usuario_model extends MY_Model {
             {
                 $salida['msg'] = 'Adcripción no localizada en la base de datos';
             }
+        } else if (!$is_diff_username_alias){
+            $salida['msg'] = 'Nombre de usuario alias no disponible';
+
         } else if (!$usuario_db)
         {
             $salida['msg'] = 'Usuario ya registrado';
@@ -338,11 +374,11 @@ class Usuario_model extends MY_Model {
             } else if($params['informacion_docente']){
                 $select = array(
                     'usuarios.id_usuario', 'docentes.id_docente', 'coalesce(docentes.matricula, usuarios.username) matricula', 'usuarios.email'
-                    , 'concat("docentes".nombre, $$ $$, "docentes".apellido_p, $$ $$, "docentes".apellido_m) nombre_completo'
+                    , 'concat("docentes".nombre, $$ $$, "docentes".apellido_p, $$ $$, "docentes".apellido_m) nombre_completo', 'username_alias'
                 );
             }else{
                 $select = array(
-                    'usuarios.id_usuario',  'usuarios.username'
+                    'usuarios.id_usuario',  'usuarios.username', 'usuarios.username_alias'
                 );
             }
         }
@@ -367,6 +403,14 @@ class Usuario_model extends MY_Model {
             }
         }
 
+        if (isset($params['or_where']))
+        {
+//            pr($params['where']);
+            foreach ($params['or_where'] as $key => $value)
+            {
+                $this->db->or_where($key, $value);
+            }
+        }
 
         if (isset($params['like'])) {
             foreach ($params['like'] as $key => $value)
@@ -608,7 +652,7 @@ class Usuario_model extends MY_Model {
 
 
 
-        $this->db->where('matricula', $params['matricula']);
+        $this->db->where('matricula', $parametros['matricula']);
         $this->db->join('censo.historico_datos_docente hd ', 'hd.id_docente=c.docente.id_docente', 'left');
         $this->db->join('catalogo.delegaciones cd ', 'cd.clave_delegacional = ch.clave_delegacional');
         $this->db->join('catalogo.categorias cc ', 'cc.clave_categoria= hd.clave_categoria');

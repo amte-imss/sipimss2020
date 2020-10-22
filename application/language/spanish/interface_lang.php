@@ -46,6 +46,7 @@ $lang['formulario']['user'] = 'Ingresar matrícula';
 $lang['formulario']['passwd'] = 'Ingresar contraseña';
 $lang['formulario']['captcha'] = 'Ingresar código de seguridad';
 $lang['formulario']['email'] = 'Ingresar correo electrónico';
+$lang['formulario']['username_alias'] = 'Nombre de usuario (alias)';
 
 
 $lang['mensajes'] = array(

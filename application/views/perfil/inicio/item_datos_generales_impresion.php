@@ -5,7 +5,7 @@
                     <label class="bold-label">
                         <?php echo $string_value['lbl_curp']; ?>:
                     </label>
-                    <?php echo $elementos_seccion['curp']; ?>
+                    <?php echo ($elementos_seccion['mostrar_datos'])?$elementos_seccion['curp']:$string_value['no_mostrar_datos_docente']; ?>
                 </p>
             </div>
 
@@ -14,7 +14,7 @@
                     <label class="bold-label">
                         <?php echo $string_value['lbl_rfc']; ?>:
                     </label>
-                    <?php echo $elementos_seccion['rfc']; ?>
+                    <?php echo ($elementos_seccion['mostrar_datos'])?$elementos_seccion['rfc']:$string_value['no_mostrar_datos_docente']; ?>
                 </p>
             </div>            
 

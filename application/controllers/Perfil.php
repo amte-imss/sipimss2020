@@ -133,15 +133,23 @@ class Perfil extends Informacion_docente {
         //$this->benchmark->mark('code_start');
         //Sesión de usuario obtiene la sesión de la cuenta
         $datos_sesion = $this->get_datos_sesion();
+        //pr($datos_sesion);
+        $mostrar_datos_docente = true;
         if ($datos_sesion) {//Valida los datos de la sesión o la información de la sesíon
             if (is_null($id_docente)) {
                 $id_docente = $datos_sesion[En_datos_sesion::ID_DOCENTE];
+                $is_alias_sesion = $datos_sesion[En_datos_sesion::IS_ALIAS_SESION];
+                if($is_alias_sesion){                    
+                    $mostrar_datos_docente = false;
+                }
+
             }
             $datos_elemento_seccion = $this->get_detalle_registros_censo($id_docente);
             //JS para renderizar formularios e información del docente principalmente
             //pr($datos_elemento_seccion);
             $this->load->library('template_item_perfil');
             $this->template_item_perfil->set_registro_censo($datos_elemento_seccion); //Agrega registros
+            $this->template_item_perfil->set_mostrar_datos_docente($mostrar_datos_docente); //Agrega registros
             $datos_files_js = $this->get_files_js_formularios_c($id_docente);
             $this->template_item_perfil->set_files_js_formularios($datos_files_js);
 

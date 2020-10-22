@@ -9,20 +9,35 @@ class Sesion_model extends CI_Model {
         parent::__construct();
     }
 
-    function validar_usuario($usr, $passwd) {
+    function validar_usuario($usr, $passwd,&$datos_usuario) {
         $this->db->flush_cache();
         $this->db->reset_query();
         $this->db->start_cache();
 
-        $this->db->select(array('username', 'password', 'token', ''));
+        $this->db->select(array('username', 'password', 'token', 'username_alias', ''));
         $this->db->from('sistema.usuarios u');
         $this->db->where('u.username', $usr);
-
         $num_user = $this->db->count_all_results();
+        
+        $usuario_alias = false;
+        /* Consulta si existe el alias*/
+        if ($num_user == 0) {
+            $this->db->flush_cache();
+            $this->db->reset_query();
+            $this->db->select(array('username', 'password', 'token', 'username_alias', ''));
+            $this->db->from('sistema.usuarios u');
+            $this->db->where('u.username_alias', $usr);
+            $num_user = $this->db->count_all_results();        
+            if ($num_user == 1) {                
+                $usuario_alias = true;
+                $datos_usuario['is_alias'] = true;
+            }
+        }
         $this->db->reset_query();
         if ($num_user == 1) {
             $usuario = $this->db->get();
             $result = $usuario->result_array();
+            $datos_usuario['matricula']=$result[0]['username']; 
             // pr($passwd);
             // pr($result);
             $this->load->library('seguridad');
@@ -35,6 +50,9 @@ class Sesion_model extends CI_Model {
 			//pr("clave: ".$clave);
 			//pr("pass: ".$result[0]['password']);
             if ($clave == $result[0]['password']) {
+                if($usuario_alias){
+                    return 4;//Existe comop alias
+                }
                 return 1; //Existe
             }
             return 2; //contraseña incorrrecta

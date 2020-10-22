@@ -14,6 +14,7 @@ class En_datos_sesion {
             MATRICULA = 'matricula',
             ID_USUARIO = 'id_usuario',
             ID_DOCENTE = 'id_docente',
-            NOMBRE_DOCENTE = 'nombre_docente'
+            NOMBRE_DOCENTE = 'nombre_docente',
+            IS_ALIAS_SESION = 'is_alias_sesion'
     ;
 }

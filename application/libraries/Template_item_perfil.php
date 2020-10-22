@@ -22,14 +22,17 @@ class Template_item_perfil {
     private $nombre_docente;
     private $matricula;
     private $config_secciones;
+    private $mostrar_datos_docente;
 
     public function __construct() {
         $this->CI = & get_instance();
         $this->CI->load->helper('html');
-
+        $this->mostrar_datos_docente = true;
         $this->elementos = array(
         );
     }
+
+
 
     /**
      * 
@@ -40,6 +43,11 @@ class Template_item_perfil {
     public function set_registro_censo($registros) {
         $this->registros_censo = $registros;
         $this->generaCampos($registros);
+    }
+
+    public function set_mostrar_datos_docente($mostrar) {
+        $this->mostrar_datos_dodcente = $mostrar;
+        
     }
     
     /**
@@ -238,7 +246,7 @@ class Template_item_perfil {
         /* Datos generales */
         $datos_gen['string_value'] = $string_value;
         $datos_gen['elementos_seccion'] = array_merge($this->get_datos_generales(), $this->get_datos_imss()); //datos_generales
-        
+        $datos_gen['elementos_seccion']['mostrar_datos'] = $this->mostrar_datos_docente;
         
         //pr($datos_gen);
         if(!is_null($tpl_item_generales)){

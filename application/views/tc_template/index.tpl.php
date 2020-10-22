@@ -83,6 +83,12 @@
                     if(isset($this->session->get_userdata()['die_sipimss']['usuario']))
                     {
                         $datos_sesion = $this->session->get_userdata()['die_sipimss']['usuario'];
+                        if($datos_sesion['is_alias_sesion']){
+                            $datos_sesion['matricula'] = 'NA';
+                            $datos_sesion['categoria'] = 'NA';
+                            $datos_sesion['delegacion'] = 'NA';
+                            $datos_sesion['unidad'] = 'NA';
+                        }
                         //pr($datos_sesion);
                     }else
                     {

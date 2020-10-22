@@ -49,6 +49,20 @@
                                     ?>
                                 </div>
                                 <div class="form-group">
+                                    <label for="username_alias" class="pull-left"><span class="glyphicon glyphicon-user"></span> Nombre de usuario(alias):</label>
+                                    <?php
+                                    echo $this->form_complete->create_element(array('id' => 'username_alias',
+                                    'type' => 'text',
+                                    'value' => isset($post['username_alias'])?$post['username_alias']:'',
+                                    'attributes' => array(
+                                        'class' => 'form-control',
+                                        'required'=>true,
+                                        'placeholder' =>$texts['username_alias']
+                                    )));
+                                    echo form_error_format('username_alias');
+                                    ?>
+                                </div>
+                                <div class="form-group">
                                     <label for="delegacion" class="pull-left"><span class="glyphicon glyphicon-user"></span> Correo electrónico:</label>
                                     <?php
                                     echo $this->form_complete->create_element(array('id' => 'reg_email',
