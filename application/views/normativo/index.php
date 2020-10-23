@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$total_ooad = $total_umae = 0;
+$total_ooad = $total_umae = $total_ooad_r = $total_umae_r = 0;
 $html_ooad = $html_umae = '';
 
 if ( !is_null($result_delegacional) ){
@@ -11,6 +11,7 @@ if ( !is_null($result_delegacional) ){
             <td>'.$ooad['total'].'</td>
         </tr>';
         $total_ooad += $ooad['total'];
+        $total_ooad_r += $ooad['total2'];
     }
 } else {
     echo '<tr>
@@ -26,6 +27,7 @@ if ( !is_null($result_umae) ){
             <td>'.$umae['total'].'</td>
         </tr>';
         $total_umae += $umae['total'];
+        $total_umae_r    += $umae['total2'];
     }
 } else {
     echo '<tr>
@@ -38,9 +40,14 @@ if ( !is_null($result_umae) ){
     <div class="list-group-item">
         <div class="panel-body" onmousedown="elemento(event);">
             <div class="row">
-                <div class="col-lg-4 col-md-4"><h3><?php echo $total_ooad + $total_umae; ?> docentes registrados</h3></div>
-                <div class="col-lg-4 col-md-4"><h3><?php echo $total_ooad; ?> docentes registrados en OOAD</h3></div>
-                <div class="col-lg-4 col-md-4"><h3><?php echo $total_umae; ?> docentes registrados en UMAE</h3></div>
+                <div class="col-lg-4 col-md-4"><h3><?php echo $total_ooad_r + $total_umae_r; ?> docentes registrados</h3></div>
+                <div class="col-lg-4 col-md-4"><h3><?php echo $total_ooad_r; ?> docentes registrados en OOAD</h3></div>
+                <div class="col-lg-4 col-md-4"><h3><?php echo $total_umae_r; ?> docentes registrados en UMAE</h3></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4"><h4><?php echo $total_ooad + $total_umae; ?> docentes en proceso de registro de información</h4></div>
+                <div class="col-lg-4 col-md-4"><h4><?php echo $total_ooad; ?> docentes en proceso de registro de información en OOAD</h4></div>
+                <div class="col-lg-4 col-md-4"><h4><?php echo $total_umae; ?> docentes en proceso de registro de información en UMAE</h4></div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6">

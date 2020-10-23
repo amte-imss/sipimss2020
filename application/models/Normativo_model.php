@@ -22,10 +22,10 @@ class Normativo_model extends CI_Model
     {
         $this->db->select(array('count(distinct d.id_docente) total', 'u.id_delegacion'));
         $this->db->join('censo.docente d', 'd.id_docente = c.id_docente');
-        $this->db->join('censo.historico_datos_docente hd', 'hd.id_docente = d.id_docente');
+        $this->db->join('censo.historico_datos_docente hd', 'hd.id_docente = d.id_docente and hd.actual=1');
         $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = hd.id_departamento_instituto');
         $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad');
-        $this->db->where("u.umae <> true and (u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null)");
+        $this->db->where("u.umae <> true and (u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null) and anio = 2020");
         if(isset($filtros['where'])) {
             foreach ($filtros['where'] as $key => $value) {
                 $this->db->where($key, $value);
@@ -37,10 +37,11 @@ class Normativo_model extends CI_Model
 
         $this->db->select(array('count(distinct d.id_docente) total', 'u.id_delegacion'));
         $this->db->join('censo.docente d', 'd.id_usuario = us.id_usuario');
-        $this->db->join('censo.historico_datos_docente hd', 'hd.id_docente = d.id_docente');
+        $this->db->join('censo.historico_datos_docente hd', 'hd.id_docente = d.id_docente and hd.actual=1');
         $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = hd.id_departamento_instituto');
         $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad');
-        $this->db->where("u.umae <> true and (u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null)");
+        $this->db->join('sistema.usuario_rol ur', 'ur.id_usuario = us.id_usuario');
+        $this->db->where("u.umae <> true and (u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null) and anio = 2020 and ur.clave_rol = 'DOCENTE' and ur.activo = true");
         if(isset($filtros['where'])) {
             foreach ($filtros['where'] as $key => $value) {
                 $this->db->where($key, $value);
@@ -66,7 +67,7 @@ class Normativo_model extends CI_Model
         $this->db->select(array('count(distinct d.id_docente) total', 'u.clave_unidad'));
         $this->db->from('censo.censo c');
         $this->db->join('censo.docente d', 'd.id_docente = c.id_docente');
-        $this->db->join('censo.historico_datos_docente hd', 'hd.id_docente = d.id_docente');
+        $this->db->join('censo.historico_datos_docente hd', 'hd.id_docente = d.id_docente and hd.actual=1');
         $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = hd.id_departamento_instituto');
         $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad');
         $this->db->where("(u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE')) and anio = 2020");
@@ -81,10 +82,11 @@ class Normativo_model extends CI_Model
         $this->db->select(array('count(distinct d.id_docente) total', 'u.clave_unidad'));
         $this->db->from('sistema.usuarios us');
         $this->db->join('censo.docente d', 'd.id_usuario = us.id_usuario');
-        $this->db->join('censo.historico_datos_docente hd', 'hd.id_docente = d.id_docente');
+        $this->db->join('censo.historico_datos_docente hd', 'hd.id_docente = d.id_docente and hd.actual=1');
         $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = hd.id_departamento_instituto');
         $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad');
-        $this->db->where("(u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE')) and anio = 2020");
+        $this->db->join('sistema.usuario_rol ur', 'ur.id_usuario = us.id_usuario');
+        $this->db->where("(u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE')) and anio = 2020 and ur.clave_rol = 'DOCENTE' and ur.activo = true");
         if(isset($filtros['where'])) {
             foreach ($filtros['where'] as $key => $value) {
                 $this->db->where($key, $value);
