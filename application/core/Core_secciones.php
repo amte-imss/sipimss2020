@@ -81,8 +81,10 @@ class Core_secciones extends Informacion_docente {
             $parametros_boton_agregar_seccion['config'] = $data['config'];//25092020
         }
         $data['seccion'] = '';
+
         $parametros_boton_agregar_seccion = array_merge($this->template->getParametrorBoton(),$parametros_boton_agregar_seccion); //Obtiene todos los parametros del botón            
         $parametros_boton_agregar_seccion['seccion'] = $this->seccion; //Agrega la sección a la que pertenece el modulo
+        $parametros_boton_agregar_seccion['fin_registro_censo'] = $datos_sesion['registro_censo']; //Agrega la sección a la que pertenece el modulo
         //$parametros_boton_agregar_seccion['is_seccion_static'] = $seccion[0]['is_seccion_static'];
         $this->template->setBotonAgregarGeneral($parametros_boton_agregar_seccion);
         $this->template->setFormularioSecciones($data);
@@ -161,11 +163,15 @@ class Core_secciones extends Informacion_docente {
 
     public function get_registros_seccion() {
 //        if ($this->input->is_ajax_request()) { //Solo se accede al método a través de una petición ajax
+        $other = array();
+        $data_sesion = $this->get_datos_sesion();
         $data_post = $this->input->post(null, TRUE);
         $string_value = get_elementos_lenguaje(array(En_catalogo_textos::DATA_TABLE_SECCIONES_CONFIG));
-        $id_docente = $this->get_datos_sesion(En_datos_sesion::ID_DOCENTE); //Obtiene el id del docente
-        $datos_actividad = $this->get_datos_actividad_docente_c($id_docente, $this->seccion);
-        $datos_actividad['id_validacion_registro'] = $this->get_estados_validacion_censo_c();
+        $id_docente = $data_sesion[En_datos_sesion::ID_DOCENTE]; //Obtiene el id del docente
+        $other['convocatoria'] = $data_sesion['convocatoria'];
+        $other['registro_censo'] = $data_sesion['registro_censo'];
+        $datos_actividad = $this->get_datos_actividad_docente_c($id_docente, $this->seccion, null,null, $other);
+        $datos_actividad['id_validacion_registro'] = $this->get_estados_validacion_censo_c();        
         $datos_actividad['textos_extra'] = $string_value;
         header('Content-Type: application/json; charset=utf-8;');
         echo json_encode($datos_actividad);
@@ -244,6 +250,7 @@ class Core_secciones extends Informacion_docente {
             $this->load->library('Funciones_motor_formulario'); //Carga biblioteca
 //            $matricula_docente = $datos_sesion[En_datos_sesion::MATRICULA];
 //            $id_docente = $datos_sesion[En_datos_sesion::ID_DOCENTE];
+            
             $id_censo = decrypt_base64($id_censo); //Identificador del registro encriptado en base 64
             $formulario = $this->get_campos_formulario(null, $id_censo); //Obtiene tosdos los campos de formulario
             $propiedades_formulario = $this->fm->get_formulario(null, $id_censo); //Obtiene datos de formulario
@@ -269,8 +276,19 @@ class Core_secciones extends Informacion_docente {
             //Obtener rama del registro
             $data_form['arbol_secciones'] = $this->get_elemento_seccion_ramas_c($elementos_seccion);
 //            pr($detalle_censo);
-            $this->template->set_boton_guardar(array('censo_regstro' => $id_censo, 'formulario' => $data_form['formulario'])); //Genera el botón de guardar un o actualizar por default
-            $data_form['boton_submit'] = $this->template->get_boton_guardar(); //Asigna comprobante
+
+            $registro_censo = (isset($datos_sesion['registro_censo']))?$datos_sesion['registro_censo']:false;
+            if($registro_censo){
+                $prop_boton = array('censo_regstro' => $id_censo,
+                'formulario' => $data_form['formulario'],
+                );
+
+                $this->template->set_boton_guardar($prop_boton); //Genera el botón de guardar un o actualizar por default
+                $data_form['boton_submit'] = $this->template->get_boton_guardar(); //Asigna comprobante
+            }else{
+                
+                $data_form['boton_cancelar'] = ''; //Asigna comprobante
+            }
 //            $this->template->set_comprobante($detalle_censo); //Envia parametros de comprobante
 //            $data_form['componente_comprobante'] = $this->template->get_comprobante(); //Asigna comprobante
             // pr($this->elementos_actividad['formulario_view']);

@@ -173,6 +173,51 @@ class Sesion_model extends CI_Model {
         return $convocatoria;
     }
 
+    public function get_info_convocatoria_censo()
+    {
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $select = array(
+            'id_convocatoria', 'nombre', 'clave', 'id_tipo_convocatoria', 'fechas_inicio', 'fechas_fin', 'activa'
+        );
+        $this->db->select($select);
+        $this->db->where('C.activa', true);                
+        $convocatoria = $this->db->get('convocatoria.convocatorias C')->result_array();
+        // pr($this->db->last_query());
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        
+        if(count($convocatoria)>0){
+            $convocatoria=$convocatoria[0];
+        }
+        return $convocatoria;
+    }
+
+    public function get_fin_registro_censo($id_docente, $id_convocatoria)
+    {
+        //select   from  where id_convocatoria = 2 and id_docente = 78;
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $select = array(
+            'activo_edicion'
+        );
+        $this->db->select($select);
+        $this->db->where('id_convocatoria', $id_convocatoria);                
+        $this->db->where('id_docente', $id_docente);                
+        $convocatoria = $this->db->get('validacion.fin_registro_censo A')->result_array();
+         //pr($this->db->last_query());
+         $this->db->flush_cache();
+         $this->db->reset_query();
+         
+         if(count($convocatoria)>0){
+             //pr("aqui valido");
+             return $convocatoria[0]['activo_edicion'];
+            }else{
+                return (!is_null($id_convocatoria) && !empty($id_convocatoria) && $id_convocatoria>0);            
+            }
+            //exit();
+    }
+
     public function get_niveles_acceso($id_usuario, $agrupadas = false){
         $this->db->flush_cache();
         $this->db->reset_query();

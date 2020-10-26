@@ -13,6 +13,7 @@ class MY_Controller extends CI_Controller {
         parent::__construct();
         $this->lang->load('interface', 'spanish');
         $this->load->config('general');
+        $this->load->library('LNiveles_acceso');
 
 //        $this->lang->load('interface', 'spanish');
 //        $this->load->library('Configuracion_grupos');

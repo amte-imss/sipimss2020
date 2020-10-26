@@ -299,11 +299,11 @@ $config['nueva_convocatoria_censo'] = array(
         'label' => 'Fecha fin registro',
         'rules' => 'required'
     ),
-    array(
+    /*array(
         'field' => 'unidades[]',
         'label' => 'Participantes',
         'rules' => 'required'
-    )
+    )*/
 );
 
 $config['editar_convocatoria_censo'] = array(

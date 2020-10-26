@@ -1,6 +1,11 @@
 <?php
 $evento = '';
 $censo = '';
+$fin_registro_censo = ($fin_registro_censo)? 1:0;
+$fin_registro = 'data-registrofinal="'.$fin_registro_censo.'"';
+//if($fin_registro_censo){
+
+
 if (isset($tipo_evento_js) and ! is_null($tipo_evento_js) and isset($funcion_js) and ! is_null($funcion_js)) {
     $evento = $tipo_evento_js . ' = ' . $funcion_js;
 }
@@ -31,7 +36,9 @@ if (!empty($config) && isset($config['btnAgregarNuevo']) && $config['btnAgregarN
         <?php echo $censo; ?>        
         <?php echo $display; ?>        
         <?php echo $text_seccion; ?>
+        <?php echo $fin_registro; ?>
 >
         <span><i class="fa fa-plus"></i></span>
         <?php echo $titulo; ?>
 </button>
+<?php //}?>

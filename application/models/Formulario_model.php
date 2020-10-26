@@ -884,7 +884,8 @@ class Formulario_model extends MY_Model {
       )
      *
      */
-    public function get_cross_datos_actividad_docente($id_docente = null, $id_seccion = null, $id_censo = null, $id_elemento_seccion = null) {
+    public function get_cross_datos_actividad_docente($id_docente = null, $id_seccion = null, $id_censo = null, $id_elemento_seccion = null, $other = null) {
+  
         $datos_docente_actividad = $this->get_datos_actividad_docente($id_docente, $id_seccion, $id_censo, $id_elemento_seccion);
         //Obtiene todos los registros elemento sección sin repetir
         $get_sub_secciones = $this->get_sub_secciones($id_docente, $id_seccion, $id_censo);
@@ -896,6 +897,7 @@ class Formulario_model extends MY_Model {
         foreach ($datos_docente_actividad as $value) {
             $llave_cross = $value['id_censo'] . '-' . $value['id_formulario'] . '-' . $value['id_elemento_seccion'];
             if (!isset($array_general[$llave_cross])) {
+                $id_validacion_censo = $this->get_id_validacion_registro($value['id_validacion_registro'], $id_docente, $other);
                 $array_general[$llave_cross] = array(
                     'id_elemento_seccion' => $value['id_elemento_seccion'],
                     'nom_elemento_seccion' => $value['nom_elemento_seccion'],
@@ -905,9 +907,10 @@ class Formulario_model extends MY_Model {
                     'id_formulario' => $value['id_formulario'],
                     'id_censo' => encrypt_base64($value['id_censo']),
                     'is_carga_sistema' => $value['is_carga_sistema'],
-                    'id_validacion_registro' => $value['id_validacion_registro'],
+                    //'id_validacion_registro' => $value['id_validacion_registro'],
+                    'id_validacion_registro' => $id_validacion_censo,
                     'nombre_validacion' => $value['nombre_validacion'],
-                    'acciones' => $this->acciones($value['is_carga_sistema'], $value['id_validacion_registro']),
+                    'acciones' => $this->acciones($id_validacion_censo, $value['is_carga_sistema']),
                 );
             }
             if ($value['mostrar_datatable']) {
@@ -953,19 +956,43 @@ class Formulario_model extends MY_Model {
         return $resultado;
     }
 
+
+
     private function acciones($id_validacion_registro, $is_carga_sistema) {
         $result['editar'] = false;
         $result['eliminar'] = false;
         $result['ver'] = true;
-        if (!empty($is_carga_sistema) && is_bool($is_carga_sistema) === FALSE) {
+        //pr('-> ' . $is_carga_sistema);
+        //if (!empty($is_carga_sistema) && is_bool($is_carga_sistema) === FALSE) {
+        if (!$is_carga_sistema) {
             //NO SE PUEDE BORRAR
-            if ($id_validacion_registro != En_estado_validacion_registro::REGISTRO_USUARIO) {
+            //pr($id_validacion_registro);
+            if ($id_validacion_registro == En_estado_validacion_registro::REGISTRO_USUARIO) {
                 $result['editar'] = true;
                 $result['eliminar'] = true;
+            //} else if() {
+
             }
         }
         return $result;
     }
+
+    private function get_id_validacion_registro($id_validacion, $id_docente, $other = null) {
+        $validacion_id = $id_validacion;
+        if(!is_null($other)){
+            //$this->load->model('ConvocatoriaV2_model', 'convocatoria');
+            //$this->convocatoria->get_info_convocatoria_censo();
+            if(isset($other['registro_censo']) && !$other['registro_censo']){
+                //pr($other);
+                
+                $validacion_id = En_estado_validacion_registro::FINALIZA_REGISTRO_CONVOCATORIA;
+                
+            }
+        
+        }
+        return $validacion_id;
+    }
+
 
     /**
      * @fecha 27/04/2017

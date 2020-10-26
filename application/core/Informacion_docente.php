@@ -79,10 +79,11 @@ class Informacion_docente extends MY_Controller {
      * @param type $id_elemento_seccion elementos de una subsección o formulario, datos con dicha estructura
      * @return type Array con todos los campos del formulario solicitado en un cross en vertical de los registros
      */
-    protected function get_datos_actividad_docente_c($id_docente = null, $id_seccion = null, $id_censo = null, $id_elemento_seccion = null) {
+    protected function get_datos_actividad_docente_c($id_docente = null, $id_seccion = null, $id_censo = null, $id_elemento_seccion = null, $other = null) {        
         if ((!is_null($id_docente) and ( !is_null($id_seccion) || !is_null($id_censo)))) {
             $this->load->model('Formulario_model', 'fm');
-            $datos_docente_actividad = $this->fm->get_cross_datos_actividad_docente($id_docente, $id_seccion, $id_censo, $id_elemento_seccion);
+            
+            $datos_docente_actividad = $this->fm->get_cross_datos_actividad_docente($id_docente, $id_seccion, $id_censo, $id_elemento_seccion, $other);
             // pr($datos_docente_actividad);
             return $datos_docente_actividad;
         }

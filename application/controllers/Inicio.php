@@ -68,7 +68,23 @@ class Inicio extends MY_Controller
                         $die_sipimss['usuario'] = $this->usuario->get_usuarios($params)[0];
                         $die_sipimss['usuario']['is_alias_sesion'] = $datos_usuario['is_alias'];
                         $die_sipimss['usuario']['niveles_acceso'] = $this->sesion->get_niveles_acceso($die_sipimss['usuario']['id_usuario']);
-                        $die_sipimss['usuario']['workflow'] = $this->sesion->get_info_convocatoria($die_sipimss['usuario']['id_docente']);
+                        //** Roles por clave */
+                        $roles = $die_sipimss['usuario']['niveles_acceso'];
+                        $roles_clave = [];
+                        foreach ($roles as $key => $values) {
+                            $roles_clave[$values['clave_rol']] = $values; 
+                        }
+                        $die_sipimss['usuario']['niveles_acceso_cves'] = $roles_clave;
+                        //** fin rol por claves  */                        
+                        $die_sipimss['usuario']['convocatoria'] = $this->sesion->get_info_convocatoria_censo();
+                        if(!empty($die_sipimss['usuario']['convocatoria']) && isset($roles_clave[LNiveles_acceso::Docente])){
+                            //pr($die_sipimss['usuario']['convocatoria']);
+                            //pr($roles_clave[LNiveles_acceso::Docente]);
+                            $die_sipimss['usuario']['registro_censo'] = $this->sesion->get_fin_registro_censo($die_sipimss['usuario']['id_docente'], $die_sipimss['usuario']['convocatoria']['id_convocatoria']);                            
+                        }else{
+                            $die_sipimss['usuario']['registro_censo'] = false;
+                        }
+                        //exit();
                         $this->session->set_userdata('die_sipimss', $die_sipimss);
                         // $this->valida_info_siap($die_sipimss['usuario']); //Esta linea se necesita en productivo y desarrollo en el imss
                         // $this->seguridad->token();//Genera un token

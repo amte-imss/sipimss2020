@@ -116,11 +116,12 @@
                                 <!--<b>Rol:</b> <?php // echo $datos_sesion['nombre_role'];         ?><br>-->
                                 <div class="ripple-container"></div></a>
                             </li>
-
-                            <!--li><a href="<?php echo site_url(); ?>/perfil"><i class="fa fa-user-plus"></i> Mi perfil</a></li-->
+                            
+                            <!--li><a href="<?php //echo site_url(); ?>/perfil"><i class="fa fa-user-plus"></i> Mi perfil</a></li-->
                             <li><a href="<?php echo site_url(); ?>/inicio/cerrar_sesion"><i class="fa fa-sign-out"></i> Cerrar sesión</a></li>
                         </ul>
                     </li>
+                                       
 
                     <?php if(isset($notificaciones_estaticas))
                     {
@@ -133,8 +134,7 @@
                     <i class="dashboard"></i>De clic aquí para finalizar el registro de convocatoria</a>
                 </li> -->
                 <?php
-                if(isset($datos_sesion['workflow']) && count($datos_sesion['workflow']) > 0){
-                    if(!$datos_sesion['workflow'][0]['finalizada'] && $datos_sesion['workflow'][0]['etapa_activa'] == 'Registro'){
+                if(isset($datos_sesion['registro_censo']) && $datos_sesion['registro_censo']){                    
                         ?>
                         <li >
                             <a id="item-contacto" href="#item-contacto" class="tablero-menu-item"
@@ -142,7 +142,7 @@
                             <i class="dashboard"></i>De clic aquí para finalizar el registro de convocatoria</a>
                         </li>
                         <?php
-                    }
+                    
                 }
                 ?>
 
@@ -353,7 +353,7 @@ $('#info_siap_modal').modal('show');
                 <p>Al dar clic en "Finalizar convocatoria" se finalizará por completo el registro de convocatoria.</p>
                 <p>Por favor confirme que desea continuar y que da por concluido el registro.</p>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <a href="<?php echo site_url('convocatoriaV2/guardar_registro_finaliza_convocatoria/'); ?>" class="btn btn-primary">
+                <a href="<?php echo site_url('convocatoriaV2/guardar_registro_finaliza_convocatoria_docente_censo/'); ?>" class="btn btn-primary">
                     Finalizar convocatoria
                 </a>
                 <!-- <button type="submit" class="btn btn-primary" onclick="finalizar_censo(this)">Finalizar censo</button>-->

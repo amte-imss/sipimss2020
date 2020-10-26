@@ -171,7 +171,7 @@ function completa_campo(data){
                 });
         }     
 
-        console.log(d);
+        //console.log(d);
     });
     
 

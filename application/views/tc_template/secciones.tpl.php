@@ -106,7 +106,7 @@ $('.tip').each(function () {
             html: true,
             title: $('#' + $(this).data('tip')).html()
         });
-    });
+});
 </script>
 
 <?php echo js("docente/grid_secciones.js"); ?>

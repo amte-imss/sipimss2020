@@ -553,4 +553,44 @@ class ConvocatoriaV2_model extends MY_Model
         }
         return $status;
     }
+
+/**
+    * Función que crea el registro para finalizar una convocatoria
+    * @author Cheko
+    * @param type $datos datos de la peticion para guardar
+    *
+    */
+    public function registro_finaliza_convocatoria_registro_censo_docente($datos){
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $status = array('success' => false, 'message' => 'No se agrego correctamente el registro', 'data'=>[]);
+        try
+        {
+            $this->db->where('id_docente', $datos['id_docente']);
+            $this->db->where('id_convocatoria', $datos['id_convocatoria']);
+            $registros = $this->db->get('validacion.fin_registro_censo')->result_array();
+            // pr($registros);
+            if(empty($registros))
+            {
+                $this->db->reset_query();
+                $this->db->insert('validacion.fin_registro_censo', $datos);
+            }else
+            {
+                $this->db->reset_query();
+                
+                $this->db->where('id_docente', $datos['id_docente']);
+                $this->db->where('id_convocatoria', $datos['id_convocatoria']);
+                $activo = array('activo_edicion'=>false);
+                $this->db->update('validacion.fin_registro_censo', $datos);                
+                
+            }
+            $status['success'] = true;
+            $status['message'] = 'Agregado con éxito el registro de finalizar convocatoria';
+        }catch(Exception $ex)
+        {
+
+        }
+        return $status;
+    }
+
 }

@@ -262,4 +262,32 @@ class ConvocatoriaV2 extends MY_Controller implements IWorkflow
         redirect('inicio');
     }
 
+    /**
+     * Función que crea un registro para finalizar la convocatoria
+     * @author Cheko
+     * @param String $finalizar Parametro para que sea correcta la petición POST
+     * @modificado Christian Garcia - No entiendo la necesidad de sergio de usar una tecnologia que no aplica para el proyecto
+     * es como si quisiera que nos adaptaramos a el, que por cierto esta muy mal aplicada.
+     * Esta es una función mas que tuve que corregir que dejo incompleta
+     * Ademas sospecho que no prueba nada de lo que hace y aplica la de "las pruebas son para los que no sabes lo que hacen"
+     */
+    public function guardar_registro_finaliza_convocatoria_docente_censo(){
+
+        $su = $this->get_datos_sesion();
+        //pr($su);
+        if(isset($su['niveles_acceso_cves'][LNiveles_acceso::Docente]) &&  isset($su['convocatoria']['id_convocatoria']) && isset($su['registro_censo']) && $su['registro_censo'])
+        {
+            
+            $guardar = array('id_docente' => $su['id_docente'], 'id_convocatoria'=>$su['convocatoria']['id_convocatoria'], 'activo_edicion'=>false); //revisar si el id_linea del tiempo viernes
+            $respuesta = $this->convocatoria->registro_finaliza_convocatoria_registro_censo_docente($guardar);
+            if($respuesta['success'])
+            {
+                $ds = $this->session->userdata('die_sipimss');
+                $ds['usuario']['registro_censo'] = false;
+                $this->session->set_userdata('die_sipimss', $ds);
+            }
+        }
+        redirect('inicio');
+    }
+
 }

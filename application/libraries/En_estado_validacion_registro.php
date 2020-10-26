@@ -14,7 +14,9 @@ class En_estado_validacion_registro {
             VALIDADO_N1 = 3,
             VALIDADO_N2 = 4,
             EVALUADO = 5,
-            NO_VALIDO_EVALUACION = 6
+            NO_VALIDO_EVALUACION = 6,
+            RATIFICADO = 7,
+            FINALIZA_REGISTRO_CONVOCATORIA = 8
 
     ;
 }

@@ -613,14 +613,26 @@ if (!function_exists('transform_date')) {
         if ($parametros != null && is_array($parametros)) {
             $iniciales = [];
             $finales = [];
+   //         pr($parametros);
             foreach ($parametros as $key => $value) {
 
                 if (startsWith($key, 'fecha_inicio_')) {
-                    $date = date_format(date_create_from_format('d-m-Y', $value), 'Y-m-d');
+ //                   pr($value);
+                    $datePre = date_create_from_format('d-m-Y', $value);
+                    if(!$datePre){                        
+                        $datePre = date_create_from_format('Y-m-d', $value);
+                    }
+                    
+                    $date = date_format($datePre, 'Y-m-d');
                     array_push($iniciales, $date);
                 }
                 if (startsWith($key, 'fecha_fin_')) {
-                    $date = date_format(date_create_from_format('d-m-Y', $value), 'Y-m-d');
+                    $datePre = date_create_from_format('d-m-Y', $value);
+                    if(!$datePre){                        
+                        $datePre = date_create_from_format('Y-m-d', $value);
+                    }
+                    
+                    $date = date_format($datePre, 'Y-m-d');                    
                     array_push($finales, $date);
                 }
             }

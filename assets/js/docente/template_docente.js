@@ -12,6 +12,12 @@ $(document).ready(function () {
         if(typeof properties.staticForm !== 'undefined' && properties.staticForm==1 || properties.staticForm=='1'){            
             $("#btn_agregar").trigger("click");
                      
+        }else{
+            var registroFinal = $("#btn_agregar").data('registrofinal');
+            if(registroFinal==0){
+                $("#btn_agregar").remove();
+            }
+
         }
         
 
