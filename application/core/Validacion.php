@@ -100,6 +100,18 @@ class Validacion extends Informacion_docente {
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }
+
+    public function listado_validadores(){
+        $output['catalogos']['result_delegacional'] = $this->normativo->get_delegacional();
+        array_unshift($output['catalogos']['result_delegacional'], ['clave_delegacional'=>'',"nombre"=>'Selecciona OOAD']); 
+        $output['catalogos']['nivel_acceso'] = array(array('clave_rol' => LNiveles_acceso::Validador1, 'descripcion' => 'Validador 1'), array('clave_rol' => LNiveles_acceso::Validador2, 'descripcion' => 'Validador 2'));
+        //pr($output);
+        array_unshift($output['catalogos']['nivel_acceso'], ['clave_rol'=>'',"descripcion"=>'Selecciona...']); 
+        $this->template->setTitle('Listado de validadores');
+        $main_content = $this->load->view('validador/body_lista_validadores.tpl.php', $output, true);
+        $this->template->setMainContent($main_content);
+        $this->template->getTemplate();
+    }
     
     public function docentes(){
         $datos_sesion = $this->get_datos_sesion();
@@ -118,6 +130,23 @@ class Validacion extends Informacion_docente {
         
     }
     
+    public function validadores(){
+        $datos_sesion = $this->get_datos_sesion();
+        //pr($datos_sesion);
+        $data_post = null;
+        if($this->input->post()){
+            $data_post = $this->input->post(null, true);
+        }
+        $rol_aplica = $this->get_rol_aplica($datos_sesion,$data_post);
+        $rol_aplica['rol_docente'] = array(LNiveles_acceso::Validador1, LNiveles_acceso::Validador2);
+        //pr($rol_aplica);
+        
+        $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
+        //pr($output['datos_docentes']);
+        header('Content-Type: application/json; charset=utf-8;');
+        echo json_encode($output);
+        
+    }
 
     
     private function get_rol_aplica($datos_sesion, $data_post = null){

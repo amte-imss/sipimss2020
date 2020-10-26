@@ -48,7 +48,9 @@ class Docente_model extends MY_Model {
         );
         if(!empty($parametros_docente)){
             $select_p = ["doc.id_docente", "doc.matricula", "doc.curp", "doc.email", "concat(doc.nombre, ' ', doc.apellido_p, ' ', doc.apellido_m) nombre_docente", "doc.telefono", 
-            "doc.telefono_laboral", "doc.telefono_particular", "doc.id_docente_carrera", "dca.descripcion fase_carrera"];
+            "doc.telefono_laboral", "doc.telefono_particular", "doc.id_docente_carrera", "dca.descripcion fase_carrera", "rol.clave_rol", "rol.nombre",
+            "case when u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE') then u.nombre_unidad_principal else null end umae",
+            "(select count(*) from sistema.control_registro_usuarios cru where cru.id_usuario_registra = doc.id_usuario) total"];
             $select = array_merge($select, $select_p);
         }
         if(!is_null($id_docente)){
@@ -74,7 +76,11 @@ class Docente_model extends MY_Model {
             $this->db->join('sistema.usuario_rol  urol', 'urol.id_usuario = doc.id_usuario and urol.activo');
             $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol');            
             if(isset($parametros_docente['rol_docente'])){
-                $this->db->where('rol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
+                if(is_array($parametros_docente['rol_docente'])){
+                    $this->db->where_in('rol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
+                } else {
+                    $this->db->where('rol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
+                }
             }
             if (isset($parametros_docente['filtros']) && !is_null($parametros_docente['filtros'])) {
                 foreach ($parametros_docente['filtros'] as $key => $value) {
