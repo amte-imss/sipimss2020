@@ -233,11 +233,21 @@ class Usuario extends MY_Controller
                 pr('no valido');
             }
         }
+        //$output['super'] = false;
+        $datos_sesion = $this->get_datos_sesion();
+        //pr($datos_sesion);
         $this->load->model('Catalogo_model', 'catalogo');
         $this->load->model('Administracion_model', 'administrador');
+        if(isset($datos_sesion['niveles_acceso_cves'][LNiveles_acceso::Super])){
+            $output['super'] = true;
+            $nivel_atencion = $this->administrador->get_niveles_acceso();
+        } else {
+            $nivel_atencion = $this->administrador->get_niveles_acceso(array('where'=>"clave_rol='VALIDADOR1'"));
+        }
+        
         $output['tipo_registro'] = $tipo;
         $output['delegaciones'] = dropdown_options($this->catalogo->get_delegaciones(null, array('oficinas_centrales'=>true)), 'clave_delegacional', 'nombre');
-        $output['nivel_atencion'] = dropdown_options($this->administrador->get_niveles_acceso(), 'id_grupo', 'nombre');
+        $output['nivel_atencion'] = dropdown_options($nivel_atencion, 'id_grupo', 'nombre');
         $main_content = $this->load->view('usuario/nuevo.tpl.php', $output, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();

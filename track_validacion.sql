@@ -3,9 +3,9 @@ create schema validacion ;
 
 -- crea convocatoria
 update convocatoria.convocatorias set activa = false;
-insert into convocatoria.convocatorias (nombre, clave, id_tipo_convocatoria, fechas_inicio, fechas_fin, activa) values ('CENSO2020_1','CENSO2020_1', 'N','{2020-10-19,2020-10-19,2020-10-19}','{2020-12-31,2020-12-31,2020-12-31}', true)
+insert into convocatoria.convocatorias (nombre, clave, id_tipo_convocatoria, fechas_inicio, fechas_fin, activa) values ('CENSO2020_1','CENSO2020_1', 'N','{2020-10-19,2020-10-19,2020-10-19}','{2020-12-31,2020-12-31,2020-12-31}', true);
 --permisos de modulo registro
-insert into sistema.modulos (clave_modulo, nombre, url, activo, modulo_padre_clave, orden, clave_configurador_modulo) values ('CENSO_FIN_REG_DOC', 'Finaliza Registro censo docente', '/ConvocatoriaV2/guardar_registro_finaliza_convocatoria_docente_censo', true, 'CENSO', 5, 'ACCION');
+insert into sistema.modulos (clave_modulo, nombre, url, activo, modulo_padre_clave, orden, clave_configurador_modulo) values ('CENSO_FIN_REG_DOC', 'Finaliza Registro censo docente', '/convocatoriaV2/guardar_registro_finaliza_convocatoria_docente_censo', true, 'CENSO', 5, 'ACCION');
 insert into sistema.roles_modulos (clave_modulo, clave_rol, activo) values ('CENSO_FIN_REG_DOC', 'DOCENTE',true);
 
 update ui.validacion_registro set activo = false where id_validacion_registro in(2,5,6);
@@ -75,3 +75,8 @@ ALTER TABLE "validacion"."ratificador" ADD CONSTRAINT "pk_ratificador_validador"
 ALTER TABLE "validacion"."ratificador" ADD CONSTRAINT "pk_ratificador_docente_ratificado" FOREIGN KEY ("id_docente") REFERENCES "censo"."docente" ("id_docente");
 ALTER TABLE "validacion"."ratificador" ADD CONSTRAINT "pk_ratificador_convocatoria" FOREIGN KEY ("id_convocatoria") REFERENCES "convocatoria"."convocatorias" ("id_convocatoria");
 
+
+
+INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo, id_catalogo_elemento_padre, activo, "label", orden, nivel, is_validado) VALUES('expdoc_prof_num_anio_6_10','6-10',63,1,null,true,'6-10',6,1, true);
+INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo, id_catalogo_elemento_padre, activo, "label", orden, nivel, is_validado) VALUES('expdoc_prof_num_anio_11_15','11-15',63,1,null,true,'11-15',7,1, true);
+INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo, id_catalogo_elemento_padre, activo, "label", orden, nivel, is_validado) VALUES('expdoc_prof_num_anio_16_mas','> 15',63,1,null,true,'> 15',8,1, true);

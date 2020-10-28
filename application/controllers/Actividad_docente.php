@@ -49,7 +49,14 @@ class Actividad_docente extends Core_secciones {
             $data_form['rutas_generales_js'] = $this->elementos_actividad['rutas_generales_js'];
             //            $this->template->set_comprobante(); //Envia parametros de comprobante
             $this->template->set_boton_guardar(array('id_censo' => null, 'formulario' => $data_form['formulario'])); //Genera el botón de guardar un o actualizar por default
-            $data_form['boton_submit'] = $this->template->get_boton_guardar(); //Asigna comprobante
+            $datos_sesion = $this->get_datos_sesion();
+            $registro_censo = (isset($datos_sesion['registro_censo']))?$datos_sesion['registro_censo']:false;
+            //pr($registro_censo);
+            if($registro_censo){
+                $data_form['boton_submit'] = $this->template->get_boton_guardar(); //Asigna comprobante
+            } else {                
+                $data_form['boton_cancelar'] = ''; //Asigna comprobante
+            }
             //            $data_form['componente_comprobante'] = $this->template->get_comprobante(); //Asigna comprobante
             $tabla_cursos = $this->load->view('tc_template/secciones/actividad_docente/exp_docente.php', $data_form, TRUE);
              //pr($data_form);

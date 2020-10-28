@@ -12,7 +12,7 @@ class Administracion_model extends MY_Model {
 
     }
 
-    public function get_niveles_acceso()
+    public function get_niveles_acceso($params = array())
     {
         $this->db->flush_cache();
         $this->db->reset_query();
@@ -20,6 +20,9 @@ class Administracion_model extends MY_Model {
         $select = array(
             'clave_rol id_grupo', 'nombre', 'descripcion'
         );
+        if(isset($params['where'])){
+            $this->db->where($params['where']);
+        }
         $this->db->select($select);
         $this->db->where('activo', true);
         $this->db->order_by('orden', 'asc');

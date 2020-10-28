@@ -136,10 +136,10 @@
                 <?php
                 if(isset($datos_sesion['registro_censo']) && $datos_sesion['registro_censo']){                    
                         ?>
-                        <li >
+                        <li>
                             <a id="item-contacto" href="#item-contacto" class="tablero-menu-item"
-                            data-toggle="modal" data-target="#admin-finalizacenso">
-                            <i class="dashboard"></i>De clic aquí para finalizar el registro de convocatoria</a>
+                            data-toggle="modal" data-target="#admin-finalizacenso" style="text-decoration: none; background-color: #006a62 !important; color: #fff;">
+                            <i class="dashboard"></i>De clic aquí para finalizar el registro docente</a>
                         </li>
                         <?php
                     
@@ -347,14 +347,14 @@ $('#info_siap_modal').modal('show');
         <div class="modal-content">
             <div class="modal-header" style="padding:35px 50px;">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4><span class="glyphicon glyphicon-lock"></span>Finalizar registro de convocatoria</h4>
+                <h4><span class="glyphicon glyphicon-lock"></span>Finalizar registro</h4>
             </div>
             <div class="modal-body" style="padding:40px 50px;">
-                <p>Al dar clic en "Finalizar convocatoria" se finalizará por completo el registro de convocatoria.</p>
-                <p>Por favor confirme que desea continuar y que da por concluido el registro.</p>
+                <p>Al dar clic en "Finalizar registro" se dará por concluido el registro docente, no le permitirá editar más sus datos.</p> 
+                <p>Por favor confirme la terminación.</p>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 <a href="<?php echo site_url('convocatoriaV2/guardar_registro_finaliza_convocatoria_docente_censo/'); ?>" class="btn btn-primary">
-                    Finalizar convocatoria
+                    Finalizar registro
                 </a>
                 <!-- <button type="submit" class="btn btn-primary" onclick="finalizar_censo(this)">Finalizar censo</button>-->
             </div>

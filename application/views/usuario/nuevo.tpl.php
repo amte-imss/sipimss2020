@@ -36,8 +36,10 @@
                                     <select id="tipo_registro" name="tipo_registro" class="form-control" onchange="cmbox_tipo_registro(this)">
                                         <option value="">Seleccionar</option>
                                         <option value="registro_siap">SIAP</option>
-                                        <option value="registro_no_siap">Sin SIAP</option>
-                                        <option value="registro_no_imss">No IMSS</option>
+                                        <?php if(isset($super) && $super == true){ ?>
+                                            <option value="registro_no_siap">Sin SIAP</option>
+                                            <option value="registro_no_imss">No IMSS</option>
+                                        <?php } ?>
                                     </select>
                 				</div>
                 			</div>

@@ -10,7 +10,7 @@
   <p>Este sistema tiene como propósito, concentrar la información profesional actualizada y confiable del personal de salud con actividad docente en el IMSS, lo que permite realizar una mejor programación, toma de decisiones y evaluación.</p>
   <p>La liga para ingresar es <a href="http://aplicativosweb_die.imss.gob.mx/censo/">http://aplicativosweb_die.imss.gob.mx/censo/</a>.</p>
   <?php if(empty($username_alias)){ ?>
-  <p>Para iniciar sesión utilice su matrícula y la siguiente contraseña: <?php echo isset($password) ? $password : ''; ?></p>  <?php echo isset($password) ? $password : ''; ?>
+  <p>Para iniciar sesión utilice su matrícula y la siguiente contraseña: <?php echo isset($password) ? $password : ''; ?></p>  
   <?php }else{ ?>
   <p>Para iniciar sesión utilice su matrícula o nombre de usuario(alias): <?php echo $username_alias; ?> y la siguiente contraseña: <?php echo isset($password) ? $password : ''; ?></p> 
   <?php } ?>
