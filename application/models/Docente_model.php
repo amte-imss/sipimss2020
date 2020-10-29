@@ -50,7 +50,7 @@ class Docente_model extends MY_Model {
             $select_p = ["doc.id_docente", "doc.matricula", "doc.curp", "doc.email", "concat(doc.nombre, ' ', doc.apellido_p, ' ', doc.apellido_m) nombre_docente", "doc.telefono", 
             "doc.telefono_laboral", "doc.telefono_particular", "doc.id_docente_carrera", "dca.descripcion fase_carrera", "rol.clave_rol", "rol.nombre",
             "case when u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE') then u.nombre_unidad_principal else null end umae",
-            "(select count(*) from sistema.control_registro_usuarios cru where cru.id_usuario_registra = doc.id_usuario) total"];
+            "(select count(*) from sistema.control_registro_usuarios cru where cru.id_usuario_registra = doc.id_usuario) total, doc.id_usuario"];
             $select = array_merge($select, $select_p);
         }
         if(!is_null($id_docente)){

@@ -349,13 +349,15 @@ if (isset($status) && $status)
 </div>
 
 <br>
-<div class="col-md-12">
-  <div class="col-md-5">
+<?php if(isset($super) && $super === true) { ?>
+    <div class="col-md-12">
+    <div class="col-md-5">
 
-  </div>
-  <div class="col-md-1">
-      <label class=" control-label"></label>
-      <button id="submit" name="submit" type="submit" class="btn btn-success"  style=" background-color:#008EAD">Guardar <span class=""></span></button>
-  </div>
+    </div>
+    <div class="col-md-1">
+        <label class=" control-label"></label>
+        <button id="submit" name="submit" type="submit" class="btn btn-success"  style=" background-color:#008EAD">Guardar <span class=""></span></button>
+    </div>
 
-</div>
+    </div>
+<?php } ?>

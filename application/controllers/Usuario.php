@@ -69,8 +69,15 @@ class Usuario extends MY_Controller
         {
            $output['usuario'] = $resultado[0];
         }
+        $datos_sesion = $this->get_datos_sesion();
+        if(isset($datos_sesion['niveles_acceso_cves'][LNiveles_acceso::Super])){
+            $output['super'] = true;
+            $output['grupos_usuario'] = $this->usuario->get_niveles_acceso($output['usuario']['id_usuario']);
+        } else {
+            $output['grupos_usuario'] = $this->usuario->get_niveles_acceso($output['usuario']['id_usuario'], array('where'=>"A.clave_rol IN ('VALIDADOR1', 'VALIDADOR2', 'DOCENTE')"));
+        }
         $output['datos_basicos'] = $this->load->view('usuario/datos_basicos.tpl.php', $output, true);
-        $output['grupos_usuario'] = $this->usuario->get_niveles_acceso($output['usuario']['id_usuario']);
+        
         $output['campo_password'] = $this->load->view('usuario/campo_password.tpl.php', $output, true);
         $output['view_grupos_usuario'] = $this->load->view('usuario/tabla_niveles.tpl.php', $output, true);
         $output['campo_niveles_acceso'] = $this->load->view('usuario/niveles_acceso.tpl.php', $output, true);
@@ -179,7 +186,7 @@ class Usuario extends MY_Controller
                     $view = $this->load->view('usuario/campo_password.tpl.php', $output, true);
                     break;
                 case Usuario::NIVELES_ACCESO:
-                    $view = $this->get_niveles($id_usuario);
+                    $view = $this->get_niveles($id_usuario, $output);
                     break;
             }
         }
@@ -208,9 +215,15 @@ class Usuario extends MY_Controller
         return $this->load->view('usuario/datos_basicos.tpl.php', $output, true);
     }
 
-    private function get_niveles($id_usuario = 0)
+    private function get_niveles($id_usuario = 0, $output = [])
     {
-        $output['grupos_usuario'] = $this->usuario->get_niveles_acceso($id_usuario);
+        $datos_sesion = $this->get_datos_sesion();
+        if(isset($datos_sesion['niveles_acceso_cves'][LNiveles_acceso::Super])){
+            $output['super'] = true;
+            $output['grupos_usuario'] = $this->usuario->get_niveles_acceso($id_usuario);
+        } else {
+            $output['grupos_usuario'] = $this->usuario->get_niveles_acceso($id_usuario, array('where'=>"A.clave_rol IN ('VALIDADOR1', 'VALIDADOR2', 'DOCENTE')"));
+        }
         $output['view_grupos_usuario'] = $this->load->view('usuario/tabla_niveles.tpl.php', $output, true);
         return $this->load->view('usuario/niveles_acceso.tpl.php', $output, true);
     }

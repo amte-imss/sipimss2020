@@ -439,12 +439,15 @@ class Usuario_model extends MY_Model {
         return $usuarios;
     }
 
-    public function get_niveles_acceso($id_usuario) {
+    public function get_niveles_acceso($id_usuario, $params = []) {
         $this->db->flush_cache();
         $this->db->reset_query();
         $select = array(
             'A.clave_rol id_rol', 'A.nombre', 'B.activo'
         );
+        if (isset($params['where'])) {
+            $this->db->where($params['where']);
+        }
         $this->db->select($select);
         $this->db->join('sistema.usuario_rol B', " B.clave_rol = A.clave_rol and B.id_usuario = {$id_usuario}", 'left');
         $query = $this->db->get('sistema.roles A');

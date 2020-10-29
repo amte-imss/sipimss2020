@@ -73,6 +73,7 @@ function lista_validadores(){
           },         
         },
         fields: [
+            {name: 'id_usuario', title: "#", visible: false},
             {name: 'clave_delegacional', title: "OOAD", type: "select", items: delegaciones,valueField: "clave_delegacional", textField: "nombre",  visible:true},
             {name: 'matricula', type: "text", title: "Matrícula", visible:true},
             {name: 'nombre_docente', type: "text", title: "Nombre validador", visible:true},
@@ -90,7 +91,7 @@ function lista_validadores(){
                 updateButtonTooltip: "Actualizar", // tooltip of update item button
                 cancelEditButtonTooltip: "Cancelar", // tooltip of cancel editing button
                 itemTemplate: function (value, item) {
-                    return '<a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">Ver detalle</a>';
+                    return '<a href="'+site_url+'/usuario/get_usuarios/'+item.id_usuario+'">Editar</a> | <a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">Ver detalle</a>';
                 }
             }
         ]
