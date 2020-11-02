@@ -88,7 +88,7 @@ class Usuario extends MY_Controller
 
     private function lista_usuarios(&$params = [])
     {
-
+        //pr($params);
         $filtros['limit'] = isset($params['pageSize'])? $params['pageSize']:Usuario::LIMIT;
         $filtros['offset'] = isset($params['pageIndex'])?  ($filtros['limit']*($params['pageIndex']-1)):0;
 
@@ -123,7 +123,7 @@ class Usuario extends MY_Controller
                         $filtros['G.nombre'] = $value;
                         break;
                     case 'unidad':
-                        $filtros['E.nombre'] = $value;
+                        $filtros['lower(replace("E".nombre, \' \', \'\'))'] = strtolower(str_replace(' ', '', $value));
                         break;
                     case 'nombre':
                         $filtros['concat(docentes.nombre, $$ $$, docentes.apellido_p, $$ $$, apellido_m)'] = $value;
