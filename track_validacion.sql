@@ -80,3 +80,4 @@ ALTER TABLE "validacion"."ratificador" ADD CONSTRAINT "pk_ratificador_convocator
 INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo, id_catalogo_elemento_padre, activo, "label", orden, nivel, is_validado) VALUES('expdoc_prof_num_anio_6_10','6-10',63,1,null,true,'6-10',6,1, true);
 INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo, id_catalogo_elemento_padre, activo, "label", orden, nivel, is_validado) VALUES('expdoc_prof_num_anio_11_15','11-15',63,1,null,true,'11-15',7,1, true);
 INSERT INTO catalogo.elementos_catalogos(nombre, descripcion, id_catalogo, tipo, id_catalogo_elemento_padre, activo, "label", orden, nivel, is_validado) VALUES('expdoc_prof_num_anio_16_mas','> 15',63,1,null,true,'> 15',8,1, true);
+

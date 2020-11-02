@@ -10,6 +10,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * */
 class Template_item_perfil {
 
+    const 
+        VIEW_DOCENTE = 1,
+        VIEW_PERFIL = 2,
+        VIEW_VALIDACION = 3        
+    ;
+
     private $elementos;
     private $registros_censo;
     private $grupos_informacion_campos;
@@ -23,13 +29,22 @@ class Template_item_perfil {
     private $matricula;
     private $config_secciones;
     private $mostrar_datos_docente;
+    private $status_validacion;
+    private $tipo_vista;
+    private $rol_valida;
+    private $registros_validacion_seccion;
+    private $registros_ratificacion;
 
     public function __construct() {
         $this->CI = & get_instance();
         $this->CI->load->helper('html');
         $this->mostrar_datos_docente = true;
-        $this->elementos = array(
-        );
+        $this->elementos = array();
+        $this->tipo_vista = Template_item_perfil::VIEW_DOCENTE;
+        $this->status_validacion = En_estado_validacion_registro::REGISTRO_USUARIO;
+        $this->rol_valida = null;
+        $this->registros_validacion_seccion = null;
+        $this->registros_ratificacion = null;
     }
 
 
@@ -44,11 +59,39 @@ class Template_item_perfil {
         $this->registros_censo = $registros;
         $this->generaCampos($registros);
     }
-
+    
     public function set_mostrar_datos_docente($mostrar) {
         $this->mostrar_datos_dodcente = $mostrar;
         
     }
+    
+    public function set_registro_validacion_seccion($registros) {
+        if(!empty($registros)){
+            //pr($registros);
+            $this->registros_validacion_seccion=[];
+            foreach($registros as $keys => $values){
+                    //pr($values_c);
+                    $values['elementos_censo'] = json_decode($values['elementos_censo'], true);
+                    $values_simple = [
+                        'comentario' => $values['comentario'],
+                        'elementos_censo' => $values['elementos_censo'],
+                        'id_seccion' => $values['id_seccion']
+                    ];                     
+                    $this->registros_validacion_seccion[$values['id_seccion']]  = $values_simple;                                    
+                                                       
+            }
+        }
+        //pr($this->registros_validacion_seccion);
+    }
+    public function set_datos_ratificacion($registro) {
+        if(!empty($registro)){
+            //pr($registros);
+            $this->registros_ratificacion = $registro[0];
+            
+        }
+        //pr($this->registros_validacion_seccion);
+    }
+    
     
     /**
      * Obtiene campos de elementos seccion y de seccion 
@@ -72,6 +115,33 @@ class Template_item_perfil {
         //pr($this->grupos_informacion_campos);
         //pr($this->campos_elemento_seccion);
         //pr($this->campos_seccion);
+    }
+
+    /**Vista del detalle de  */
+    public function set_tipoVistaDocente($tipo_vista_docente){
+        $this->tipo_vista = $tipo_vista_docente;
+    }
+    
+    public function get_tipoVistaDocente(){
+        return $this->tipo_vista;
+    }
+    
+    public function set_status_validacion($status_validacion){
+        if($status_validacion == 0){
+            $status_validacion = En_estado_validacion_registro::__default;
+        }
+        $this->status_validacion = $status_validacion;
+    }
+    public function get_status_validacion(){
+        return $this->status_validacion ;
+    }
+
+    public function set_rol_valida($rol_valida){
+        $this->rol_valida = $rol_valida;
+    }
+
+    public function get_rol_valida(){
+        return $this->rol_valida ;
     }
 
     /**
@@ -266,8 +336,9 @@ class Template_item_perfil {
 //        $tmp_resultado .= $this->CI->load->view($tpl_seccion, $datos, TRUE); //Agrega item de datos imss al template
 //        pr($datos_imss);
         //pr($this->registros_censo);
-
-        foreach ($this->registros_censo as $value) {//Genera todos los items, separados por seccion
+        $i = 1;
+        $conf_validacion = [];
+        foreach ($this->registros_censo as $value) {//Genera todos los items, separados por seccion          
             $value['activo'] = ''; //Active siempre limpio
             if (!isset($array_elemento_seccion[$value['id_seccion']])) {
                 $array_elemento_seccion[$value['id_seccion']] = array(
@@ -282,58 +353,177 @@ class Template_item_perfil {
             $value['string_value'] = $string_value;
             $value['campos_seccion'] = $this->campos_seccion[$value['id_seccion']]; //Agrega elementos items contet de carrusel(información del registro)
             $value['campos_elemento_seccion'] = $this->campos_elemento_seccion[$value['id_elemento_seccion']]; //Agrega elementos items contet de carrusel(información del registro)
+            $value['id_docente'] = $this->datos_generales['id_docente'];
+            if(isset($this->registros_validacion_seccion[$value['id_seccion']])){
+                $value['validacion_seccion_reg'] = $this->registros_validacion_seccion[$value['id_seccion']];
+            }
             //Carga cada item de las actividades del docente
            // pr($secciones_config[$value['id_seccion']]['config']);
             //Configuraciones de seccion
-            $array_elemento_seccion[$value['id_seccion']]['pinta_elemento_seccion'] = false;
+                $array_elemento_seccion[$value['id_seccion']]['pinta_elemento_seccion'] = false;//indica si agrega el nombre de la seccion como columna a la tabla de datos
+                $value['is_view_personalizada'] = 0;//Vista personalizada para mostrar los datos en la tabla
                 if(!is_null($secciones_config[$value['id_seccion']]['config']) && isset($secciones_config[$value['id_seccion']]['config']['is_personalizado']) &&  $secciones_config[$value['id_seccion']]['config']['is_personalizado'] == 1){                    
-                    $seccion_name = $secciones_config[$value['id_seccion']]['nombre'];                    
+                    $value['is_view_personalizada'] = 1;
+                    if(!isset($conf_validacion[1][$value['id_seccion']])){
+                        $conf_validacion[1][$value['id_seccion']] = $this->get_view_validacion(1, $value);
+                    }
+                    $value['conf_validacion'][1] = $conf_validacion[1][$value['id_seccion']];                                            
+                    //pr($value['is_view_personalizada']);
+                    $seccion_name = $secciones_config[$value['id_seccion']]['nombre'];                                        
                     $value['campos_agrupados'] = $this->grupos_informacion_campos[$value['id_seccion']];
                     $array_elemento_seccion[$value['id_seccion']]['view'] .= $this->CI->load->view($tpl_item.'_'.$seccion_name, $value, TRUE); //Concatena los items dentro del carrusel
                 }else{
-                    $value['pinta_elemento_seccion'] = false; 
+                    $value['pinta_elemento_seccion'] = false; //indica si agrega el nombre de la seccion como columna a la tabla de datos
+                    if(!isset($conf_validacion[1][$value['id_seccion']])){
+                        $conf_validacion[1][$value['id_seccion']] = $this->get_view_validacion(1, $value);
+                    }
+                    $value['conf_validacion'][1] = $conf_validacion[1][$value['id_seccion']];                                                                
                     if(!is_null($secciones_config[$value['id_seccion']]['config']) && (!isset($secciones_config[$value['id_seccion']]['config']['id_elementoSeccionDefault'])|| $secciones_config[$value['id_seccion']]['config']['id_elementoSeccionDefault']<=0)){                    
-                        $value['pinta_elemento_seccion'] = true; 
-                        $array_elemento_seccion[$value['id_seccion']]['pinta_elemento_seccion'] = true; 
+                        $value['pinta_elemento_seccion'] = true; //indica si agrega el nombre de la seccion como columna a la tabla de datos
+                        $array_elemento_seccion[$value['id_seccion']]['pinta_elemento_seccion'] = true; //indica si agrega el nombre de la seccion como columna a la tabla de datos
                     }
                     //pr($value);
                     $array_elemento_seccion[$value['id_seccion']]['view'] .= $this->CI->load->view($tpl_item, $value, TRUE); //Concatena los items dentro del carrusel
                     
                 }
                 $array_elemento_seccion[$value['id_seccion']]['count'] ++; //Incrementa el contador de vistas o item por sección 
-            
-        }
-        //pr($array_elemento_seccion);
-        //Genera el carrucel por seccion 
-        foreach ($array_elemento_seccion as $key => $value) {
-            $datos = $value; //Agrega elementos de sección label y nombre
-            //pr($datos);
-            $datos['elementos_seccion'] = $array_elemento_seccion[$key]['view']; //Agrega elementos items contet de carrusel(información del registro)
-            $datos['campos_seccion'] = $this->campos_seccion[$value['id_seccion']]; //Agrega elementos items contet de carrusel(información del registro)
-            $datos['campos_elemento_seccion'] = $this->campos_elemento_seccion[$value['id_elemento_seccion']]; //Agrega elementos items contet de carrusel(información del registro)
-            $datos['count'] = $array_elemento_seccion[$key]['count']; //Agrega elementos items contet de carrusel(información del registro)
-            if(!is_null($secciones_config[$value['id_seccion']]['config']) && isset($secciones_config[$value['id_seccion']]['config']['is_personalizado']) &&  $secciones_config[$value['id_seccion']]['config']['is_personalizado'] == 1){                    
-                $seccion_name = $secciones_config[$value['id_seccion']]['nombre'];
-                $aux = $this->CI->load->view($tpl_item_carrucel.'_'.$seccion_name, $datos, TRUE);
-            }else{
                 
-                $aux = $this->CI->load->view($tpl_item_carrucel, $datos, TRUE);
             }
-            $array_carrucel['datos'][$key] = array(
-                'lbl_seccion' => $value['lbl_seccion'],
-                'id_seccion' => $value['id_seccion'],
-                'carrusel' => $aux
-            );
+            //pr($conf_validacion);
+            //pr($array_elemento_seccion);
+            //Genera el carrucel por seccion 
+            foreach ($array_elemento_seccion as $key => $value) {
+                $datos = $value; //Agrega elementos de sección label y nombre
+                //pr($datos);
+                $datos['elementos_seccion'] = $array_elemento_seccion[$key]['view']; //Agrega elementos items contet de carrusel(información del registro)
+                $datos['campos_seccion'] = $this->campos_seccion[$value['id_seccion']]; //Agrega elementos items contet de carrusel(información del registro)
+                $datos['campos_elemento_seccion'] = $this->campos_elemento_seccion[$value['id_elemento_seccion']]; //Agrega elementos items contet de carrusel(información del registro)
+                $datos['count'] = $array_elemento_seccion[$key]['count']; //Agrega elementos items contet de carrusel(información del registro)
+                $value['is_view_personalizada'] = 0;//Vista personalizada para mostrar los datos en la tabla
+                
+                $datos['conf_validacion'][1] = $conf_validacion[1][$value['id_seccion']];                                            
+                                                           
+                if(!is_null($secciones_config[$value['id_seccion']]['config']) && isset($secciones_config[$value['id_seccion']]['config']['is_personalizado']) &&  $secciones_config[$value['id_seccion']]['config']['is_personalizado'] == 1){                    
+                    $value['is_view_personalizada'] = 1;//Vista personalizada para mostrar los datos en la tabla
+                    $seccion_name = $secciones_config[$value['id_seccion']]['nombre'];                    
+                    $aux = $this->CI->load->view($tpl_item_carrucel.'_'.$seccion_name, $datos, TRUE);
+                }else{                                        
+                    $aux = $this->CI->load->view($tpl_item_carrucel, $datos, TRUE);
+                }
+                $array_carrucel['datos'][$key] = array(
+                    'lbl_seccion' => $value['lbl_seccion'],
+                    'id_seccion' => $value['id_seccion'],
+                    'carrusel' => $aux
+                );
         }
+
+        if(!isset($conf_validacion[2])){//ratificacion
+            $param = null;
+            if(!is_null($this->registros_ratificacion)){
+                $param['ratificacion'] = $this->registros_ratificacion;
+            }
+            //pr($param);
+            $conf_validacion[2] = $this->get_view_validacion(2, $param);
+        }
+        if(!isset($conf_validacion[3])){//Validacion final n1
+            $conf_validacion[3] = $this->get_view_validacion(3, null);
+        }
+        $array_carrucel['conf_validacion'][2] = $conf_validacion[2];                                            
+        $array_carrucel['conf_validacion'][3] = $conf_validacion[3];
         $array_carrucel['string_value'] = $string_value;//Atrributo textos para la vista tab perfil
         $array_carrucel['secciones'] = $string_value;
         $array_carrucel['files_js_render_formularios'] = $this->get_files_js_formularios();
+        if(!is_null($this->registros_validacion_seccion) && !empty($this->registros_validacion_seccion)){
+            $array_carrucel['registros_validacion_seccion'] = $this->registros_validacion_seccion;
+
+
+        }
+        $array_carrucel['files_js_validacion_censo'] = '/validador/validacion_censo.js';
         
         $resul_view_tab = $this->CI->load->view($tpl_tab_perfil, $array_carrucel, TRUE);//Genera la vista de tab's, separadas por actividades
-//        $datos['elementos_seccion'] = $resul_view_tab;
-//        $tmp_resultado .= $this->CI->load->view($tpl_seccion, $datos, TRUE);
+        //        $datos['elementos_seccion'] = $resul_view_tab;
+        //        $tmp_resultado .= $this->CI->load->view($tpl_seccion, $datos, TRUE);
         $tmp_resultado['main_content'] = $resul_view_tab;
         return $tmp_resultado;
+    }
+
+    /**
+     * $tipo, puede ser para la ratificacion = 2; o la validacion n1 por sección = 1; validacion general 3;
+     */
+    public function get_view_validacion($tipo = 1, $param= null){
+        $result = array('view'=>'', 'view_btn_guardar'=>'', 'view_btn_ratificar'=>'', 
+        'view_col_val_censo' => false, 'validar_proceso'=>false, 'vista_ratificacion'=>false);
+
+        $estado_valido = $this->aplica_estado_validacion($tipo, $this->status_validacion);
+        if($this->tipo_vista == Template_item_perfil::VIEW_VALIDACION){
+            //pr($this->rol_valida . $tipo);
+            switch($tipo){            
+                case 2://vista de la ratificacion  
+                    $paso_validacion = false;
+                    if($this->rol_valida ==LNiveles_acceso::Validador2 && $estado_valido['valido_estado']){             
+                        $result['view_btn_ratificar'] = $this->CI->load->view('perfil/inicio/validacion/btn_validacion_ratificacion.php', $param, true);
+                        $result['validar_proceso'] = true;
+                        $paso_validacion = true;
+                    }
+                    if(!is_null($param) || $paso_validacion){ 
+                        $result['view'] = $this->CI->load->view('perfil/inicio/validacion/validacion_ratificacion.php', $param, true);
+                        $result['vista_ratificacion'] = true;
+                    }
+                    
+                break;
+                case 3://vista de la validación general  
+                    if($this->rol_valida ==LNiveles_acceso::Validador1 && $estado_valido['valido_estado']){             
+                        $result['view'] = $this->CI->load->view('perfil/inicio/validacion/validacion_n1_gen.php', $param, true);
+                        $result['validar_proceso'] = true;
+                    }
+                    if($this->rol_valida ==LNiveles_acceso::Normativo){
+
+                    }
+                   
+
+                break;
+                case 1://Vista de la validacion por seccion
+                    //pr($param);
+                    if(!is_null($param)){                        
+                        $result['view_col_val_censo'] = true;
+                        $result['view'] = $this->CI->load->view('perfil/inicio/validacion/validacion_seccion.php', $param, true);
+                    }
+                    if($this->rol_valida ==LNiveles_acceso::Validador1 && $estado_valido['valido_estado']){                           
+                        //pr("<-->".$param['is_view_personalizada'] . " -> " . $param['id_seccion']);
+                        if(!is_null($param)){
+                            $result['view_btn_guardar'] = $this->CI->load->view('perfil/inicio/validacion/btn_validacion_seccion.php', $param, true);
+                            //pr($result['view']);                            
+                        }
+                        $result['validar_proceso'] = true;
+                    }
+                    
+                break;            
+            }
+        }
+        return $result;
+    }
+
+    private function aplica_estado_validacion($tipo = 1, $status_val){
+        $array = ['status_val', 'valido_estado'=>false];
+        
+        switch($tipo){            
+            case 2://vista de la ratificacion  
+                $array['status_val'][En_estado_validacion_registro::VALIDADO_N1] = true;
+            break;
+            case 3://vista de la validación general  
+                $array['status_val'][En_estado_validacion_registro::PROCESO_VALIDACION_N1] = true;
+                
+            break;
+            default://Vista de la validacion por seccion
+            $array['status_val'][En_estado_validacion_registro::FINALIZA_REGISTRO_CONVOCATORIA] = true;
+            $array['status_val'][En_estado_validacion_registro::PROCESO_VALIDACION_N1] = true;
+            
+            
+        }
+        if(isset($array['status_val'][$status_val])){
+            $array['valido_estado'] = true;
+        }
+        return $array;
     }
 
     private function get_grupos_informacion($value){

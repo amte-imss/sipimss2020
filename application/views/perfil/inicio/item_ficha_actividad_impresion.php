@@ -4,6 +4,8 @@ $controlador = $this->uri->rsegment(1);
 //pr("Aqui entra");
 //pr($campos);
 //pr($campos_seccion);
+//pr($campos_elemento_seccion);
+//pr($id_censo);
 ?>
 
 
@@ -95,7 +97,14 @@ $controlador = $this->uri->rsegment(1);
                 
                 <?php
             }
-            ?>
+            //pr($conf_validacion);
+            if($conf_validacion[1]['view_col_val_censo']){
+                ?>
+                 <th> <input type="radio" id="radio_si_<?php echo $id_censo;?>" class="ctrselect_si_<?php echo $id_seccion?>" name="<?php echo $id_censo;?>" value="si"><label>Si </label></th>
+                 <th> <input type="radio" id="radio_no_<?php echo $id_censo;?>" class="ctrselect_no_<?php echo $id_seccion?>" name="<?php echo $id_censo;?>" value="no"><label>No </label></th>
+                <?php
+                }
+                ?>
             </tr>
               
     

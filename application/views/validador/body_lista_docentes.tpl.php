@@ -16,6 +16,8 @@ $controlador = '/' . $this->uri->rsegment(1);
     var url_ctr = "<?php echo $controlador; ?>";
     var delegaciones =  <?php echo json_encode($catalogos['result_delegacional']); ?>;
     var fase_carrera_docente =  <?php echo json_encode($catalogos['fase_carrera_docente']); ?>;
+    var estados_validacion =  <?php echo json_encode($catalogos['estados_validacion']); ?>;
+    var ratificado =  <?php echo json_encode($catalogos['ratificado']); ?>;
 </script>
 
 <div id="main_content" class="">

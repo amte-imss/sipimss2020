@@ -68,6 +68,7 @@ class Perfil extends Informacion_docente {
             //JS para renderizar formularios e información del docente principalmente
             //        pr($datos_elemento_seccion);
             $this->load->library('template_item_perfil');
+            $this->template_item_perfil->set_tipoVistaDocente(Template_item_perfil::VIEW_PERFIL);//Tipo de vista
             $this->template_item_perfil->set_registro_censo($datos_elemento_seccion); //Agrega registros
             $datos_files_js = $this->get_files_js_formularios_c($id_docente);
             $this->template_item_perfil->set_files_js_formularios($datos_files_js);
@@ -148,6 +149,7 @@ class Perfil extends Informacion_docente {
             //JS para renderizar formularios e información del docente principalmente
             //pr($datos_elemento_seccion);
             $this->load->library('template_item_perfil');
+            $this->template_item_perfil->set_tipoVistaDocente(Template_item_perfil::VIEW_DOCENTE);//Tipo de vista
             $this->template_item_perfil->set_registro_censo($datos_elemento_seccion); //Agrega registros
             $this->template_item_perfil->set_mostrar_datos_docente($mostrar_datos_docente); //Agrega registros
             $datos_files_js = $this->get_files_js_formularios_c($id_docente);

@@ -13,7 +13,7 @@ class Docente_model extends MY_Model {
         $usuario = null;
         $this->db->flush_cache();
         $this->db->reset_query();        
-        $this->db->select('*, dc.id_docente_carrera');
+        $this->db->select('*, dc.id_docente_carrera, censo.estado_validacion_docente(d.id_docente) id_status_validacion');
         if(!is_null($id_docente)){                
             $this->db->where('d.id_docente', $id_docente);
         }        
@@ -47,10 +47,17 @@ class Docente_model extends MY_Model {
             "cc.id_categoria", "cc.clave_categoria", "concat(cc.nombre, ' (', cc.clave_categoria, ')') categoria"
         );
         if(!empty($parametros_docente)){
+            $convocatoria = $parametros_docente['convocatoria'];
+            $censo_reg = "(select count(*) total_registros_censo from censo.censo cc where cc.id_docente = doc.id_docente) total_registros_censo";
+            $ratificado = "(select ratificado from validacion.ratificador rat where rat.id_docente = doc.id_docente and rat.id_convocatoria = ".$convocatoria.") ratificado";
             $select_p = ["doc.id_docente", "doc.matricula", "doc.curp", "doc.email", "concat(doc.nombre, ' ', doc.apellido_p, ' ', doc.apellido_m) nombre_docente", "doc.telefono", 
             "doc.telefono_laboral", "doc.telefono_particular", "doc.id_docente_carrera", "dca.descripcion fase_carrera", "rol.clave_rol", "rol.nombre",
             "case when u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE') then u.nombre_unidad_principal else null end umae",
-            "(select count(*) from sistema.control_registro_usuarios cru where cru.id_usuario_registra = doc.id_usuario) total, doc.id_usuario"];
+            "(select count(*) from sistema.control_registro_usuarios cru where cru.id_usuario_registra = doc.id_usuario) total, doc.id_usuario",
+            "censo.estado_validacion_docente(doc.id_docente) id_status_validacion",
+            $censo_reg,
+            $ratificado
+            ];
             $select = array_merge($select, $select_p);
         }
         if(!is_null($id_docente)){
@@ -98,6 +105,8 @@ class Docente_model extends MY_Model {
         }
         return $array_result;
     }
+
+    
 
     public function update_datos_imss($id_docente, $id_departamento_unidad, $clave_delegacional, $id_categoria, $datos_docente) {
         $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GENERAL)); //Carga textos de lenguaje

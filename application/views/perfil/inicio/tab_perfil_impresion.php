@@ -35,12 +35,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="" id="name_seccion_<?php echo $value['id_seccion']; ?>-pills">
                         <?php echo $value['carrusel']; ?>
                     </div>
+                    
                     <?php
                 //}
+            }
+            if(isset($conf_validacion[2])){
+                if($conf_validacion[2]['vista_ratificacion']){
+                    echo $conf_validacion[2]['view'];                
+                }                
+                echo $conf_validacion[2]['view_btn_ratificar'];                
+            }
+            if(isset($conf_validacion[3])){
+                echo $conf_validacion[3]['view'];                
             }
         }
     ?>
 </ul>
+<?php ?>
+    
+<?php ?>
 <br>
 
 <?php
@@ -51,13 +64,24 @@ if (!empty($files_js_render_formularios)) {
         echo js($aux); //Agrega archivos JS del formulario
     }
 }
+if(isset($registros_validacion_seccion)){
+    ?>
+    <script>
+        var datos_validacion_seccion = <?php echo json_encode($registros_validacion_seccion); ?>
+    </script>
+    <?php 
+}
 
+if(isset($files_js_validacion_censo)){
+    
+    echo js($files_js_validacion_censo); //Agrega archivos JS del formulario
+}
 ?>
 <script type="text/javascript">
     var consulta = '';
     $(document).ready(function () {
 		//console.log("Qe ");
-$('.l_sede_academica').each(function (index, element) {
+        $('.l_sede_academica').each(function (index, element) {
         var label = $(element);
         consulta =  site_url +"/rama_organica/get_detalle/unidad/"+label.text()+"/actual" ;
         $.getJSON(consulta, {})

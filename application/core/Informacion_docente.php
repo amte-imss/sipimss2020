@@ -28,9 +28,9 @@ class Informacion_docente extends MY_Controller {
      * @param type $id_docente $identificador del docente en la base de datos
      * @return array de todos los registros de secciones de censo del
      */
-    protected function get_detalle_registros_censo($id_docente) {
+    protected function get_detalle_registros_censo($id_docente, $id_seccion = null) {
         $this->load->model('Formulario_model', 'fm');
-        $datos_registro_tmp = $this->fm->get_cross_datos_actividad_docente_completo($id_docente);
+        $datos_registro_tmp = $this->fm->get_cross_datos_actividad_docente_completo($id_docente, $id_seccion);
         return $datos_registro_tmp;
     }
 

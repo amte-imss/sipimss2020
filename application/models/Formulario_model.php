@@ -1002,11 +1002,11 @@ class Formulario_model extends MY_Model {
      * ejemplo: array('condicion' => $valor);
      * @return type
      */
-    public function get_cross_datos_actividad_docente_completo($id_docente) {
+    public function get_cross_datos_actividad_docente_completo($id_docente, $id_seccion = null) {
         if (!is_numeric($id_docente)) {
             return array();
         }
-        $datos_docente_actividad = $this->get_datos_actividad_docente($id_docente);
+        $datos_docente_actividad = $this->get_datos_actividad_docente($id_docente, $id_seccion);
         $array_result = array();
         $array_general = array();
         $array_campos = array();

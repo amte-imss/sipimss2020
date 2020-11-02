@@ -264,12 +264,8 @@ class ConvocatoriaV2 extends MY_Controller implements IWorkflow
 
     /**
      * Función que crea un registro para finalizar la convocatoria
-     * @author Cheko
-     * @param String $finalizar Parametro para que sea correcta la petición POST
-     * @modificado Christian Garcia - No entiendo la necesidad de sergio de usar una tecnologia que no aplica para el proyecto
-     * es como si quisiera que nos adaptaramos a el, que por cierto esta muy mal aplicada.
-     * Esta es una función mas que tuve que corregir que dejo incompleta
-     * Ademas sospecho que no prueba nada de lo que hace y aplica la de "las pruebas son para los que no sabes lo que hacen"
+     * @author LEAS
+     * 29/10/2020
      */
     public function guardar_registro_finaliza_convocatoria_docente_censo(){
 

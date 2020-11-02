@@ -63,6 +63,10 @@ function lista_docentes(){
                             && (!filter.nombre_docente || (registro.nombre_docente !== null && registro.nombre_docente.toLowerCase().indexOf(filter.nombre_docente.toString().toLowerCase()) > -1))
                             && (!filter.email || (registro.email !== null && registro.email.toLowerCase().indexOf(filter.email.toString().toLowerCase()) > -1))
                             && (!filter.id_docente_carrera || (registro.id_docente_carrera != null && (registro.id_docente_carrera == filter.id_docente_carrera)))
+                            && (!filter.id_status_validacion || (registro.id_status_validacion != null && (registro.id_status_validacion == filter.id_status_validacion)))
+                            && (!filter.total_registros_censo || (registro.total_registros_censo != null && (registro.total_registros_censo == filter.total_registros_censo)))
+                            && (!filter.ratificado || (registro.ratificado != null && (registro.ratificado == filter.ratificado)))
+
                            
                             
                           });
@@ -77,7 +81,10 @@ function lista_docentes(){
             {name: 'matricula', type: "text", title: "Matrícula", visible:true},
             {name: 'nombre_docente', type: "text", title: "Nombre docente", visible:true},
             {name: 'email', title:"Correos", type: "text",  visible:true},
-            {name: 'id_docente_carrera', type: "text", title: "Docente de carrera", type: "select", items:fase_carrera_docente, valueField: "id_docente_carrera", textField: "descripcion", visible:true},
+            {name: 'id_docente_carrera', title: "Docente de carrera", type: "select", items:fase_carrera_docente, valueField: "id_docente_carrera", textField: "descripcion", visible:true},
+            {name: 'id_status_validacion', title: "Estado validación", type: "select", items:estados_validacion, valueField: "id", textField: "label", visible:true},
+            {name: 'ratificado', title: "Ratificado", type: "select", items:ratificado, valueField: "id", textField: "label", visible:true},
+            {name: 'total_registros_censo', title: "Total registros", type: "text", visible:true, /*width:"15"*/},
             //{name: 'id_elemento_catalogo_padre', title: 'Elemento padre', type: 'select', items: json_elementos_catalogo_padre, valueField: "id_elemento_catalogo", textField: "label"},
             //{name: 'id_elemento_catalogo_hijo', title: 'Elemento hijo', type: 'select', items: json_elementos_catalogo_hijo, valueField: "id_elemento_catalogo", textField: "label"},
             {type: "control", editButton: false, deleteButton: false, visible:true,

@@ -609,6 +609,7 @@ class Catalogo_model extends MY_Model {
         $this->db->reset_query();
         $this->db->where("activo", true);
         $this->db->select(array("id_validacion_registro id", "nombre label"));
+        $this->db->order_by("orden");
         $result = $this->db->get("ui.validacion_registro")->result_array();
         return $result;
     }

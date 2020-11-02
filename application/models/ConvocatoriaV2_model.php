@@ -593,4 +593,174 @@ class ConvocatoriaV2_model extends MY_Model
         return $status;
     }
 
+    public function upsert_validacion_secciones(&$datos){
+        if(!empty($datos['data'])){
+            $this->db->flush_cache();
+            $this->db->reset_query();
+            try
+            {
+            $this->db->where('id_docente', $datos['data']['id_docente']);
+            $this->db->where('id_convocatoria', $datos['data']['id_convocatoria']);
+            $this->db->where('id_validador', $datos['data']['id_validador']);
+            $this->db->where('id_seccion', $datos['data']['id_seccion']);
+            $this->db->where('activo', true);
+            $registros = $this->db->get('validacion.validacionN1_seccion')->result_array();
+            if(empty($registros))
+            {
+                $this->db->reset_query();
+                $this->db->insert('validacion.validacionN1_seccion', $datos['data']);
+                
+            }else{
+                $this->db->reset_query();
+                
+                $this->db->where('id_validador', $datos['data']['id_validador']);
+                $this->db->where('id_docente', $datos['data']['id_docente']);
+                $this->db->where('id_convocatoria', $datos['data']['id_convocatoria']);
+                $this->db->where('id_seccion', $datos['data']['id_seccion']);
+                $this->db->update('validacion.validacionN1_seccion', $datos['data']);                
+                
+            }
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $datos['respuesta']['tp_msg'] = 'danger';
+                $datos['respuesta']['mensaje'] = 'Ocurrio un error al guardar la validación. Por favor intentelo nuevamente';
+            } else {
+                $this->db->trans_commit();
+                $datos['respuesta']['mensaje'] = 'La validación de la sección se guardo correctamente';
+                $datos['respuesta']['tp_msg'] = 'success';
+                
+            }
+        }catch(Exception $ex)
+        {
+            $datos['respuesta']['tp_msg'] = 'danger';
+            $datos['respuesta']['mensaje'] = 'Ocurrio un error al guardar la validación. Por favor intentelo nuevamente';
+
+        }
+        }
+    }
+
+
+    public function upsert_finaliza_validacion(&$datos){
+        if(!empty($datos['data'])){
+            $this->db->flush_cache();
+            $this->db->reset_query();
+            try
+            {
+            $this->db->where('id_docente', $datos['data']['id_docente']);
+            $this->db->where('id_convocatoria', $datos['data']['id_convocatoria']);
+            $this->db->where('id_validador', $datos['data']['id_validador']);
+            $this->db->where('activo', true);
+            
+            $registros = $this->db->get('validacion.validacionN1_finaliza')->result_array();
+            if(empty($registros))
+            {
+                $this->db->reset_query();
+                $this->db->insert('validacion.validacionN1_finaliza', $datos['data']);
+                
+            }else{
+                $this->db->reset_query();
+                
+                $this->db->where('id_validador', $datos['data']['id_validador']);
+                $this->db->where('id_docente', $datos['data']['id_docente']);
+                $this->db->where('id_convocatoria', $datos['data']['id_convocatoria']);
+                $this->db->update('validacion.validacionN1_finaliza', $datos['data']);                
+                
+            }
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $datos['respuesta']['tp_msg'] = 'danger';
+                $datos['respuesta']['mensaje'] = 'Ocurrio un error al guardar la validación. Por favor intentelo nuevamente';
+            } else {
+                $this->db->trans_commit();
+                $datos['respuesta']['mensaje'] = 'La validación ha finalizado correctamente';
+                $datos['respuesta']['tp_msg'] = 'success';
+                
+            }
+        }catch(Exception $ex)
+        {
+            $datos['respuesta']['tp_msg'] = 'danger';
+            $datos['respuesta']['mensaje'] = 'Ocurrio un error al guardar la validación. Por favor intentelo nuevamente';
+
+        }
+        }
+    }
+
+    public function upsert_finaliza_ratificacion(&$datos){
+        if(!empty($datos['data'])){
+            $this->db->flush_cache();
+            $this->db->reset_query();
+            try
+            {
+            $this->db->where('id_docente', $datos['data']['id_docente']);
+            $this->db->where('id_convocatoria', $datos['data']['id_convocatoria']);
+            $this->db->where('id_ratificador_validador', $datos['data']['id_ratificador_validador']);
+            $this->db->where('activo', true);
+            $registros = $this->db->get('validacion.ratificador')->result_array();
+            if(empty($registros))
+            {
+                $this->db->reset_query();
+                $this->db->insert('validacion.ratificador', $datos['data']);
+                
+            }else{
+                $this->db->reset_query();
+                
+                $this->db->where('id_ratificador_validador', $datos['data']['id_ratificador_validador']);
+                $this->db->where('id_docente', $datos['data']['id_docente']);
+                $this->db->where('id_convocatoria', $datos['data']['id_convocatoria']);
+                $this->db->update('validacion.ratificador', $datos['data']);                
+                
+            }
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $datos['respuesta']['tp_msg'] = 'danger';
+                $datos['respuesta']['mensaje'] = 'Ocurrio un error al guardar la ratificación. Por favor intentelo nuevamente';
+            } else {
+                $this->db->trans_commit();
+                $datos['respuesta']['mensaje'] = 'La ratificación se guardo correctamente';
+                $datos['respuesta']['tp_msg'] = 'success';
+                
+            }
+        }catch(Exception $ex)
+        {
+            $datos['respuesta']['tp_msg'] = 'danger';
+            $datos['respuesta']['mensaje'] = 'Ocurrio un error al guardar la ratificación. Por favor intentelo nuevamente';
+
+        }
+        }
+    }
+
+    public function get_validaciones_seccion($id_docente, $id_convocatoria, $id_seccion = null , $id_validador = null){
+        $this->db->where('id_docente', $id_docente);
+        $this->db->where('id_convocatoria', $id_convocatoria);
+        if(!is_null($id_validador)){
+            $this->db->where('id_validador', $id_validador);
+        }   
+        if(!is_null($id_seccion)){
+            $this->db->where('id_seccion', $id_seccion);
+        }
+        $this->db->where('activo', true);
+        $registros = $this->db->get('validacion.validacionN1_seccion')->result_array();
+        return $registros;
+    }
+
+    public function get_ratificacion($id_docente, $id_convocatoria, $id_validador = null){
+        $this->db->where('id_docente', $id_docente);
+        $this->db->where('id_convocatoria', $id_convocatoria);
+        $this->db->where('activo', true);
+        if(!is_null($id_validador)){
+            $this->db->where('id_validador', $id_validador);
+        }   
+        
+        $registros = $this->db->get('validacion.ratificador')->result_array();
+        return $registros;
+    }
+    
+
+    public function estado_validacion_censo($id_docente){
+        
+        $this->db->flush_cache();
+        $this->db->reset_query();
+
+    }
+
 }
