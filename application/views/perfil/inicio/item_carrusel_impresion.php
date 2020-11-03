@@ -27,8 +27,8 @@ $controlador = $this->uri->rsegment(1);
                     if($conf_validacion[1]['view_col_val_censo']){//Pinta columnas validacion de la seccion
 
             ?>
-                        <th> <input type="radio" id="radio_si_general<?php echo $id_seccion?>" name="radio_general_<?php echo $id_seccion?>" data-seccion="<?php echo $id_seccion?>" onclick="selecciona_todo(this);" value="si"><label>Si a todo </label></th>
-                        <th> <input type="radio" id="radio_no_general<?php echo $id_seccion?>" name="radio_general_<?php echo $id_seccion?>" data-seccion="<?php echo $id_seccion?>" onclick="selecciona_todo(this);" value="no"><label>No a todo </label></th>
+                        <th> <input type="radio" id="radio_si_general<?php echo $id_seccion?>" name="radio_general_<?php echo $id_seccion?>" class="tipo_radio" data-seccion="<?php echo $id_seccion?>" onclick="selecciona_todo(this);" value="si"><label>Si a todo </label></th>
+                        <th> <input type="radio" id="radio_no_general<?php echo $id_seccion?>" name="radio_general_<?php echo $id_seccion?>" class="tipo_radio" data-seccion="<?php echo $id_seccion?>" onclick="selecciona_todo(this);" value="no"><label>No a todo </label></th>
                         
             <?php
             ?>

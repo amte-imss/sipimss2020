@@ -9,8 +9,8 @@
                     <label  class="control-label text-right">Comentario:</label>        
             </div>
             <div class="col-md-6 text-right">
-                <input type="radio" id="radio_si_<?php echo $id_censo;?>" class="ctrselect_si_<?php echo $id_seccion?>" name="<?php echo $id_censo;?>" value="si"><label>Si </label>
-                <input type="radio" id="radio_no_<?php echo $id_censo;?>" class="ctrselect_no_<?php echo $id_seccion?>" name="<?php echo $id_censo;?>" value="no"><label>No </label>            
+                <input type="radio" id="radio_si_<?php echo $id_censo;?>" class="ctrselect_si_<?php echo $id_seccion?> tipo_radio" name="<?php echo $id_censo;?>" value="si"><label>Si </label>
+                <input type="radio" id="radio_no_<?php echo $id_censo;?>" class="ctrselect_no_<?php echo $id_seccion?> tipo_radio" name="<?php echo $id_censo;?>" value="no"><label>No </label>            
             </div>
         </div>
     <?php }else{?>

@@ -10,6 +10,7 @@ function carga_datos_validacion_seccion(){
             var val_secciones = datos_validacion_seccion[index];
             //comentario
             $("#coment_seccion_"+index).val(val_secciones.comentario);
+            
             inhabilita_seccion(index);
             //validacion secciones
             Object.keys(val_secciones.elementos_censo).forEach(function (indexc) {
@@ -20,6 +21,7 @@ function carga_datos_validacion_seccion(){
             });
         });
     }
+    inhabilita_seccion();
 }
 
 function selecciona_todo(elemento){
@@ -35,8 +37,8 @@ function selecciona_todo(elemento){
     
 }
 
-function inhabilita_seccion(seccion){
-    var value_si = $("#radio_si_general"+seccion).val();
+function inhabilita_seccion(){
+    /*var value_si = $("#radio_si_general"+seccion).val();
     var value_no = $("#radio_no_general"+seccion).val();
     //console.log(value_si + " . " +seccion);
     if(typeof value_si === 'undefined'){
@@ -59,8 +61,16 @@ function inhabilita_seccion(seccion){
         //console.log(this.id);
         //console.log(this.name);
         $("#"+this.id).attr('disabled', 'disabled');
-    });
-    
+    });*/
+    var status_val = $("#status_validacion_docente").val(); 
+    console.log(status_val);
+    if(status_val != 9 && status_val != 8){
+        $(".tipo_radio").each(function (index) {
+            //console.log(this.id);
+            //console.log(this.name);
+            $("#"+this.id).attr('disabled', 'disabled');
+        });
+    }
 }
 
 function guarda_val_seccion(elemento){
@@ -98,8 +108,8 @@ function guarda_val_seccion(elemento){
                 //console.log(resp);                    
                 if (typeof resp.mensaje !== 'undefined') {//Muestra mensaje al usuario si este existe
                     if (resp.tp_msg === 'success') {                        
-                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 5000, 'div_error_'+ seccion,'alerta_seccion_'+seccion,'msg_'+seccion);
-                        inhabilita_seccion(seccion);
+                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 5000, 'div_error_'+ seccion,'alerta_seccion_'+seccion,'msg_'+seccion);                        
+                        $("#btn_val_seccion_"+seccion).text("Modificar");
                         if($("#status_validacion_docente").val()==8 || $("#status_validacion_docente").val()=='8'){                                    
                             setTimeout("location.reload()", 4000);        
                         }                    
