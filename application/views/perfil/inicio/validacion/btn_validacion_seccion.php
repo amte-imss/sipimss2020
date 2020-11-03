@@ -5,7 +5,7 @@
 ?>
 
 <div class="text-right">
-    <button class="btn btn-success" id="btn_val_seccion_<?php echo $id_seccion; ?>" style=" background-color:#008EAD" 
+    <button class="btn btn-success btn_guardar_seccion" id="btn_val_seccion_<?php echo $id_seccion; ?>" style=" background-color:#008EAD" 
         data-seccion="<?php echo $id_seccion; ?>"
         data-path="<?php echo $controlador; ?>"
         onclick="guarda_val_seccion(this);"

@@ -84,7 +84,7 @@ function lista_docentes(){
             {name: 'id_docente_carrera', title: "Docente de carrera", type: "select", items:fase_carrera_docente, valueField: "id_docente_carrera", textField: "descripcion", visible:true},
             {name: 'id_status_validacion', title: "Estado validación", type: "select", items:estados_validacion, valueField: "id", textField: "label", visible:true},
             {name: 'ratificado', title: "Ratificado", type: "select", items:ratificado, valueField: "id", textField: "label", visible:true},
-            {name: 'total_registros_censo', title: "Total registros", type: "text", visible:true, /*width:"15"*/},
+            {name: 'total_registros_censo', title: "Total registros", type: "text", visible:true},
             //{name: 'id_elemento_catalogo_padre', title: 'Elemento padre', type: 'select', items: json_elementos_catalogo_padre, valueField: "id_elemento_catalogo", textField: "label"},
             //{name: 'id_elemento_catalogo_hijo', title: 'Elemento hijo', type: 'select', items: json_elementos_catalogo_hijo, valueField: "id_elemento_catalogo", textField: "label"},
             {type: "control", editButton: false, deleteButton: false, visible:true,
@@ -95,7 +95,17 @@ function lista_docentes(){
                 updateButtonTooltip: "Actualizar", // tooltip of update item button
                 cancelEditButtonTooltip: "Cancelar", // tooltip of cancel editing button
                 itemTemplate: function (value, item) {
-                    return '<a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">Ver detalle</a>';
+                    var liga = 
+                    '<a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'/2">Ver detalle</a>';
+                    if((item.id_status_validacion != 1 || item.id_status_validacion != '1') && item.total_registros_censo > 0){
+                        var name_boton = 'Ver validación'
+                        if(item.id_status_validacion == 7 || item.id_status_validacion == '7'){
+                             name_boton = 'Ver ratificación'                            
+                        }
+                        liga +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
+                    }
+
+                    return liga; 
                 }
             }
         ]

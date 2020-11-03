@@ -11,6 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!-- <div class="panel-heading">
     Formación
 </div> -->
+<input id="status_validacion_docente" type="hidden" value="<?php echo $status_validacion_censo;?>">
 <ul class="nav nav-pills">
     <?php
     //$active = 'active';

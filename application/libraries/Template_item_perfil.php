@@ -439,6 +439,7 @@ class Template_item_perfil {
 
         }
         $array_carrucel['files_js_validacion_censo'] = '/validador/validacion_censo.js';
+        $array_carrucel['status_validacion_censo'] = $this->status_validacion;
         
         $resul_view_tab = $this->CI->load->view($tpl_tab_perfil, $array_carrucel, TRUE);//Genera la vista de tab's, separadas por actividades
         //        $datos['elementos_seccion'] = $resul_view_tab;
@@ -472,7 +473,8 @@ class Template_item_perfil {
                     
                 break;
                 case 3://vista de la validación general  
-                    if($this->rol_valida ==LNiveles_acceso::Validador1 && $estado_valido['valido_estado']){             
+                    if($this->rol_valida ==LNiveles_acceso::Validador1 && $estado_valido['valido_estado']){
+                        //$param['valido_estado'] = $estado_valido['valido_estado'];
                         $result['view'] = $this->CI->load->view('perfil/inicio/validacion/validacion_n1_gen.php', $param, true);
                         $result['validar_proceso'] = true;
                     }

@@ -20,7 +20,7 @@ class Validacion extends Informacion_docente {
     public function index() {
     }
 
-    public function detalle_censo_docente($id_docente = null){
+    public function detalle_censo_docente($id_docente = null, $tipo = 1){
          
         //Sesión de usuario obtiene la sesión de la cuenta
         $datos_sesion = $this->get_datos_sesion();
@@ -35,7 +35,12 @@ class Validacion extends Informacion_docente {
             }
             $this->load->library('template_item_perfil');
             $this->template_item_perfil->set_rol_valida($rol_valida['rol_aplica']);
-            $this->template_item_perfil->set_tipoVistaDocente(Template_item_perfil::VIEW_VALIDACION);//Tipo de vista
+            if($tipo==1){
+                $this->template_item_perfil->set_tipoVistaDocente(Template_item_perfil::VIEW_VALIDACION);//Tipo de vista
+            }else{
+                $this->template_item_perfil->set_tipoVistaDocente(Template_item_perfil::VIEW_DOCENTE);//Tipo de vista
+
+            }
             $datos_elemento_seccion = $this->get_detalle_registros_censo($id_docente);
             //Datos de la validacion de la seccion
             $this->load->model('ConvocatoriaV2_model', 'convocatoria');

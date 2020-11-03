@@ -1,6 +1,7 @@
 
 $(document).ready(function () {
     carga_datos_validacion_seccion();
+    
 });
 
 function carga_datos_validacion_seccion(){
@@ -9,6 +10,8 @@ function carga_datos_validacion_seccion(){
             var val_secciones = datos_validacion_seccion[index];
             //comentario
             $("#coment_seccion_"+index).val(val_secciones.comentario);
+            //$("#btn_val_seccion_"+index).text("Modificar");
+            $("#btn_val_seccion_"+index).css("display", "none");
             //validacion secciones
             Object.keys(val_secciones.elementos_censo).forEach(function (indexc) {
                 var val_c = val_secciones.elementos_censo[indexc];
@@ -67,10 +70,15 @@ function guarda_val_seccion(elemento){
                 var resp = $.parseJSON(data);
                 //console.log(resp);                    
                 if (typeof resp.mensaje !== 'undefined') {//Muestra mensaje al usuario si este existe
-                    if (resp.tp_msg === 'danger') {
-                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 10000, 'div_error_'+ seccion,'alerta_seccion_'+seccion,'msg_'+seccion);                       
+                    if (resp.tp_msg === 'success') {                        
+                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 5000, 'div_error_'+ seccion,'alerta_seccion_'+seccion,'msg_'+seccion);
+                        //data_element.text("Modificar");
+                        data_element.css("display", "none");
+                        if($("#status_validacion_docente").val()==8 || $("#status_validacion_docente").val()=='8'){                                    
+                            setTimeout("location.reload()", 4000);        
+                        }                    
                     }else{
-                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 5000, 'div_error_'+ seccion,'alerta_seccion_'+seccion,'msg_'+seccion);                       
+                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 10000, 'div_error_'+ seccion,'alerta_seccion_'+seccion,'msg_'+seccion);                       
                     }
                 }
                 
@@ -124,12 +132,16 @@ function guarda_validacion(elemento){
                 var resp = $.parseJSON(data);
                 //console.log(resp);                    
                 if (typeof resp.mensaje !== 'undefined') {//Muestra mensaje al usuario si este existe
-                    if (resp.tp_msg === 'danger') {
-                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 10000, 'div_error_'+ doc,'alerta_'+doc,'msg_'+doc);
-                    }else{
+                    if (resp.tp_msg === 'success') {
                         $('#item_finaliza_validacion').hide();
+                        //$('.fin_validacion_btn').css("display", "block");
+                        $(".btn_guardar_seccion").each(function (index) {
+                            $("#"+this.id).css("display", "none");
+                        });                        
                         get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 5000, 'div_error_'+ doc,'alerta_'+doc,'msg_'+doc);
-                        setTimeout("location.reload()", 5000);
+                        setTimeout("location.reload()", 4000);
+                    }else{
+                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 10000, 'div_error_'+ doc,'alerta_'+doc,'msg_'+doc);
                     }
                 }
                 
@@ -183,12 +195,12 @@ function guarda_ratificacion(elemento){
                 var resp = $.parseJSON(data);
                 //console.log(resp);                    
                 if (typeof resp.mensaje !== 'undefined') {//Muestra mensaje al usuario si este existe
-                    if (resp.tp_msg === 'danger') {
-                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 10000, 'div_error_'+ doc,'alerta_'+doc,'msg_'+doc);
-                    }else{
+                    if (resp.tp_msg === 'success') {
                         $('#item_finaliza_ratificacion').hide();
                         get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 5000, 'div_error_'+ doc,'alerta_'+doc,'msg_'+doc);
-                        setTimeout("location.reload()", 5000);
+                        setTimeout("location.reload()", 4000);
+                    }else{
+                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 10000, 'div_error_'+ doc,'alerta_'+doc,'msg_'+doc);
                     }
                 }
                 
