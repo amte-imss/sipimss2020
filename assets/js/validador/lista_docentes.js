@@ -77,7 +77,7 @@ function lista_docentes(){
           },         
         },
         fields: [
-            {name: 'clave_delegacional', title: "OOAD", type: "select", items: delegaciones,valueField: "clave_delegacional", textField: "nombre",  visible:true},
+            {name: 'clave_delegacional', title: "OOAD", type: "select", items: delegaciones,valueField: "clave_delegacional", textField: "nombre",  visible:true, filtering:!bloquea_delegacion},
             {name: 'matricula', type: "text", title: "Matrícula", visible:true},
             {name: 'nombre_docente', type: "text", title: "Nombre docente", visible:true},
             {name: 'email', title:"Correos", type: "text",  visible:true},
@@ -99,7 +99,7 @@ function lista_docentes(){
                     '<a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'/2">Ver detalle</a>';
                     if((item.id_status_validacion != 1 || item.id_status_validacion != '1') && item.total_registros_censo > 0){
                         var name_boton = 'Ver validación'
-                        if(item.id_status_validacion == 7 || item.id_status_validacion == '7'){
+                        if(item.id_status_validacion == 7 || item.id_status_validacion == '7' || item.id_status_validacion == 3 || item.id_status_validacion == '3'){
                              name_boton = 'Ver ratificación'                            
                         }
                         liga +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         

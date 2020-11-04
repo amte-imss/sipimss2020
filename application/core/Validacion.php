@@ -322,6 +322,8 @@ class Validacion extends Informacion_docente {
         }
     }
     public function listado_docentes(){
+        $datos_sesion = $this->get_datos_sesion();
+        $output['bloquea_delegacion'] = $this->get_rol_aplica($datos_sesion)['bloquea_delegacion'];
         $output['catalogos']['result_delegacional'] = $this->normativo->get_delegacional();
         array_unshift($output['catalogos']['result_delegacional'], ['clave_delegacional'=>'',"nombre"=>'Selecciona OOAD']); 
         $output['catalogos']['fase_carrera_docente'] = $this->cm->get_fase_carrera_docente();
@@ -386,7 +388,7 @@ class Validacion extends Informacion_docente {
     
     private function get_rol_aplica($datos_sesion, $data_post = null){
         $claves_rol = $this->get_roles_usuario(2);
-        $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente];
+        $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente, 'bloquea_delegacion' => 0];
         $conf['rol_docente']=LNiveles_acceso::Docente;
         $conf['convocatoria'] = $datos_sesion['convocatoria']['id_convocatoria'];
         if(isset($claves_rol[LNiveles_acceso::Normativo])){
@@ -398,12 +400,14 @@ class Validacion extends Informacion_docente {
             }
         }else if(isset($claves_rol[LNiveles_acceso::Validador2])){
             $conf['rol_aplica'] = LNiveles_acceso::Validador2;      
-                  
+            $conf['bloquea_delegacion'] = 1;      
+            
             $conf['filtros']['where']['d.clave_delegacional'] = $datos_sesion['clave_delegacional']; 
             
-
+            
         }else if(isset($claves_rol[LNiveles_acceso::Validador1])){
             $conf['rol_aplica'] = LNiveles_acceso::Validador1;
+            $conf['bloquea_delegacion'] = 1;      
             //$where['d.clave_delegacional'] =  
             $ids_usuario_registrados = $this->get_usuarios_registro_validador($datos_sesion[En_datos_sesion::ID_USUARIO]);
             if(!empty($ids_usuario_registrados)){

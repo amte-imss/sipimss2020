@@ -63,13 +63,21 @@ function inhabilita_seccion(){
         $("#"+this.id).attr('disabled', 'disabled');
     });*/
     var status_val = $("#status_validacion_docente").val(); 
-    console.log(status_val);
-    if(status_val != 9 && status_val != 8){
+    //console.log(status_val);
+    if((status_val != 9 && status_val != 8) || bloqueo_componentes_validacion_secciones == 1){
         $(".tipo_radio").each(function (index) {
-            //console.log(this.id);
-            //console.log(this.name);
             $("#"+this.id).attr('disabled', 'disabled');
         });
+        $(".tipo_textarea").each(function (index) {
+            $("#"+this.id).attr('disabled', 'disabled');
+        });
+        
+    }
+    if(status_val == 7 && status_val == 7){
+        $(".component_ratifica").each(function (index) {
+            $("#"+this.id).attr('disabled', 'disabled');
+        });
+        
     }
 }
 
@@ -81,9 +89,9 @@ function guarda_val_seccion(elemento){
     var dataSend = new FormData($('#' + formulario)[0]);    
     //var dataSend = $('#' +formulario).serialize();
     var div_respuesta = '';
-    console.log(formulario);
-    console.log(path);
-    console.log(dataSend);
+    //console.log(formulario);
+    //console.log(path);
+    //console.log(dataSend);
     //break;
     $.ajax({
 

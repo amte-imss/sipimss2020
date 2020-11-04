@@ -18,7 +18,7 @@
     <?php }?>
     <input id="seccion" name="seccion_validacion" type="hidden" value="<?php echo $id_seccion;?>" >    
     <input id="docente" name="docente" type="hidden" value="<?php echo encrypt_base64($id_docente);?>" >    
-    <textarea id="coment_seccion_<?php echo $id_seccion; ?>" name="comentario_seccion" class="md-textarea form-control" rows="3"></textarea><br>    
+    <textarea id="coment_seccion_<?php echo $id_seccion; ?>" name="comentario_seccion" class="md-textarea form-control tipo_textarea" rows="3"></textarea><br>    
     <?php echo form_error_format("comentario_seccion");?>
     <div class="col-md-12" id="div_error_<?php echo $id_seccion;?>" style='display:none'>
         <div id="alerta_seccion_<?php echo $id_seccion;?>"  class="alert alert-danger" role="alert">

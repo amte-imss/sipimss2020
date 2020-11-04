@@ -23,7 +23,7 @@
             'first' => array('' => 'Selecciona opción'),
             'value' => $ratificacion_value,
             'attributes' =>array(
-                'class'=> 'form-control',
+                'class'=> 'form-control component_ratifica',
             )
         )); 
      ?>
@@ -31,6 +31,6 @@
 </div> 
 <div> 
     <label  class="control-label text-right">Comentario:</label>
-    <textarea id="coment_ratificacion_<?php echo $aux_doc; ?>" name="comentario_ratificacion" class="md-textarea form-control" rows="5" ><?php echo $comentario_value;?></textarea><br>    
+    <textarea id="coment_ratificacion_<?php echo $aux_doc; ?>" name="comentario_ratificacion" class="md-textarea form-control component_ratifica" rows="5" ><?php echo $comentario_value;?></textarea><br>    
 </div> 
 <?php echo form_close()?>

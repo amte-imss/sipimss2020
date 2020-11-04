@@ -18,6 +18,7 @@ $controlador = '/' . $this->uri->rsegment(1);
     var fase_carrera_docente =  <?php echo json_encode($catalogos['fase_carrera_docente']); ?>;
     var estados_validacion =  <?php echo json_encode($catalogos['estados_validacion']); ?>;
     var ratificado =  <?php echo json_encode($catalogos['ratificado']); ?>;
+    var bloquea_delegacion =  <?php echo $bloquea_delegacion; ?>;
 </script>
 
 <div id="main_content" class="">

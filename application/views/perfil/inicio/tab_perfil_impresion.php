@@ -56,7 +56,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
 <?php ?>
 <br>
-
+<script>
+    var bloqueo_componentes_validacion_secciones = <?php echo $conf_validacion[4]['bloqueo_componentes_validacion_secciones']; ?>
+</script>
 <?php
 //pr($files_js_render_formularios);
 if (!empty($files_js_render_formularios)) {
@@ -69,9 +71,10 @@ if(isset($registros_validacion_seccion)){
     ?>
     <script>
         var datos_validacion_seccion = <?php echo json_encode($registros_validacion_seccion); ?>
-    </script>
+        </script>
     <?php 
 }
+
 
 if(isset($files_js_validacion_censo)){
     
@@ -79,6 +82,7 @@ if(isset($files_js_validacion_censo)){
 }
 ?>
 <script type="text/javascript">
+
     var consulta = '';
     $(document).ready(function () {
 		//console.log("Qe ");

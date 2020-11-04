@@ -428,8 +428,12 @@ class Template_item_perfil {
         if(!isset($conf_validacion[3])){//Validacion final n1
             $conf_validacion[3] = $this->get_view_validacion(3, null);
         }
+        if(!isset($conf_validacion[4])){//Validacion final n1
+            $conf_validacion[4] = $this->get_view_validacion(4, null);
+        }
         $array_carrucel['conf_validacion'][2] = $conf_validacion[2];                                            
         $array_carrucel['conf_validacion'][3] = $conf_validacion[3];
+        $array_carrucel['conf_validacion'][4] = $conf_validacion[4];
         $array_carrucel['string_value'] = $string_value;//Atrributo textos para la vista tab perfil
         $array_carrucel['secciones'] = $string_value;
         $array_carrucel['files_js_render_formularios'] = $this->get_files_js_formularios();
@@ -453,7 +457,9 @@ class Template_item_perfil {
      */
     public function get_view_validacion($tipo = 1, $param= null){
         $result = array('view'=>'', 'view_btn_guardar'=>'', 'view_btn_ratificar'=>'', 
-        'view_col_val_censo' => false, 'validar_proceso'=>false, 'vista_ratificacion'=>false);
+        'view_col_val_censo' => false, 'validar_proceso'=>false, 'vista_ratificacion'=>false
+        ,'bloqueo_componentes_validacion_secciones' => 1
+    );
 
         $estado_valido = $this->aplica_estado_validacion($tipo, $this->status_validacion);
         if($this->tipo_vista == Template_item_perfil::VIEW_VALIDACION){
@@ -494,8 +500,16 @@ class Template_item_perfil {
                         //pr("<-->".$param['is_view_personalizada'] . " -> " . $param['id_seccion']);
                         if(!is_null($param)){
                             $result['view_btn_guardar'] = $this->CI->load->view('perfil/inicio/validacion/btn_validacion_seccion.php', $param, true);
+                            $result['bloqueo_componentes_validacion_secciones'] = 0;
                             //pr($result['view']);                            
                         }
+                        $result['validar_proceso'] = true;
+                    }
+                    
+                break;            
+                case 4://Vista de la validacion por seccion                                        
+                    if($this->rol_valida ==LNiveles_acceso::Validador1 && $estado_valido['valido_estado']){                                                   
+                        $result['bloqueo_componentes_validacion_secciones'] = 0;
                         $result['validar_proceso'] = true;
                     }
                     
