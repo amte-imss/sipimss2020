@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 
 function lista_docentes(){
-    //console.log(site_url + url_ctr + "/docentes/");
+    //console.log(site_url + url_ctr + "/docentes/");s
     $(function() {
     var grid_list=$('#js_grid_lista_docentes').jsGrid({
         height: "520px",
@@ -124,4 +124,34 @@ function lista_docentes(){
             var page = parseInt($(this).val(), 10);
             $("#js_grid_lista_docentes").jsGrid("option", "pageSize", page);
         });*/
+}
+
+function obtener_cabeceras() {
+    var arr_header = {
+        clave_delegacional: 'OOAD',
+        matricula: 'Matrícula',
+        nombre_docente: 'Nombre docente',
+        email: 'Correo electrónico',
+        id_docente_carrera: 'Fase docente de carrera',
+        id_status_validacion: 'Estatus',
+        ratificado: 'Ratificado',
+        total_registros_censo: 'Total de registros'
+    }
+
+    return arr_header;
+}
+
+function cabeceras_no_exportar() {
+    var arr_header = {
+        acciones: 'Acciones',
+    }
+    return arr_header;
+}
+
+
+function exportar_lista_docentes(element) {
+    var namegrid = $(element).data('namegrid');
+    var headers = remove_headers(obtener_cabeceras(), cabeceras_no_exportar());
+//    var headers = obtener_cabeceras_implementaciones();
+    export_xlsx_grid(namegrid, headers, 'docentes', 'docentes');
 }
