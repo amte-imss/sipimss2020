@@ -286,4 +286,27 @@ class ConvocatoriaV2 extends MY_Controller implements IWorkflow
         redirect('inicio');
     }
 
+    /**
+     * Función que crea un registro para finalizar la convocatoria
+     * @author LEAS
+     * 29/10/2020
+     */
+    public function finaliza_convocatoria_docente_censo_general(){
+
+        $su = $this->get_datos_sesion();
+        //pr($su);
+        if(isset($su['niveles_acceso_cves'][LNiveles_acceso::Normativo]) &&  isset($su['convocatoria']['id_convocatoria']))
+        {
+            $docentes = $this->convocatoria->docentes(LNiveles_acceso::Docente);
+            
+            $guardar = array('docentes' => $docentes, 'id_convocatoria'=>$su['convocatoria']['id_convocatoria'], 'activo_edicion'=>false); //revisar si el id_linea del tiempo viernes
+            $respuesta = $this->convocatoria->registro_finaliza_convocatoria_registro_censo_docente_general($guardar);
+            if($respuesta['tp_msg'] == 'success')
+            {
+                redirect('inicio');
+            }
+        }
+    }
+
+    
 }

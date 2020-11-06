@@ -221,7 +221,7 @@ class Convocatoria extends MY_Controller implements IWorkflow
             $filtros['tipo_convocatoria'] = $convocatoria['id_tipo_convocatoria'];
             $convocatoria = $this->convocatoria->get_convocatorias($filtros)[0];
             $output['convocatoria'] = $convocatoria;
-//            pr($convocatoria);
+            //pr($vista_url);
             $vista = $this->load->view($vista_url, $output, true);
         }
         return $vista;

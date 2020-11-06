@@ -173,14 +173,20 @@ class Sesion_model extends CI_Model {
         return $convocatoria;
     }
 
-    public function get_info_convocatoria_censo()
+    public function get_info_convocatoria_censo($id_convocatoria = null)
     {
         $this->db->flush_cache();
         $this->db->reset_query();
         $select = array(
-            'id_convocatoria', 'nombre', 'clave', 'id_tipo_convocatoria', 'fechas_inicio', 'fechas_fin', 'activa'
+            'id_convocatoria', 'nombre', 'clave', 'id_tipo_convocatoria', 'fechas_inicio', 'fechas_fin', 'activa', 'is_confirmado_cierre_registro_censo'
         );
         $this->db->select($select);
+        if(is_null($id_convocatoria)){
+            $this->db->where('C.activa', true);                
+            
+        }else{            
+            $this->db->where('C.id_convocatoria', $id_convocatoria);                
+        }
         $this->db->where('C.activa', true);                
         $convocatoria = $this->db->get('convocatoria.convocatorias C')->result_array();
         // pr($this->db->last_query());

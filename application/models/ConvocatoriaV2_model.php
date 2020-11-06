@@ -592,6 +592,77 @@ class ConvocatoriaV2_model extends MY_Model
         }
         return $status;
     }
+    public function registro_finaliza_convocatoria_registro_censo_docente_general($datos){
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $status = array('success' => false, 'message' => 'No se agrego correctamente el registro', 'data'=>[]);
+        try
+        {   if(isset($datos['docentes'])){
+            $docentes = $datos['docentes'];
+            unset($datos['docentes']);
+            //pr($datos);exit();
+            //pr($docentes);exit();
+            $resp = [];
+            foreach($docentes as $key => $value){
+                
+                $this->db->where('id_docente', $value['id_docente']);
+                $this->db->where('id_convocatoria', $datos['id_convocatoria']);
+                $registros = $this->db->get('validacion.fin_registro_censo')->result_array();
+                // pr($registros);
+                    if(empty($registros))
+                    {
+                        $datos['es_finaliza_docente'] = false;
+                        $datos['id_docente'] = $value['id_docente'];
+                        //pr($datos);
+                        $this->db->reset_query();
+                        $this->db->insert('validacion.fin_registro_censo', $datos);
+                    }else{
+                        $this->db->reset_query();
+                        $datos['es_finaliza_docente'] = true;
+                        
+                        $this->db->where('id_docente', $value['id_docente']);
+                        $this->db->where('id_convocatoria', $datos['id_convocatoria']);
+                        $activo = array('activo_edicion'=>false);
+                        $this->db->update('validacion.fin_registro_censo', $datos);                
+                        
+                    }
+                    if ($this->db->trans_status() === FALSE) {
+                        $this->db->trans_rollback();
+                        $status['tp_msg'] = 'danger';
+                        $status['mensaje'] = 'Ocurrio un error al guardar la ratificación. Por favor intentelo nuevamente';
+                    break;
+                } else {
+                    //    $this->db->trans_commit();
+                    //  $datos['respuesta']['mensaje'] = 'La finalización se guardo correctamente';
+                    $status['tp_msg'] = 'success';
+                    
+                }
+                if($status['tp_msg'] == 'success'){
+                    //Guarda convocatoria
+                    $conv['is_confirmado_cierre_registro_censo'] = true;
+                        $this->db->reset_query();
+                        $this->db->where('id_convocatoria', $datos['id_convocatoria']);
+                        $this->db->update('convocatoria.convocatorias', $conv);                
+                        if ($this->db->trans_status() === FALSE) {
+                            $this->db->trans_rollback();
+                            $status['tp_msg'] = 'danger';
+                            $status['mensaje'] = 'Ocurrio un error al guardar la ratificación. Por favor intentelo nuevamente';
+                        }else{
+                            $status['tp_msg'] = 'success';
+                            $status['mensaje'] = 'La finalización se guardo correctamente';
+                        }
+                    }
+                }
+            }
+           
+        }catch(Exception $ex)
+        {
+            $status['tp_msg'] = 'danger';
+            $status['mensaje'] = 'Ocurrio un error al guardar la ratificación. Por favor intentelo nuevamente';
+        }
+         
+        return $status;
+    }
 
     public function upsert_validacion_secciones(&$datos){
         if(!empty($datos['data'])){
@@ -762,5 +833,34 @@ class ConvocatoriaV2_model extends MY_Model
         $this->db->reset_query();
 
     }
+
+    public function validar_cerrar_convocatoria($id_convocatoria){
+        $convocatoria = $this->sesion->get_info_convocatoria_censo($id_convocatoria);
+        $fechas_inicio = transform_date($convocatoria['fechas_inicio']);
+        $fechas_fin = transform_date($convocatoria['fechas_fin']);
+        $date1=date_create(date('Y-m-d'));
+        $date2=date_create($fechas_fin[0]);
+        $dias = date_diff($date1, $date2)->days;
+        if($date1 > $date2){
+            $dias = $dias * -1;                
+        }
+        //Si es fecha mayor al cierre de convocatoria y no se ha cerrado
+        if($dias<0 && !$convocatoria['is_confirmado_cierre_registro_censo']){//aparece boton de finaliza cierre de censo            
+            return true;
+        }
+        return false;
+    }
+
+    public function docentes($rol){
+        $this->db->select('d.id_docente');
+        $this->db->join('sistema.usuarios u', 'u.id_usuario = d.id_usuario');
+        $this->db->join('sistema.usuario_rol ur', 'ur.id_usuario = u.id_usuario');
+        $this->db->where('u.activo', true);
+        $this->db->where('ur.clave_rol', $rol);           
+        
+        $registros = $this->db->get('censo.docente d')->result_array();
+        return $registros;
+    }
+
 
 }

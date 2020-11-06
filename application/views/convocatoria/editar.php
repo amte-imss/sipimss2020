@@ -13,7 +13,7 @@ $fechas_fin = transform_date($convocatoria['fechas_fin']);
 //pr($fechas_fin);
 ?>
 <style>
-    .datepicker {z-index: 1151 !important;}
+    
 </style>
 <div class="row">
     <div class="form-group">
@@ -91,11 +91,11 @@ foreach ($nombres_fechas as $key => $value)
             <div class="col-md-6">
                 <div class="input-group input-group-sm">
                     <span class="input-group-addon">Fecha de inicio <?php echo $value; ?></span>
-                    <?php
+                    <?php //pr(date_format(date_create($fechas_fin[$key]), 'd/m/Y'));
                     echo $this->form_complete->create_element(
                             array('id' => 'fecha_inicio_'.$key,
-                                'type' => 'date',
-                                'value' => date_format(date_create($fechas_inicio[$key]), 'd/m/Y'),
+                                'type' => 'text',
+                                'value' => date_format(date_create($fechas_fin[$key]), 'd/m/Y'),
                                 'attributes' => array(
                                     'class' => 'form-control fecha',
                                     'data-toggle' => 'tooltip',
@@ -112,7 +112,7 @@ foreach ($nombres_fechas as $key => $value)
                     <?php
                     echo $this->form_complete->create_element(
                             array('id' => 'fecha_fin_'.$key,
-                                'type' => 'date',
+                                'type' => 'text',
                                 'value' => date_format(date_create($fechas_fin[$key]), 'd/m/Y'),
                                 'attributes' => array(
                                     'class' => 'form-control fecha',

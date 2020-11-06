@@ -43,10 +43,17 @@ class MY_Controller extends CI_Controller {
             // pr($menu);
             $this->template->setNav($menu);
             $notificaciones = $this->notificaciones->obtener_notificacion_estatica();
+            
+            
             $data['notificaciones'] = $notificaciones;
+            $data['roles_usuario'] = $this->get_roles_usuario(2);
+            $data['finaliza_etapas'] = $this->boton_finaliza_etapa();
+            //$data['finaliza_etapas'] = '';
+            $this->template->set_finaliza_etapas_cierre($data['finaliza_etapas']);
 
             // pr($data);
-            $notificaciones = $this->load->view('notificaciones/estaticas.tpl.php', $data, true);
+            $notificaciones = $this->load->view('notificaciones/estaticas_libres.tpl.php', $data, true);
+             //pr($notificaciones);
             $this->template->set_notificaciones_estaticas($notificaciones);
             $this->carga_imagen();
             //pr($menu);
@@ -57,6 +64,26 @@ class MY_Controller extends CI_Controller {
         //$this->output->parse_exec_vars = TRUE;
 //        echo ' ';
         //$this->output->append_output($this->benchmark->memory_usage());
+    }
+
+    private function notificaciones_estaticas(){
+        $notificaciones = $this->notificaciones->obtener_notificacion_estatica();
+            
+            $data['notificaciones'] = $notificaciones;
+    }
+
+    private function boton_finaliza_etapa(){
+        if(isset($this->get_datos_sesion()['convocatoria'])){
+            $this->load->model('ConvocatoriaV2_model', 'convV2');
+            //$this->load->model('Sesion_model', 'sesion');
+            $convocatoria = $this->get_datos_sesion()['convocatoria'];
+            if($this->convV2->validar_cerrar_convocatoria($convocatoria['id_convocatoria'])){
+                $vista_cierre = $this->load->view('convocatoria/cerrar_registro_censo_normativo.php',null, true);
+                return $vista_cierre;
+            }                        
+        }
+        return '';
+        //pr($this->get_datos_sesion()['convocatoria']);
     }
 
     private function carga_imagen() {

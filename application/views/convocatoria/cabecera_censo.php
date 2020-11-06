@@ -23,10 +23,10 @@ $nombres_fechas = array(0 => 'registro', 1 => 'validación N1', 2 => 'validació
     <label><?php echo $convocatoria['clave']; ?></label>
 </div>
 <div class="col-md-6">
-    <label>Segmento: <?php echo $segmentos[$convocatoria['target']]; ?></label>
+    <label>Segmento: <?php echo ""//$segmentos[$convocatoria['target']]; ?></label>
 </div>
 <div class="col-md-6">
-    <label>Porcentaje de muestra: <?php echo $convocatoria['porcentaje']; ?></label>
+    <label>Porcentaje de muestra: <?php ""//echo $convocatoria['porcentaje']; ?></label>
 </div>
 
 <?php

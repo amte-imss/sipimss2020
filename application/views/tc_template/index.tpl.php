@@ -145,7 +145,7 @@
                     
                 }
                 ?>
-
+                <?php echo $finaliza_etapas;?>
 
                 <?php if(isset($this->session->userdata('die_sipimss')['anterior']))
                 {

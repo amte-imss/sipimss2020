@@ -53,7 +53,8 @@ class Template {
             "cuerpo_modal" => null,
             "blank" => null,
             'date_picker' => true,
-            'notificaciones_estaticas' => null
+            'notificaciones_estaticas' => null,
+            'finaliza_etapas' => null
         );
 
         $this->comprobante = null;
@@ -465,6 +466,12 @@ class Template {
     function set_notificaciones_estaticas($notificaciones)
     {
         $this->elements['notificaciones_estaticas'] = $notificaciones;
+        // pr($this->elements['notificaciones_estaticas']);
+    }
+
+    function set_finaliza_etapas_cierre($finaliza_etapas)
+    {
+        $this->elements['finaliza_etapas'] = $finaliza_etapas;
         // pr($this->elements['notificaciones_estaticas']);
     }
 
