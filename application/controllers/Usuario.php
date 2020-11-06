@@ -12,7 +12,7 @@ class Usuario extends MY_Controller
 
     const LIMIT = 10, LISTA = 'lista', BASICOS = 'basico', PASSWORD = 'password',
             NIVELES_ACCESO = 'niveles', NO_SIAP = 'no_siap', SIAP = 'siap', NO_IMSS = 'no_imss',
-            STATUS_ACTIVIDAD = 'actividad';
+            STATUS_ACTIVIDAD = 'actividad', STATUS_REAPERTURA = 'reapertura_registro';
 
     function __construct()
     {
@@ -62,7 +62,7 @@ class Usuario extends MY_Controller
            'F.id_categoria', 'F.nombre categoria', 'C.cve_tipo_contratacion',
            'docentes.curp', 'docentes.rfc', 'docentes.telefono_particular',
            'docentes.telefono_laboral', 'docentes.email', 'usuarios.activo usuario_activo',
-           'D.clave_departamental', 'F.clave_categoria'
+           'D.clave_departamental', 'F.clave_categoria', '(select activo_edicion from validacion.fin_registro_censo frc where frc.id_docente = docentes.id_docente) activo_edicion'
         );
         $resultado = $this->usuario->get_usuarios($params);
         if (count($resultado) == 1)
@@ -162,6 +162,9 @@ class Usuario extends MY_Controller
                 case Usuario::STATUS_ACTIVIDAD:
                    $validations = $this->config->item('form_status_actividad_usuario');
                    break;
+                case Usuario::STATUS_REAPERTURA:
+                    $validations = $this->config->item('form_status_reapertura_usuario');
+                    break;
             }
             $this->form_validation->set_rules($validations); //Añadir validaciones
             if ($this->form_validation->run() == TRUE)

@@ -86,6 +86,14 @@ $config['form_status_actividad_usuario'] = array(
     )
 );
 
+$config['form_status_reapertura_usuario'] = array(
+    array(
+        'field' => 'status_reapertura',
+        'label' => 'Actividad registro',
+        'rules' => 'required|integer'
+    )
+);
+
 
 $config["login"] = array(
     array(

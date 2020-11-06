@@ -332,6 +332,11 @@ class Validacion extends Informacion_docente {
         array_unshift($output['catalogos']['estados_validacion'], ['id'=>'',"label"=>'Selecciona...']); 
         $output['catalogos']['ratificado'] = array(["id"=>1, "label"=>"Sí"], ["id"=>2, "label"=>"No"]);
         array_unshift($output['catalogos']['ratificado'], ['id'=>'',"label"=>'Selecciona...']); 
+        $datos_sesion = $this->get_datos_sesion();
+        $output['permiso'] = 0;
+        if(isset($datos_sesion['niveles_acceso_cves'][LNiveles_acceso::Super]) || isset($datos_sesion['niveles_acceso_cves'][LNiveles_acceso::Normativo])){
+            $output['permiso'] = 1;
+        }
         $this->template->setTitle('Censo de docentes');
         $main_content = $this->load->view('validador/body_lista_docentes.tpl.php', $output, true);
         $this->template->setMainContent($main_content);

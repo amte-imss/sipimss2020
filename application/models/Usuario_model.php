@@ -475,8 +475,29 @@ class Usuario_model extends MY_Model {
             case Usuario::STATUS_ACTIVIDAD:
                 $salida = $this->update_status_actividad($params);
                 break;
+            case Usuario::STATUS_REAPERTURA:
+                $salida = $this->update_reapertura_registro($params);
+                break;
         }
         return $salida;
+    }
+
+    private function update_reapertura_registro($params = [])
+    {
+       $this->db->flush_cache();
+       $this->db->reset_query();
+       $salida = false;
+       try{
+           $status_reapertura = $params['status_reapertura'] == 1 ? true : false;
+           $this->db->set('activo_edicion', $status_reapertura);
+           $this->db->where('id_docente = (select id_docente from censo.docente d where d.id_usuario='.$params['id_usuario'].')');
+           $this->db->update('validacion.fin_registro_censo');
+           $salida = true;
+       }catch(Exception $ex)
+       {
+       }
+       $this->db->reset_query();
+       return $salida;
     }
 
     private function update_status_actividad($params = [])

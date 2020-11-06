@@ -19,16 +19,19 @@ $controlador = '/' . $this->uri->rsegment(1);
     var estados_validacion =  <?php echo json_encode($catalogos['estados_validacion']); ?>;
     var ratificado =  <?php echo json_encode($catalogos['ratificado']); ?>;
     var bloquea_delegacion =  <?php echo $bloquea_delegacion; ?>;
+    var permiso = "<?php echo $permiso; ?>";
 </script>
 
 <div id="main_content" class="">
     <div id="page-inner">
         <h2>Censo de docentes</h2>
-        <div class="col-md-12 col-sm-12">
-            <a href="#" type="button" class="btn btn-theme animated flipInY visible pull-right" aria-expanded="false" onclick="exportar_lista_docentes(this);" data-namegrid="js_grid_lista_docentes">
-                <span>Exportar</span>
-            </a>
-        </div><br>
+        <?php if ($permiso == 1){ ?>
+            <div class="col-md-12 col-sm-12">
+                <a href="#" type="button" class="btn btn-theme animated flipInY visible pull-right" aria-expanded="false" onclick="exportar_lista_docentes(this);" data-namegrid="js_grid_lista_docentes">
+                    <span>Exportar</span>
+                </a>
+            </div><br>
+        <?php } ?>
         <h5 id="docentes_registrados"></h5>
         <div id="js_grid_lista_docentes"><div>
     <div>

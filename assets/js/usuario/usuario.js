@@ -19,6 +19,11 @@ $(function () {
         data_ajax($(this).attr('action'), $(this), null, actualiza_actividad_usuario, true,[]);
     });
 
+    $('#form_reapertura').submit(function (event) {
+        event.preventDefault();
+        data_ajax($(this).attr('action'), $(this), null, actualiza_actividad_usuario, true,[]);
+    });
+
     $('#unidad_texto').keyup(function () {
         keyword = document.getElementById('unidad_texto').value;
         console.log('buscando:' + keyword);
