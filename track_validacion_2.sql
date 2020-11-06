@@ -71,6 +71,7 @@ insert into sistema.roles_modulos (clave_modulo, clave_rol, activo) values ('CEN
 insert into sistema.modulos (clave_modulo, nombre, url, activo, modulo_padre_clave, orden, clave_configurador_modulo) values ('CENSO_TER_RATI', 'Ratificar', '/censo/ratificar_validacion', true, 'CENSO', 8, 'ACCION');
 insert into sistema.roles_modulos (clave_modulo, clave_rol, activo) values ('CENSO_TER_RATI', 'VALIDADOR2',true);
 
+delete from catalogo.unidades_instituto where id_unidad_instituto=27483;
 ---Convocatoria
 
 --Bandera finaliza docente u otro

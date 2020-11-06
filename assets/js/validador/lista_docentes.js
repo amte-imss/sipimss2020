@@ -105,7 +105,7 @@ function lista_docentes(){
                         liga +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
                     }
                     if(permiso==1){
-                        liga = '<a href="'+site_url+'/usuario/get_usuarios/'+item.id_usuario+'">Editar</a> | ' + liga;
+                        //liga = '<a href="'+site_url+'/usuario/get_usuarios/'+item.id_usuario+'">Editar</a> | ' + liga;
                     }
 
                     return liga; 
