@@ -10,6 +10,7 @@ function carga_datos_validacion_seccion(){
             var val_secciones = datos_validacion_seccion[index];
             //comentario
             $("#coment_seccion_"+index).val(val_secciones.comentario);
+            $("#btn_val_seccion_"+index).text("Modificar");
             
             inhabilita_seccion(index);
             //validacion secciones

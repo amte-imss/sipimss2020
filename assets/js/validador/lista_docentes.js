@@ -97,15 +97,48 @@ function lista_docentes(){
                 updateButtonTooltip: "Actualizar", // tooltip of update item button
                 cancelEditButtonTooltip: "Cancelar", // tooltip of cancel editing button
                 itemTemplate: function (value, item) {
-                    var liga = 
-                    '<a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'/2">Ver detalle</a>';
-                    if((item.id_status_validacion != 1 || item.id_status_validacion != '1') && item.total_registros_censo > 0){
-                        var name_boton = 'Ver validación'
-                        if(item.id_status_validacion == 7 || item.id_status_validacion == '7' || item.id_status_validacion == 3 || item.id_status_validacion == '3'){
-                             name_boton = 'Ver ratificación'                            
+                    var liga = '<a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'/2">Ver detalle</a>';
+                    var liga_aux = '';
+                    var control_normal = true;
+                    var ambas = 0;                  
+                    var name_boton = 'Ver validación';
+                    if(typeof item.permite_validacion !== "undefined"){
+                        if(item.permite_validacion==1){
+                            if((item.id_status_validacion != 1 || item.id_status_validacion != '1') && item.total_registros_censo > 0){
+                                liga_aux +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
+                                ambas += 1;
+                            }
                         }
-                        liga +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
+                        
+                        control_normal = false;
                     }
+                    if(typeof item.permite_ratificacion !== "undefined"){                        
+                        
+                        if(item.permite_ratificacion==1){
+                            if(item.id_status_validacion == 7 || item.id_status_validacion == '7' || item.id_status_validacion == 3 || item.id_status_validacion == '3'){
+                                name_boton = 'Ver ratificación';
+                                liga_aux +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
+                                ambas += 1;
+                            }
+                        }
+                        control_normal = false;
+                    }
+                    if(ambas == 2){
+                        name_boton = 'Ver ratificación';
+                        liga +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
+                    }else{
+                        liga += liga_aux;
+                    }
+                    if(control_normal){
+                        name_boton = 'Ver validación';
+                        if((item.id_status_validacion != 1 || item.id_status_validacion != '1') && item.total_registros_censo > 0){
+                            if(item.id_status_validacion == 7 || item.id_status_validacion == '7' || item.id_status_validacion == 3 || item.id_status_validacion == '3'){
+                                name_boton = 'Ver ratificación';
+                            }
+                            liga +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
+                        }
+                    }
+                    
                     if(permiso==1){
                         //liga = '<a href="'+site_url+'/usuario/get_usuarios/'+item.id_usuario+'">Editar</a> | ' + liga;
                     }

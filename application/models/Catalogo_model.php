@@ -76,41 +76,62 @@ class Catalogo_model extends MY_Model {
     public function get_ooad_select($id_usuario, $clave = 1) {
         $this->db->flush_cache();
         $this->db->reset_query();
-        $select = array(
-            'id_usuario', 'ooad',
-        );
+        $select = ['id_usuario', 'ooad'];
         $this->db->select($select);
         $this->db->where('id_usuario', $id_usuario);
         
         $resultado = $this->db->get('sistema.usuario_ooad');
 //            pr($this->db->last_query());
-        if($clave == 2){
+        
+            switch($clave){
+                case 2:
             $respuesta = [];
             foreach ($resultado->result_array() as $key_ooad => $ooad) { 
                 $respuesta[$ooad['ooad']] = $ooad;
-            }
-            
+            }            
             return $respuesta;
-        }
+            break;
+            case 3:
+                $aux = $resultado->result_array();
+                $respuesta = [];
+                if(!empty($aux)){
+                    foreach($aux as $val){
+                        $respuesta[] = "'".$val['ooad']."'";
+                    }
+                }
+            return $respuesta;
+            break;
+            }
+        
         return $resultado->result_array();
     }
     
     public function get_umae_select($id_usuario, $clave = 1) {
         $this->db->flush_cache();
         $this->db->reset_query();
-        $select = array(
-            'id_usuario', 'umae',
-        );
+        
+        $select = ['id_usuario', 'umae'];
         $this->db->select($select);
         $this->db->where('id_usuario', $id_usuario);
-        
         $resultado = $this->db->get('sistema.usuario_umae');
-        if($clave == 2){
+        switch($clave){
+            case 2:
             $respuesta = [];
             foreach ($resultado->result_array() as $key_umae => $umae) { 
                 $respuesta[$umae['umae']] = $umae;
             }
             return $respuesta;
+        break;
+        case 3:
+            $aux = $resultado->result_array();
+            $respuesta = [];
+            if(!empty($aux)){
+                foreach($aux as $val){
+                    $respuesta[] = "'".$val['umae']."'";
+                }
+            }
+            return $respuesta;
+        break;
         }
 //            pr($this->db->last_query());
         return $resultado->result_array();

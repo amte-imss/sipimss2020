@@ -9,17 +9,80 @@ class Docente_model extends MY_Model {
         parent::__construct();
     }
 
-    public function get_datos_generales($id_docente = null, $OOAD = null) {
+    public function get_datos_generales($id_docente = null, $OOAD = null, $parametros_docente = []) {
         $usuario = null;
         $this->db->flush_cache();
-        $this->db->reset_query();        
-        $this->db->select('*, dc.id_docente_carrera, censo.estado_validacion_docente(d.id_docente) id_status_validacion');
+        $this->db->reset_query();
+        $select = "hdd.*,ec.*,dc.*, d.*, dc.id_docente_carrera, censo.estado_validacion_docente(d.id_docente) id_status_validacion";        
         if(!is_null($id_docente)){                
             $this->db->where('d.id_docente', $id_docente);
         }        
         $this->db->join('censo.historico_datos_docente hdd', 'hdd.id_docente = d.id_docente and hdd.actual = 1', 'left');
         $this->db->join('catalogo.estado_civil ec', 'ec.id_estado_civil = d.id_estado_civil', 'left');
         $this->db->join('censo.docente_carrera  dc', 'dc.id_docente_carrera = d.id_docente_carrera', 'left');
+        //***************************************************************** */
+        if(!empty($parametros_docente)){
+            $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = hdd.id_departamento_instituto');
+            $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad and u.anio = (select max(un.anio) from catalogo.unidades_instituto un )');
+            $this->db->join('catalogo.delegaciones del', 'del.id_delegacion = u.id_delegacion');
+
+            $this->db->join('sistema.usuario_rol  urol', 'urol.id_usuario = d.id_usuario and urol.activo');
+            $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol and urol.clave_rol = \''.LNiveles_acceso::Docente.'\'');     
+            //pr($parametros_docente);       
+            if($parametros_docente['is_entidad_designada']){
+
+                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = del.clave_delegacional', 'left');            
+                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad', 'left'); 
+                $filtro_umae_ooad = array();           
+                if(isset($parametros_docente['user_validadorn1'])){
+                    
+                    $filtro_umae_ooad[] = 'd.id_usuario IN(' . $parametros_docente['user_validadorn1'] . ')';
+                }
+                if(isset($parametros_docente['ooad_usuario'])){
+                    $filtro_umae_ooad[] = 'del.clave_delegacional in(' . $parametros_docente['ooad'].')'; 
+                    //$this->db->where('d.clave_delegacional', $parametros_docente['ooad_usuario']);//Rol del docente
+                }
+                if(isset($parametros_docente['umae_usuario'])){
+                    $filtro_umae_ooad[] = 'u.clave_unidad in(' . $parametros_docente['umae'].')'; 
+                    //$this->db->where_in('u.clave_unidad' ,$parametros_docente['umae_usuario']);//Rol del docente                    
+                }
+                if(!empty($filtro_umae_ooad)){
+                    $string = implode(' or ',$filtro_umae_ooad);
+                    $string = '('. $string . ')';
+                    $this->db->where($string, null);//Rol del docente                    
+                    
+                }
+                if($parametros_docente['aplica_bandera_separarV1_v2'] == 1){
+                    $select_aux = [];
+                    if(isset($parametros_docente['user_validadorn1'])){
+                        $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = d.id_usuario', 'left');
+                        $select .= ",(case when cru.id_usuario_registrado is null then 0 else 1 end) permite_validacion";                         
+                        $select .= ",(case when ((ooad.ooad is not null and ooad.ooad = del.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
+                        
+                        
+                    }
+
+                }
+            }
+            if(isset($parametros_docente['rol_docente'])){
+                if(is_array($parametros_docente['rol_docente'])){
+                    $this->db->where_in('rol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
+                } else {
+                    $this->db->where('rol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
+                }
+            }
+            if (isset($parametros_docente['filtros']) && !is_null($parametros_docente['filtros'])) {
+                foreach ($parametros_docente['filtros'] as $key => $value) {
+                    foreach($value as $keyApp => $valApp){
+                        $this->db->{$key}($keyApp, $valApp);
+                    }
+                }
+            }            
+        }
+        //************************************************** */
+
+
+        $this->db->select($select);
         $resultado = $this->db->get('censo.docente d')->result_array();
         if ($resultado) {
             $usuario = $resultado[0];
@@ -68,7 +131,7 @@ class Docente_model extends MY_Model {
             $this->db->where('d.clave_delegacional', $OOAD);
             //$this->db->where('d.id_delegacion', $OOAD);
         }
-        $this->db->select($select);
+        
         $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = dd.id_departamento_instituto');
         $this->db->join('catalogo.categorias cc', 'cc.id_categoria = dd.id_categoria', 'left');
         $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad and u.anio = (select max(un.anio) from catalogo.unidades_instituto un )');
@@ -81,7 +144,42 @@ class Docente_model extends MY_Model {
             $this->db->join('censo.docente_carrera  dca', 'dca.id_docente_carrera = doc.id_docente_carrera', 'left');
             
             $this->db->join('sistema.usuario_rol  urol', 'urol.id_usuario = doc.id_usuario and urol.activo');
-            $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol');            
+            $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol');     
+            //pr($parametros_docente);       
+            if($parametros_docente['is_entidad_designada']){
+
+                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = d.clave_delegacional', 'left');            
+                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad', 'left'); 
+                $filtro_umae_ooad = array();           
+                if(isset($parametros_docente['user_validadorn1'])){
+                    $filtro_umae_ooad[] = 'doc.id_usuario IN(' . $parametros_docente['user_validadorn1'] . ')';
+                }
+                if(isset($parametros_docente['ooad_usuario'])){
+                    $filtro_umae_ooad[] = 'd.clave_delegacional in(' . $parametros_docente['ooad'].')'; 
+                    //$this->db->where('d.clave_delegacional', $parametros_docente['ooad_usuario']);//Rol del docente
+                }
+                if(isset($parametros_docente['umae_usuario'])){
+                    $filtro_umae_ooad[] = 'u.clave_unidad in(' . $parametros_docente['umae'].')'; 
+                    //$this->db->where_in('u.clave_unidad' ,$parametros_docente['umae_usuario']);//Rol del docente                    
+                }
+                if(!empty($filtro_umae_ooad)){
+                    $string = implode(' or ',$filtro_umae_ooad);
+                    $string = '('. $string . ')';
+                    $this->db->where($string, null);//Rol del docente                    
+                    
+                }
+                if($parametros_docente['aplica_bandera_separarV1_v2'] == 1){
+                    $select_aux = [];
+                    if(isset($parametros_docente['user_validadorn1'])){
+                        $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = doc.id_usuario', 'left');
+                        $select_aux[] = "(case when cru.id_usuario_registrado is null then 0 else 1 end) permite_validacion";                         
+                        $select_aux[] = "(case when ((ooad.ooad is not null and ooad.ooad = d.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
+                        $select = array_merge($select, $select_aux);
+                        
+                    }
+
+                }
+            }
             if(isset($parametros_docente['rol_docente'])){
                 if(is_array($parametros_docente['rol_docente'])){
                     $this->db->where_in('rol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
@@ -97,6 +195,7 @@ class Docente_model extends MY_Model {
                 }
             }            
         }
+        $this->db->select($select);
         $result = $this->db->get('censo.historico_datos_docente dd');
         $array_result = $result->result_array();
         //pr($this->db->last_query()); exit();

@@ -34,6 +34,8 @@ class Template_item_perfil {
     private $rol_valida;
     private $registros_validacion_seccion;
     private $registros_ratificacion;
+    private $permite_validacion;
+    private $permite_ratificacion;
 
     public function __construct() {
         $this->CI = & get_instance();
@@ -45,6 +47,8 @@ class Template_item_perfil {
         $this->rol_valida = null;
         $this->registros_validacion_seccion = null;
         $this->registros_ratificacion = null;
+        $this->permite_validacion = 1;
+        $this->permite_ratificacion = 1;
     }
 
 
@@ -132,6 +136,15 @@ class Template_item_perfil {
         }
         $this->status_validacion = $status_validacion;
     }
+    public function set_permite_ratificacion($permite_ratificacion){
+ 
+        $this->permite_ratificacion = $permite_ratificacion;
+    }
+    public function set_permite_validacion($permite_validacion){
+        
+        $this->permite_validacion = $permite_validacion;
+    }
+
     public function get_status_validacion(){
         return $this->status_validacion ;
     }
@@ -467,7 +480,7 @@ class Template_item_perfil {
             switch($tipo){            
                 case 2://vista de la ratificacion  
                     $paso_validacion = false;
-                    if($this->rol_valida ==LNiveles_acceso::Validador2 && $estado_valido['valido_estado']){             
+                    if($this->is_aplicable_rol(LNiveles_acceso::Validador2) && $estado_valido['valido_estado'] && $this->permite_ratificacion ==1){             
                         $result['view_btn_ratificar'] = $this->CI->load->view('perfil/inicio/validacion/btn_validacion_ratificacion.php', $param, true);
                         $result['validar_proceso'] = true;
                         $paso_validacion = true;
@@ -479,12 +492,12 @@ class Template_item_perfil {
                     
                 break;
                 case 3://vista de la validación general  
-                    if($this->rol_valida ==LNiveles_acceso::Validador1 && $estado_valido['valido_estado']){
+                    if($this->is_aplicable_rol(LNiveles_acceso::Validador1) && $estado_valido['valido_estado'] && $this->permite_validacion == 1){
                         //$param['valido_estado'] = $estado_valido['valido_estado'];
                         $result['view'] = $this->CI->load->view('perfil/inicio/validacion/validacion_n1_gen.php', $param, true);
                         $result['validar_proceso'] = true;
                     }
-                    if($this->rol_valida ==LNiveles_acceso::Normativo){
+                    if($this->is_aplicable_rol(LNiveles_acceso::Normativo)){
 
                     }
                    
@@ -496,7 +509,7 @@ class Template_item_perfil {
                         $result['view_col_val_censo'] = true;
                         $result['view'] = $this->CI->load->view('perfil/inicio/validacion/validacion_seccion.php', $param, true);
                     }
-                    if($this->rol_valida ==LNiveles_acceso::Validador1 && $estado_valido['valido_estado']){                           
+                    if($this->is_aplicable_rol(LNiveles_acceso::Validador1) && $estado_valido['valido_estado']){                           
                         //pr("<-->".$param['is_view_personalizada'] . " -> " . $param['id_seccion']);
                         if(!is_null($param)){
                             $result['view_btn_guardar'] = $this->CI->load->view('perfil/inicio/validacion/btn_validacion_seccion.php', $param, true);
@@ -508,7 +521,7 @@ class Template_item_perfil {
                     
                 break;            
                 case 4://Vista de la validacion por seccion                                        
-                    if($this->rol_valida ==LNiveles_acceso::Validador1 && $estado_valido['valido_estado']){                                                   
+                    if($this->is_aplicable_rol(LNiveles_acceso::Validador1) && $estado_valido['valido_estado']){                                                   
                         $result['bloqueo_componentes_validacion_secciones'] = 0;
                         $result['validar_proceso'] = true;
                     }
@@ -517,6 +530,17 @@ class Template_item_perfil {
             }
         }
         return $result;
+    }
+
+    public function is_aplicable_rol($rol){
+        if(!is_null($this->rol_valida) && !empty($this->rol_valida) ){
+            foreach($this->rol_valida as $key => $value){
+                if($rol == $value){
+                    return true;
+                }
+            }        
+        }
+        return false;
     }
 
     private function aplica_estado_validacion($tipo = 1, $status_val){
