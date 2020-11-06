@@ -606,6 +606,7 @@ class Usuario_model extends MY_Model {
     }
 
     private function update_niveles_acceso($params = []) {
+        //pr($params);
         $this->load->model('Administracion_model', 'admin');
         $id_usuario = $params['id_usuario'];
         $grupos = $this->admin->get_niveles_acceso();
@@ -620,8 +621,50 @@ class Usuario_model extends MY_Model {
             $this->db->trans_rollback();
             $status = false;
         } else {
-            $this->db->trans_commit();
-            $status = true;
+            if(isset($params['entidad_asignada']) && $params['entidad_asignada']==1 ){
+                $datos['id_usuario'] = $params['id_usuario'];
+                $this->db->reset_query();
+                $this->db->where('id_usuario', $params['id_usuario']);
+                $this->db->delete('sistema.usuario_ooad');
+                $this->db->reset_query();
+                $this->db->where('id_usuario', $params['id_usuario']);
+                $this->db->delete('sistema.usuario_umae');
+                if(isset($params['activo'.LNiveles_acceso::Validador2])){
+                   
+
+                    if(isset($params['umae'])){
+                        foreach($params['umae']as $key => $value){
+                            $datos['umae'] = $value;
+                            $this->db->reset_query();
+                            
+                            $this->db->insert('sistema.usuario_umae', $datos);
+                            
+                        }
+                    }
+                    unset($datos['umae']);
+                    if(isset($params['ooad'])){
+                        foreach($params['ooad']as $key => $value){
+                            $datos['ooad'] = $value;
+                            $this->db->reset_query();
+                            $this->db->insert('sistema.usuario_ooad', $datos);
+                            
+                        }
+                    }               
+
+                }                
+
+                if ($this->db->trans_status() === FALSE) {
+                    $this->db->trans_rollback();
+                    $status = false;
+                } else {
+                    $this->db->trans_commit();
+                    $status = true;
+                }
+            }else{
+                $this->db->trans_commit();
+                $status = true;
+
+            }
         }
         return $status;
     }

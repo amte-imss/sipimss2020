@@ -66,6 +66,7 @@ function lista_docentes(){
                             && (!filter.id_status_validacion || (registro.id_status_validacion != null && (registro.id_status_validacion == filter.id_status_validacion)))
                             && (!filter.total_registros_censo || (registro.total_registros_censo != null && (registro.total_registros_censo == filter.total_registros_censo)))
                             && (!filter.ratificado || (registro.ratificado != null && (registro.ratificado == filter.ratificado)))
+                            && (!filter.nom_unidad || (registro.nom_unidad !== null && registro.nom_unidad.toLowerCase().replace(/ /g, "").indexOf(filter.nom_unidad.toString().toLowerCase().replace(/ /g, "")) > -1))
 
                            
                             
@@ -78,6 +79,7 @@ function lista_docentes(){
         },
         fields: [
             {name: 'clave_delegacional', title: "OOAD", type: "select", items: delegaciones,valueField: "clave_delegacional", textField: "nombre",  visible:true, filtering:!bloquea_delegacion},
+            {name: 'nom_unidad', title: "Unidad", type: "text",  visible:true},
             {name: 'matricula', type: "text", title: "Matrícula", visible:true},
             {name: 'nombre_docente', type: "text", title: "Nombre docente", visible:true},
             {name: 'email', title:"Correos", type: "text",  visible:true},
@@ -132,6 +134,7 @@ function lista_docentes(){
 function obtener_cabeceras() {
     var arr_header = {
         clave_delegacional: 'OOAD',
+        nom_unidad: 'Unidad',
         matricula: 'Matrícula',
         nombre_docente: 'Nombre docente',
         email: 'Correo electrónico',

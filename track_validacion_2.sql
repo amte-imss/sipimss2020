@@ -112,3 +112,16 @@ join ui.formulario f on f.id_formulario = cf.id_formulario and c.id_formulario =
 join catalogo.catalogo cc on cc.id_catalogo = cf.id_catalogo
 join catalogo.elementos_catalogos ec on (ec.id_catalogo = cc.id_catalogo) and (ci.valor != 'NULL' and ec.id_elemento_catalogo = ci.valor::int)
 ;
+
+CREATE TABLE "sistema"."usuario_ooad" (
+"id_usuario" integer NOT NULL,
+"ooad" varchar(2) NOT NULL,
+PRIMARY KEY ("id_usuario", "ooad") 
+);
+
+
+CREATE TABLE "sistema"."usuario_umae" (
+"id_usuario" integer NOT NULL,
+"umae" varchar(20) NOT NULL,
+PRIMARY KEY ("id_usuario", "umae") 
+);

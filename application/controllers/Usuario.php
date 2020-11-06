@@ -30,7 +30,7 @@ class Usuario extends MY_Controller
         redirect('usuario/get_usuarios/');
     }
 
-    public function get_usuarios($usuario = '')
+    public function get_usuarios($usuario = '', $tipo_registro_validador = 2)
     {
         $output = [];
         switch($usuario)
@@ -45,12 +45,13 @@ class Usuario extends MY_Controller
                 $this->template->getTemplate();
                 break;
             default:
-                $this->muestra_usuario($usuario);
+            $this->muestra_usuario($usuario, $tipo_registro_validador);
+                
                 break;
         }
     }
 
-    private function muestra_usuario($usuario = 0)
+    private function muestra_usuario($usuario = 0, $tipo_registro_validador)
     {
         $params['where'] = array(
            'usuarios.id_usuario' => $usuario
@@ -79,6 +80,16 @@ class Usuario extends MY_Controller
         $output['datos_basicos'] = $this->load->view('usuario/datos_basicos.tpl.php', $output, true);
         
         $output['campo_password'] = $this->load->view('usuario/campo_password.tpl.php', $output, true);
+        $output['entidad_atiende'] = null;
+        
+        if($tipo_registro_validador == 1){
+            $this->load->model('Catalogo_model', 'catalogo');
+            $output['delegaciones_cat'] = $this->catalogo->get_delegaciones();
+            $output['umae_cat'] = $this->catalogo->get_umae();
+            $output['ooad_select'] = $this->catalogo->get_ooad_select($usuario, 2);
+            $output['umae_select'] = $this->catalogo->get_umae_select($usuario, 2);            
+            $output['entidad_atiende'] = $this->load->view('usuario/entidad_atiente.tpl.php', $output, true);
+        }
         $output['view_grupos_usuario'] = $this->load->view('usuario/tabla_niveles.tpl.php', $output, true);
         $output['campo_niveles_acceso'] = $this->load->view('usuario/niveles_acceso.tpl.php', $output, true);
         $view = $this->load->view('usuario/usuario.tpl.php', $output, true);
@@ -138,12 +149,13 @@ class Usuario extends MY_Controller
         return $filtros;
     }
 
-    public function editar($id_usuario = 0, $tipo = Usuario::BASICOS)
+    public function editar($id_usuario = 0, $tipo = Usuario::BASICOS, $entidad_designada = 2)
     {
         $salida = [];
         $view = '';
         if ($this->input->post() && $this->input->is_ajax_request())
         {
+            $params = $this->input->post(null, true);
             $this->config->load('form_validation'); //Cargar archivo con validaciones
             switch ($tipo)
             {
@@ -157,10 +169,18 @@ class Usuario extends MY_Controller
                     break;
                 case Usuario::NIVELES_ACCESO:
                     $validations = $this->config->item('form_niveles_acceso_usuario');
+                    if($entidad_designada ==1){
+                        if(isset($params['activo'.LNiveles_acceso::Validador2]) && !is_null($params['activo'.LNiveles_acceso::Validador2])){
+                            if(!isset($params['umae']) && !isset($params['ooad'])){
+                                $validations[] = ['field'=>'entidad_asignada_valida', 'label' => 'Entidad designada', 'rules' => 'trim|required'];            
+                            }
+                        }
+                    }
                     $view = $this->get_niveles($id_usuario);
                     break;
                 case Usuario::STATUS_ACTIVIDAD:
                    $validations = $this->config->item('form_status_actividad_usuario');
+
                    break;
                 case Usuario::STATUS_REAPERTURA:
                     $validations = $this->config->item('form_status_reapertura_usuario');
@@ -169,7 +189,7 @@ class Usuario extends MY_Controller
             $this->form_validation->set_rules($validations); //Añadir validaciones
             if ($this->form_validation->run() == TRUE)
             {
-                $params = $this->input->post(null, true);
+
                 $params['id_usuario'] = $id_usuario;
                 $salida['tp_msg'] = $this->usuario->update($tipo, $params);
                 $output['status'] = $salida;
@@ -179,6 +199,7 @@ class Usuario extends MY_Controller
                 $salida['tp_msg'] = En_tpmsg::DANGER;
                 $salida['msg'] = validation_errors();
                 $output['status'] = false;
+                $output['msg'] = validation_errors();
             }
             switch ($tipo)
             {
@@ -189,7 +210,7 @@ class Usuario extends MY_Controller
                     $view = $this->load->view('usuario/campo_password.tpl.php', $output, true);
                     break;
                 case Usuario::NIVELES_ACCESO:
-                    $view = $this->get_niveles($id_usuario, $output);
+                    $view = $this->get_niveles($id_usuario, $output, $entidad_designada);
                     break;
             }
         }
@@ -218,7 +239,7 @@ class Usuario extends MY_Controller
         return $this->load->view('usuario/datos_basicos.tpl.php', $output, true);
     }
 
-    private function get_niveles($id_usuario = 0, $output = [])
+    private function get_niveles($id_usuario = 0, $output = [], $tipo_entidad = 2)
     {
         $datos_sesion = $this->get_datos_sesion();
         if(isset($datos_sesion['niveles_acceso_cves'][LNiveles_acceso::Super])){
@@ -226,6 +247,16 @@ class Usuario extends MY_Controller
             $output['grupos_usuario'] = $this->usuario->get_niveles_acceso($id_usuario);
         } else {
             $output['grupos_usuario'] = $this->usuario->get_niveles_acceso($id_usuario, array('where'=>"A.clave_rol IN ('VALIDADOR1', 'VALIDADOR2', 'DOCENTE')"));
+        }
+        $output['entidad_atiende'] = null;
+        
+        if($tipo_entidad == 1){
+            $this->load->model('Catalogo_model', 'catalogo');
+            $output['delegaciones_cat'] = $this->catalogo->get_delegaciones();
+            $output['umae_cat'] = $this->catalogo->get_umae();
+            $output['ooad_select'] = $this->catalogo->get_ooad_select($id_usuario, 2);
+            $output['umae_select'] = $this->catalogo->get_umae_select($id_usuario, 2);
+            $output['entidad_atiende'] = $this->load->view('usuario/entidad_atiente.tpl.php', $output, true);
         }
         $output['view_grupos_usuario'] = $this->load->view('usuario/tabla_niveles.tpl.php', $output, true);
         return $this->load->view('usuario/niveles_acceso.tpl.php', $output, true);

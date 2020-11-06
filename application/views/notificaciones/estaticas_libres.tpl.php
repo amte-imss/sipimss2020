@@ -5,14 +5,15 @@
 
 
 // pr($usuario['workflow']);
+    if(count($notificaciones) > 0){
     ?>
     <li class="dropdown" >
         <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true" style="text-decoration: none; background-color: #006a62 !important; color: #fff;">
             <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down" ></i>
         </a>
-        <ul class="dropdown-menu dropdown-tasks">
+        <ul class="dropdown-menu dropdown-user">
             <?php
-            if(count($notificaciones) > 0){
+            
                 //pr($notificaciones);
                 foreach ($notificaciones as $row)
                 {
@@ -27,7 +28,7 @@
                         $texto = str_replace('{dias_restantes_convocatoria}', $dias, $row['descripcion']);
                     ?>
                         <li>
-                            <a href="#">
+                            <a class="link_ficha_usuario" href="#">
                                 <div >
                                     <strong><?php echo $row['nombre']; ?></strong>
                                     <h5><?php echo $texto; ?></h5>
@@ -38,10 +39,10 @@
                     <?php
                     }
                 }
-            }
+            
             ?>
         </ul>
     </li>
     <?php
-
+    }
 ?>

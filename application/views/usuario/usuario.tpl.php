@@ -153,7 +153,11 @@ echo js('usuario/usuario.js');
 
                     <div class="">
                         <?php
-                        echo form_open('usuario/editar/' . $usuario['id_usuario'] . '/' . Usuario::NIVELES_ACCESO, array('id' => 'form_usuario_niveles'));
+                            $tipo_ent = '';
+                        if(isset($entidad_atiende) && !is_null($entidad_atiende)){
+                            $tipo_ent = '/1';
+                        }
+                        echo form_open('usuario/editar/' . $usuario['id_usuario'] . '/' . Usuario::NIVELES_ACCESO . $tipo_ent, array('id' => 'form_usuario_niveles'));
                         ?>
                         <div  id="campo_niveles_acceso">
                             <?php echo $campo_niveles_acceso; ?>

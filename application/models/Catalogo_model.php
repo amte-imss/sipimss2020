@@ -48,6 +48,73 @@ class Catalogo_model extends MY_Model {
         return $resultado->result_array();
     }
 
+
+       /**
+     *
+     * @author LEAS
+     * @fecha 18/05/2017
+     * @return type catálogo de las delegaciones
+     */
+    public function get_umae($filtros = []) {
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $select = array(
+            'u.clave_unidad', 'u.nombre',
+        );
+        $this->db->select($select);
+        $this->db->where('activa', TRUE);
+        $this->db->where('u.anio = (select max(un.anio) from catalogo.unidades_instituto un )', null);
+        $this->db->where("(u.umae or u.grupo_tipo_unidad in ('UMAE','CUMAE'))", null);
+        $this->db->order_by('nombre');
+        
+        
+
+        $resultado = $this->db->get('catalogo.unidades_instituto u');
+//            pr($this->db->last_query());
+        return $resultado->result_array();
+    }
+    public function get_ooad_select($id_usuario, $clave = 1) {
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $select = array(
+            'id_usuario', 'ooad',
+        );
+        $this->db->select($select);
+        $this->db->where('id_usuario', $id_usuario);
+        
+        $resultado = $this->db->get('sistema.usuario_ooad');
+//            pr($this->db->last_query());
+        if($clave == 2){
+            $respuesta = [];
+            foreach ($resultado->result_array() as $key_ooad => $ooad) { 
+                $respuesta[$ooad['ooad']] = $ooad;
+            }
+            
+            return $respuesta;
+        }
+        return $resultado->result_array();
+    }
+    
+    public function get_umae_select($id_usuario, $clave = 1) {
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $select = array(
+            'id_usuario', 'umae',
+        );
+        $this->db->select($select);
+        $this->db->where('id_usuario', $id_usuario);
+        
+        $resultado = $this->db->get('sistema.usuario_umae');
+        if($clave == 2){
+            $respuesta = [];
+            foreach ($resultado->result_array() as $key_umae => $umae) { 
+                $respuesta[$umae['umae']] = $umae;
+            }
+            return $respuesta;
+        }
+//            pr($this->db->last_query());
+        return $resultado->result_array();
+    }
     /**
      * @author LEAS
      * @fecha 18/05/2017
