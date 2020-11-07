@@ -31,6 +31,7 @@ class Validacion extends Informacion_docente {
             }
             $this->load->library('template_item_perfil');
             $rol_valida = $this->get_rol_aplica($datos_sesion, null);
+            //pr($rol_valida);
             $this->template_item_perfil->set_rol_valida($rol_valida['roles_filtro']);
             $datos_generales = $this->dm->get_datos_generales($id_docente, null, $rol_valida);
             if (empty($datos_generales)) {
@@ -67,7 +68,7 @@ class Validacion extends Informacion_docente {
             
                 //Status de la validacion del registros del censo del docente
                 $this->template_item_perfil->set_status_validacion($datos_generales['id_status_validacion']);
-                if($rol_valida['is_entidad_designada']){
+                if($rol_valida['aplica_bandera_separarV1_v2']){
                     $this->template_item_perfil->set_permite_validacion($datos_generales['permite_validacion']);
                     $this->template_item_perfil->set_permite_ratificacion($datos_generales['permite_ratificacion']);
                 }

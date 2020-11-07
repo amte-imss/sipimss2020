@@ -69,7 +69,7 @@ class MY_Controller extends CI_Controller {
     private function notificaciones_estaticas(){
         $notificaciones = $this->notificaciones->obtener_notificacion_estatica();
             
-            $data['notificaciones'] = $notificaciones;
+        $data['notificaciones'] = $notificaciones;
     }
 
     private function boton_finaliza_etapa(){
@@ -158,7 +158,8 @@ class MY_Controller extends CI_Controller {
     public function get_roles_usuario($tipo_claves_rol = 1) {
         if(isset($this->session->userdata('die_sipimss')['usuario']['niveles_acceso'])){
 
-            $roles = $this->session->userdata('die_sipimss')['usuario']['niveles_acceso'];
+            //$roles = $this->session->userdata('die_sipimss')['usuario']['niveles_acceso'];
+            $roles = $this->sesion->get_niveles_acceso($this->get_datos_sesion(En_datos_sesion::ID_USUARIO));
             switch($tipo_claves_rol){
                 case 1:
                     $roles_clave = [];

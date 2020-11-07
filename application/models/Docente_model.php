@@ -13,20 +13,20 @@ class Docente_model extends MY_Model {
         $usuario = null;
         $this->db->flush_cache();
         $this->db->reset_query();
-        $select = "hdd.*,ec.*,dc.*, d.*, dc.id_docente_carrera, censo.estado_validacion_docente(d.id_docente) id_status_validacion";        
+        $select = "hdd.*,ec.*,dc.*, doc.*, dc.id_docente_carrera, censo.estado_validacion_docente(doc.id_docente) id_status_validacion";        
         if(!is_null($id_docente)){                
-            $this->db->where('d.id_docente', $id_docente);
+            $this->db->where('doc.id_docente', $id_docente);
         }        
-        $this->db->join('censo.historico_datos_docente hdd', 'hdd.id_docente = d.id_docente and hdd.actual = 1', 'left');
-        $this->db->join('catalogo.estado_civil ec', 'ec.id_estado_civil = d.id_estado_civil', 'left');
-        $this->db->join('censo.docente_carrera  dc', 'dc.id_docente_carrera = d.id_docente_carrera', 'left');
+        $this->db->join('censo.historico_datos_docente hdd', 'hdd.id_docente = doc.id_docente and hdd.actual = 1', 'left');
+        $this->db->join('catalogo.estado_civil ec', 'ec.id_estado_civil = doc.id_estado_civil', 'left');
+        $this->db->join('censo.docente_carrera  dc', 'dc.id_docente_carrera = doc.id_docente_carrera', 'left');
         //***************************************************************** */
         if(!empty($parametros_docente)){
             $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = hdd.id_departamento_instituto');
             $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad and u.anio = (select max(un.anio) from catalogo.unidades_instituto un )');
             $this->db->join('catalogo.delegaciones del', 'del.id_delegacion = u.id_delegacion');
-
-            $this->db->join('sistema.usuario_rol  urol', 'urol.id_usuario = d.id_usuario and urol.activo');
+            
+            $this->db->join('sistema.usuario_rol  urol', 'urol.id_usuario = doc.id_usuario and urol.activo');
             $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol and urol.clave_rol = \''.LNiveles_acceso::Docente.'\'');     
             //pr($parametros_docente);       
             if($parametros_docente['is_entidad_designada']){
@@ -36,7 +36,7 @@ class Docente_model extends MY_Model {
                 $filtro_umae_ooad = array();           
                 if(isset($parametros_docente['user_validadorn1'])){
                     
-                    $filtro_umae_ooad[] = 'd.id_usuario IN(' . $parametros_docente['user_validadorn1'] . ')';
+                    $filtro_umae_ooad[] = 'doc.id_usuario IN(' . $parametros_docente['user_validadorn1'] . ')';
                 }
                 if(isset($parametros_docente['ooad_usuario'])){
                     $filtro_umae_ooad[] = 'del.clave_delegacional in(' . $parametros_docente['ooad'].')'; 
@@ -55,7 +55,7 @@ class Docente_model extends MY_Model {
                 if($parametros_docente['aplica_bandera_separarV1_v2'] == 1){
                     $select_aux = [];
                     if(isset($parametros_docente['user_validadorn1'])){
-                        $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = d.id_usuario', 'left');
+                        $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = doc.id_usuario', 'left');
                         $select .= ",(case when cru.id_usuario_registrado is null then 0 else 1 end) permite_validacion";                         
                         $select .= ",(case when ((ooad.ooad is not null and ooad.ooad = del.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
                         
@@ -83,7 +83,7 @@ class Docente_model extends MY_Model {
 
 
         $this->db->select($select);
-        $resultado = $this->db->get('censo.docente d')->result_array();
+        $resultado = $this->db->get('censo.docente doc')->result_array();
         if ($resultado) {
             $usuario = $resultado[0];
         }
@@ -180,6 +180,7 @@ class Docente_model extends MY_Model {
 
                 }
             }
+            
             if(isset($parametros_docente['rol_docente'])){
                 if(is_array($parametros_docente['rol_docente'])){
                     $this->db->where_in('rol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
