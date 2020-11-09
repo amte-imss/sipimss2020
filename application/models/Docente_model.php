@@ -134,8 +134,8 @@ class Docente_model extends MY_Model {
         
         $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = dd.id_departamento_instituto');
         $this->db->join('catalogo.categorias cc', 'cc.id_categoria = dd.id_categoria', 'left');
-        $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad and u.anio = (select max(un.anio) from catalogo.unidades_instituto un )');
-        $this->db->join('catalogo.delegaciones d', 'd.id_delegacion = u.id_delegacion');
+        $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad and u.anio = (select max(un.anio) from catalogo.unidades_instituto un )', 'left');
+        $this->db->join('catalogo.delegaciones d', 'd.id_delegacion = u.id_delegacion', 'left');
         $this->db->join('catalogo.tipos_unidades tu', 'tu.id_tipo_unidad = u.id_tipo_unidad', 'left');
         $this->db->join('catalogo.regiones r', 'r.id_region = d.id_region', 'left');
         $this->db->join('catalogo.tipo_contratacion tc', 'tc.cve_tipo_contratacion = dd.cve_tipo_contratacion', 'left');

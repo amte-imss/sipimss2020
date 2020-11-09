@@ -59,6 +59,7 @@ function lista_docentes(){
                           });*/
                           var res = $.grep(result.datos_docentes, function (registro) {
                             return (!filter.clave_delegacional || (registro.clave_delegacional != null && (registro.clave_delegacional == filter.clave_delegacional)))
+                            && (!filter.delegacion || (registro.delegacion !== null && registro.delegacion.toLowerCase().indexOf(filter.delegacion.toString().toLowerCase()) > -1))
                             && (!filter.matricula || (registro.matricula !== null && registro.matricula.toLowerCase().indexOf(filter.matricula.toString().toLowerCase()) > -1))
                             && (!filter.nombre_docente || (registro.nombre_docente !== null && registro.nombre_docente.toLowerCase().indexOf(filter.nombre_docente.toString().toLowerCase()) > -1))
                             && (!filter.email || (registro.email !== null && registro.email.toLowerCase().indexOf(filter.email.toString().toLowerCase()) > -1))
@@ -67,9 +68,7 @@ function lista_docentes(){
                             && (!filter.total_registros_censo || (registro.total_registros_censo != null && (registro.total_registros_censo == filter.total_registros_censo)))
                             && (!filter.ratificado || (registro.ratificado != null && (registro.ratificado == filter.ratificado)))
                             && (!filter.nom_unidad || (registro.nom_unidad !== null && registro.nom_unidad.toLowerCase().replace(/ /g, "").indexOf(filter.nom_unidad.toString().toLowerCase().replace(/ /g, "")) > -1))
-
-                           
-                            
+                            && (!filter.umae || (registro.umae !== null && registro.umae.toLowerCase().replace(/ /g, "").indexOf(filter.umae.toString().toLowerCase().replace(/ /g, "")) > -1))
                           });
                           d.resolve(res);
                       });
@@ -79,7 +78,9 @@ function lista_docentes(){
         },
         fields: [
             {name: 'clave_delegacional', title: "OOAD", type: "select", items: delegaciones,valueField: "clave_delegacional", textField: "nombre",  visible:true, filtering:!bloquea_delegacion},
+            {name: 'delegacion', title: "Delegacion", type: "text",  visible:false},
             {name: 'nom_unidad', title: "Unidad", type: "text",  visible:true},
+            {name: 'umae', title: "Unidad", type: "text",  visible:false},
             {name: 'matricula', type: "text", title: "Matrícula", visible:true},
             {name: 'nombre_docente', type: "text", title: "Nombre docente", visible:true},
             {name: 'email', title:"Correos", type: "text",  visible:true},
@@ -167,7 +168,9 @@ function lista_docentes(){
 function obtener_cabeceras() {
     var arr_header = {
         clave_delegacional: 'OOAD',
+        delegacion: 'Delegacion',
         nom_unidad: 'Unidad',
+        umae: 'UMAE',
         matricula: 'Matrícula',
         nombre_docente: 'Nombre docente',
         email: 'Correo electrónico',

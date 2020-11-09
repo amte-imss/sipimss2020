@@ -125,3 +125,7 @@ CREATE TABLE "sistema"."usuario_umae" (
 "umae" varchar(20) NOT NULL,
 PRIMARY KEY ("id_usuario", "umae") 
 );
+
+update catalogo.unidades_instituto set sede_academica=true where clave_unidad = '23HA020000';
+
+update validacion.fin_registro_censo set activo_edicion = true where activo_edicion = false;

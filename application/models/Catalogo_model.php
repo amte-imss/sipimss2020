@@ -59,13 +59,13 @@ class Catalogo_model extends MY_Model {
         $this->db->flush_cache();
         $this->db->reset_query();
         $select = array(
-            'u.clave_unidad', 'u.nombre',
+            'u.clave_unidad', "CONCAT(u.nombre_unidad_principal,' - ', u.nombre) as nombre",
         );
         $this->db->select($select);
         $this->db->where('activa', TRUE);
         $this->db->where('u.anio = (select max(un.anio) from catalogo.unidades_instituto un )', null);
-        $this->db->where("(u.umae or u.grupo_tipo_unidad in ('UMAE','CUMAE'))", null);
-        $this->db->order_by('nombre');
+        $this->db->where("(u.umae or u.grupo_tipo_unidad in ('UMAE'))", null); //,'CUMAE'
+        $this->db->order_by('clave_unidad');
         
         
 
