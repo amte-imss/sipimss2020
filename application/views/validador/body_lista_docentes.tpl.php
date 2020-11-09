@@ -32,6 +32,7 @@ $controlador = '/' . $this->uri->rsegment(1);
                 </a>
             </div><br>
         <?php } ?>
+        <p>Dado el cambio en el proceso e inicio de una nueva etapa, se ha modificado el número de registros a mostrar para los CCEIS y JDES, ahora solo dispondrá de los que ha registrado para que pueda validarlos.</p>
         <h5 id="docentes_registrados"></h5>
         <div id="js_grid_lista_docentes"><div>
     <div>
