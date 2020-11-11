@@ -504,12 +504,12 @@ $config['catalogo_unidades_instituto'] = array(
     array(
         'field' => 'nivel_atencion',
         'label' => 'Nivel de atención',
-        'rules' => 'required|is_numeric'
+        'rules' => 'is_numeric'
     ),
     array(
         'field' => 'id_tipo_unidad',
         'label' => 'Tipo de unidad',
-        'rules' => 'required|is_numeric'
+        'rules' => 'is_numeric'
     ),
     array(
         'field' => 'umae',
@@ -529,6 +529,11 @@ $config['catalogo_unidades_instituto'] = array(
     array(
         'field' => 'anio',
         'label' => 'Año',
+        'rules' => 'required|is_numeric'
+    ),
+    array(
+        'field' => 'sede_academica',
+        'label' => 'Sede academica',
         'rules' => 'required|is_numeric'
     ),
 );

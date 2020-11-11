@@ -586,8 +586,11 @@ class Catalogo extends MY_Controller {
             {
                 $post['umae'] = $post['umae'] == 1? true:false;
                 $post['activa'] = $post['activa'] == 1? true:false;
+                $post['sede_academica'] = $post['sede_academica'] == 1? true:false;
                 $post['longitud'] = is_numeric($post['longitud'])?$post['longitud']:null;
                 $post['latitud'] = is_numeric($post['latitud'])?$post['latitud']:null;
+                $post['nivel_atencion'] = is_numeric($post['nivel_atencion'])?$post['nivel_atencion']:null;
+                $post['id_tipo_unidad'] = is_numeric($post['id_tipo_unidad'])?$post['id_tipo_unidad']:null;
                 $output['status'] = $this->catalogo->insert_registro('catalogo.unidades_instituto', $post);
             }else
             {
@@ -600,7 +603,7 @@ class Catalogo extends MY_Controller {
         $regiones = $this->catalogo->get_registros('catalogo.regiones', $filtros);
 
         $output['post']['data'] = $params;
-        $output['delegaciones'] = dropdown_options($this->catalogo->get_delegaciones(null, array('oficinas_centrales'=>true)), 'clave_delegacional', 'nombre');
+        $output['delegaciones'] = dropdown_options($this->catalogo->get_delegaciones(null, array('oficinas_centrales'=>true)), 'id_delegacion', 'nombre');
         $output['tipos_unidades'] = dropdown_options($tipos_unidades, 'id_tipo_unidad', 'tipo_unidad');
         $output['regiones'] = dropdown_options($regiones, 'id_region', 'region');
         $view = $this->load->view('catalogo/formulario_unidad_instituto.tpl.php', $output, true);
@@ -625,8 +628,11 @@ class Catalogo extends MY_Controller {
             {
                 $post['umae'] = $post['umae'] == 1? true:false;
                 $post['activa'] = $post['activa'] == 1? true:false;
+                $post['sede_academica'] = $post['sede_academica'] == 1? true:false;
                 $post['longitud'] = is_numeric($post['longitud'])?$post['longitud']:null;
                 $post['latitud'] = is_numeric($post['latitud'])?$post['latitud']:null;
+                $post['nivel_atencion'] = is_numeric($post['nivel_atencion'])?$post['nivel_atencion']:null;
+                $post['id_tipo_unidad'] = is_numeric($post['id_tipo_unidad'])?$post['id_tipo_unidad']:null;
                 $where_ids = array(
                     'id_unidad_instituto' => $params['id_unidad']
                 );
@@ -649,7 +655,7 @@ class Catalogo extends MY_Controller {
         }
         $output['post'] = $unidad[0];
         // pr($output['post']);
-        $output['delegaciones'] = dropdown_options($this->catalogo->get_delegaciones(null, array('oficinas_centrales'=>true)), 'clave_delegacional', 'nombre');
+        $output['delegaciones'] = dropdown_options($this->catalogo->get_delegaciones(null, array('oficinas_centrales'=>true)), 'id_delegacion', 'nombre');
         $output['tipos_unidades'] = dropdown_options($tipos_unidades, 'id_tipo_unidad', 'tipo_unidad');
         $output['regiones'] = dropdown_options($regiones, 'id_region', 'region');
         $view = $this->load->view('catalogo/formulario_unidad_instituto.tpl.php', $output, true);

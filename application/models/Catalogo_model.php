@@ -30,7 +30,7 @@ class Catalogo_model extends MY_Model {
         $this->db->flush_cache();
         $this->db->reset_query();
         $select = array(
-            'clave_delegacional', 'nombre',
+            'clave_delegacional', 'nombre', 'id_delegacion'
         );
         $this->db->select($select);
         $this->db->where('activo', TRUE);
@@ -573,10 +573,10 @@ class Catalogo_model extends MY_Model {
             return $status;
         }
         try {
-            if(empty($params['orden'])){
+            if(isset($params['orden']) && empty($params['orden'])){
                 $params['orden'] = null;
             }
-            pr($params);
+            //pr($params);
             $this->db->update($nombre_tabla, $params, $where_ids);
             $status['success'] = true;
             $status['message'] = 'Actualizado con éxito';

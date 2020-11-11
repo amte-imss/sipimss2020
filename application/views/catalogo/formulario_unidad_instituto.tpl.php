@@ -132,7 +132,7 @@
                             <div class="col-md-5">
                                 <div class="col-md-4">
                                     <label for="nivel_atencion" class="righthoralign control-label">
-                                        <b class="rojo">*</b> Nivel atención:
+                                        <b class="rojo"></b> Nivel atención:
                                     </label>
                                 </div>
                                 <div class="col-md-8">
@@ -147,8 +147,7 @@
                                         'options' => array(1=>'Primer nivel', 2=>'Segundo nivel', 3=>'Tercer nivel'),
                                         'value' => isset($post['nivel_atencion'])?$post['nivel_atencion']:'',
                                         'attributes' => array(
-                                            'class' => 'form-control',
-                                            'required'=>true
+                                            'class' => 'form-control'
                                         )));
                                         ?>
                                         <?php echo form_error_format('nivel_atencion'); ?>
@@ -158,7 +157,7 @@
                             <div class="col-md-6" style="display: 1">
                                 <div class="col-md-4">
                                     <label for="id_tipo_unidad" class="control-label">
-                                        <b class="rojo">*</b> Tipo de unidad:
+                                        <b class="rojo"></b> Tipo de unidad:
                                     </label>
                                 </div>
                                 <div class="col-md-8">
@@ -173,8 +172,7 @@
                                         'first' => array('' => 'Seleccione una opción'),
                                         'options' => $tipos_unidades,
                                         'attributes' => array(
-                                            'class' => 'form-control',
-                                            'required'=>true
+                                            'class' => 'form-control'
                                         )));
                                         ?>
                                         <?php echo form_error_format('id_tipo_unidad'); ?>
@@ -528,6 +526,32 @@
                                         )));
                                         ?>
                                         <?php echo form_error_format('unidad_principal'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="display: 1">
+                                <div class="col-md-4">
+                                    <label for="activa" class="control-label">
+                                        <b class="rojo">*</b> Sede académica:
+                                    </label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-female"> </span>
+                                        </span>
+                                        <?php
+                                        echo $this->form_complete->create_element(array('id' => 'sede_academica',
+                                        'type' => 'dropdown',
+                                        'value' => isset($post['sede_academica'])?$post['sede_academica']:'',
+                                        'first' => array('' => 'Seleccione una opción'),
+                                        'options' => array(0=>'No', 1=>'Si'),
+                                        'attributes' => array(
+                                            'class' => 'form-control',
+                                            'required'=>true
+                                        )));
+                                        ?>
+                                        <?php echo form_error_format('sede_academica'); ?>
                                     </div>
                                 </div>
                             </div>

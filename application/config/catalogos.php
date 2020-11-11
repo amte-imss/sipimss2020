@@ -36,6 +36,7 @@ $config['catalogo.unidades_instituto completo']  = array(
         'delegacion.id_delegacion',
         'delegacion.nombre delegacion',
         'tipo_unidad.nombre tipo_unidad',
+        'sede_academica'
     ),
     'join' => array(
         array(
