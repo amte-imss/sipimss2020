@@ -861,6 +861,38 @@ class ConvocatoriaV2_model extends MY_Model
         $registros = $this->db->get('censo.docente d')->result_array();
         return $registros;
     }
+    public function registro_editar_nuevamete($datos){
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $status = array('success' => false, 'message' => 'No se agrego correctamente el registro', 'data'=>[]);
+        try
+        {
+            $this->db->where('id_docente', $datos['id_docente']);
+            $this->db->where('id_convocatoria', $datos['id_convocatoria']);
+            $registros = $this->db->get('validacion.fin_registro_censo')->result_array();
+            // pr($registros);
+            if(!empty($registros))
+            {
+                
+                $this->db->reset_query();
+                
+                $this->db->where('id_docente', $datos['id_docente']);
+                $this->db->where('id_convocatoria', $datos['id_convocatoria']);
+                $activo = array('activo_edicion'=>true);
+                $this->db->update('validacion.fin_registro_censo', $activo);                
+                $status['success'] = 1;
+                $status['message'] = 'La edición se habilito con éxito';    
+            }else{
+                $status['success'] = 0;
+                $status['message'] = 'No se pudo actualizar la edición del registro del censo';
+    
+            }
+            
+        }catch(Exception $ex)
+        {
 
+        }
+        return $status;
+    }
 
 }

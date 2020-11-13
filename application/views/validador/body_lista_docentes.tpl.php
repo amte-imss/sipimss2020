@@ -10,7 +10,7 @@
 
 <?php 
 $controlador = '/' . $this->uri->rsegment(1);
-//pr($catalogos['result_delegacional']);
+//pr();
 ?>
 <script>
     var url_ctr = "<?php echo $controlador; ?>";
@@ -19,6 +19,7 @@ $controlador = '/' . $this->uri->rsegment(1);
     var estados_validacion =  <?php echo json_encode($catalogos['estados_validacion']); ?>;
     var ratificado =  <?php echo json_encode($catalogos['ratificado']); ?>;
     var bloquea_delegacion =  <?php echo $bloquea_delegacion; ?>;
+    var editar_reg_doc =  <?php echo $editar_reg_doc_nuevamente; ?>;
     var permiso = "<?php echo $permiso; ?>";
 </script>
 

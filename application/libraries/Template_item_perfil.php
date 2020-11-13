@@ -481,13 +481,13 @@ class Template_item_perfil {
                 case 2://vista de la ratificacion  
                     $paso_validacion = false;
                     if($this->is_aplicable_rol(LNiveles_acceso::Validador2) && $estado_valido['valido_estado'] && $this->permite_ratificacion ==1){             
-                        $result['view_btn_ratificar'] = $this->CI->load->view('perfil/inicio/validacion/btn_validacion_ratificacion.php', $param, true);
+                        //$result['view_btn_ratificar'] = $this->CI->load->view('perfil/inicio/validacion/btn_validacion_ratificacion.php', $param, true);
                         $result['validar_proceso'] = true;
                         $paso_validacion = true;
                     }
                     if(!is_null($param) || $paso_validacion){ 
-                        $result['view'] = $this->CI->load->view('perfil/inicio/validacion/validacion_ratificacion.php', $param, true);
-                        $result['vista_ratificacion'] = true;
+                        //$result['view'] = $this->CI->load->view('perfil/inicio/validacion/validacion_ratificacion.php', $param, true);
+                        //$result['vista_ratificacion'] = true;
                     }
                     
                 break;

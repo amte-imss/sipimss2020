@@ -332,7 +332,8 @@ class Validacion extends Informacion_docente {
     }
     public function listado_docentes(){
         $datos_sesion = $this->get_datos_sesion();
-        $rol_aplica = $this->get_rol_aplica($datos_sesion);    
+        $rol_aplica = $this->get_rol_aplica($datos_sesion);
+        $output['editar_reg_doc_nuevamente'] = $rol_aplica['editar_reg_doc_nuevamente'];    
         $output['bloquea_delegacion'] = $rol_aplica['bloquea_delegacion'];
         $output['catalogos']['result_delegacional'] = $this->normativo->get_delegacional();
         array_unshift($output['catalogos']['result_delegacional'], ['clave_delegacional'=>'',"nombre"=>'Selecciona OOAD']); 
@@ -382,6 +383,8 @@ class Validacion extends Informacion_docente {
         
     }
     
+  
+
     public function validadores(){
         $datos_sesion = $this->get_datos_sesion();
         //pr($datos_sesion);
@@ -403,13 +406,15 @@ class Validacion extends Informacion_docente {
     
     private function get_rol_aplica($datos_sesion, $data_post = null){
         $claves_rol = $this->get_roles_usuario(2);
-        $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente, 'bloquea_delegacion' => 0, 'is_entidad_designada' => false,'aplica_bandera_separarV1_v2' => 0];
+        $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente, 'bloquea_delegacion' => 0, 
+        'is_entidad_designada' => false,'aplica_bandera_separarV1_v2' => 0, 'editar_reg_doc_nuevamente' => 0 
+        ];
         $conf['rol_docente']=LNiveles_acceso::Docente;
         $conf['convocatoria'] = $datos_sesion['convocatoria']['id_convocatoria'];
         if(isset($claves_rol[LNiveles_acceso::Normativo])){
             $conf['rol_aplica'] = LNiveles_acceso::Normativo;
             $conf['roles_filtro'] = [LNiveles_acceso::Normativo];
-
+            $conf['editar_reg_doc_nuevamente'] = 1;
             if(!is_null($data_post) && !empty($data_post['clave_delegacional'])){
                 $conf['filtros']['where']['d.clave_delegacional'] = $data_post['clave_delegacional'];
                 $conf['filtros']['where']['d.clave_delegacional'] = $data_post['clave_delegacional'];
@@ -424,31 +429,37 @@ class Validacion extends Informacion_docente {
             $output['ooad_select'] = $this->catalogo->get_ooad_select($datos_sesion[En_datos_sesion::ID_USUARIO], 3);
             $output['umae_select'] = $this->catalogo->get_umae_select($datos_sesion[En_datos_sesion::ID_USUARIO], 3);            
             $entidad_designada = false;
+            $conf['ooad_usuario'] = $datos_sesion[En_datos_sesion::ID_USUARIO];
+            $conf['is_entidad_designada'] = true;
             if(isset($output['ooad_select']) && !empty($output['ooad_select'])){
                 $entidad_designada = true;
                 $stringIds = implode(',',$output['ooad_select']);
                 $conf['ooad'] = $stringIds;
                 //pr($conf['ooad']);
-                $conf['ooad_usuario'] = $datos_sesion[En_datos_sesion::ID_USUARIO];
                 //$conf['filtros']['where_in']['d.clave_delegacional'] = $conf['ooad']; 
-                $conf['is_entidad_designada'] = true;
+            }else{
+                $conf['ooad'] = null;
             }                                
+            $conf['umae_usuario'] = $datos_sesion[En_datos_sesion::ID_USUARIO];
             if(isset($output['umae_select']) && !empty($output['umae_select'])){                
                 $entidad_designada = true;
                 $stringIds = implode(',',$output['umae_select']);
                 $conf['umae'] = $stringIds;//$output['umae_select'];
                 //pr($conf['umae']);
-                $conf['umae_usuario'] = $datos_sesion[En_datos_sesion::ID_USUARIO];
                 //$conf['filtros']['where_in']['u.clave_unidad'] = $stringIds; 
-                $conf['is_entidad_designada'] = true;
+                //$conf['is_entidad_designada'] = true;
+            }else{
+                $conf['umae'] = null;
+
             }
             //pr($claves_rol);
             if(isset($claves_rol[LNiveles_acceso::Validador1])){
                 $conf['roles_filtro'] = [LNiveles_acceso::Validador2, LNiveles_acceso::Validador1];
                 
                     $conf['aplica_bandera_separarV1_v2'] = 1;
-                
-                
+                    $conf['editar_reg_doc_nuevamente'] = 1;
+                    
+                    
                     
                 $ids_usuario_registrados = $this->get_usuarios_registro_validador($datos_sesion[En_datos_sesion::ID_USUARIO]);
                 $stringIds = implode(',',$ids_usuario_registrados);
@@ -459,6 +470,7 @@ class Validacion extends Informacion_docente {
             
             
         }else if(isset($claves_rol[LNiveles_acceso::Validador1])){
+            $conf['editar_reg_doc_nuevamente'] = 1;
             $conf['rol_aplica'] = LNiveles_acceso::Validador1;
             $conf['roles_filtro'] = [LNiveles_acceso::Validador1];
             $conf['bloquea_delegacion'] = 1;      
@@ -571,6 +583,24 @@ class Validacion extends Informacion_docente {
             $this->envia_correo_electronico('cenitluis.pumas@gmail.com', ['nombre'=>'Jesús Díaz', 'password'=>'AUSL880811BC6_NOW']);
         }else{
             $this->envia_correo_electronico($correo, ['nombre'=>'Jesús Díaz', 'password'=>'AUSL880811BC6_NOW']);
+        }
+    }
+
+    public function habilita_edicion(){
+        if ($this->input->is_ajax_request()) {
+            if($this->input->post()){
+               $post =   $this->input->post(null, true);
+               $datos_sesion = $this->get_datos_sesion();
+                              $this->load->model('ConvocatoriaV2_model', 'convocatoria');
+                $output = array(
+                    'id_docente' => $post['docente'],
+                    'id_convocatoria' => $datos_sesion['convocatoria']['id_convocatoria'],
+                );
+               $datos_validacion_seccion = $this->convocatoria->registro_editar_nuevamete($output);
+               header('Content-Type: application/json; charset=utf-8;');
+               echo json_encode($datos_validacion_seccion);
+               exit();
+            }
         }
     }
     

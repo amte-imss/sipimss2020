@@ -1,5 +1,6 @@
 
 $(document).ready(function () {
+    console.log("saludos");
     lista_docentes();
 });
 
@@ -86,7 +87,7 @@ function lista_docentes(){
             {name: 'email', title:"Correos", type: "text",  visible:true},
             {name: 'id_docente_carrera', title: "Docente de carrera", type: "select", items:fase_carrera_docente, valueField: "id_docente_carrera", textField: "descripcion", visible:true},
             {name: 'id_status_validacion', title: "Estado validación", type: "select", items:estados_validacion, valueField: "id", textField: "label", visible:true},
-            {name: 'ratificado', title: "Ratificado", type: "select", items:ratificado, valueField: "id", textField: "label", visible:true},
+            {name: 'ratificado', title: "Ratificado", type: "select", items:ratificado, valueField: "id", textField: "label", visible:false},
             {name: 'total_registros_censo', title: "Total registros", type: "text", visible:true},
             //{name: 'id_elemento_catalogo_padre', title: 'Elemento padre', type: 'select', items: json_elementos_catalogo_padre, valueField: "id_elemento_catalogo", textField: "label"},
             //{name: 'id_elemento_catalogo_hijo', title: 'Elemento hijo', type: 'select', items: json_elementos_catalogo_hijo, valueField: "id_elemento_catalogo", textField: "label"},
@@ -117,7 +118,8 @@ function lista_docentes(){
                         
                         if(item.permite_ratificacion==1){
                             if(item.id_status_validacion == 7 || item.id_status_validacion == '7' || item.id_status_validacion == 3 || item.id_status_validacion == '3'){
-                                name_boton = 'Ver ratificación';
+                                //name_boton = 'Ver ratificación';
+                                name_boton = 'Ver validación';
                                 liga_aux +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
                                 ambas += 1;
                             }
@@ -125,7 +127,8 @@ function lista_docentes(){
                         control_normal = false;
                     }
                     if(ambas == 2){
-                        name_boton = 'Ver ratificación';
+                        //name_boton = 'Ver ratificación';
+                        name_boton = 'Ver validación';
                         liga +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
                     }else{
                         liga += liga_aux;
@@ -138,6 +141,10 @@ function lista_docentes(){
                             }
                             liga +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
                         }
+                    }
+                    if(editar_reg_doc == 1 && item.id_status_validacion == 8){
+                        //liga +='<br><button data-docente="'+item.id_docente+'" onclick="permite_edicion_docente(this);" class="link">Habilitar edición de registro censo</button>';
+                        liga +='<br><a  data-docente="'+item.id_docente+'" onclick="permite_edicion_docente(this);" >Habilitar edición de registro censo</a>';
                     }
                     
                     if(permiso==1){
@@ -196,4 +203,46 @@ function exportar_lista_docentes(element) {
     var headers = remove_headers(obtener_cabeceras(), cabeceras_no_exportar());
 //    var headers = obtener_cabeceras_implementaciones();
     export_xlsx_grid(namegrid, headers, 'docentes', 'docentes');
+}
+function permite_edicion_docente(element) {
+    var docente = $(element).data('docente');
+    var url = url_ctr + "/habilita_edicion";
+    apprise('Confirme que realmente desea activar la edición del registro del censo', {verify: true}, function (btnClick) {
+        if (btnClick) {//Continua con el guardado de las secciones
+            $.ajax({                
+                    type: "POST",                
+                    url: site_url + url,
+                    data: {docente:docente},
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                //            $('#tabla_actividades_docente').html(create_loader());
+                                    mostrar_loader();
+                                }
+                            })
+                                    .done(function (data) {
+                                        try {//Cacha el error
+                                            var resp = $.parseJSON(data);
+                                            console.log(resp);
+                                            if (typeof resp.success !== 'undefined' && (resp.success == 1 || resp.success == "1")) {
+                                                console.log("resp");
+                                                location.reload();
+                                            }
+                                        } catch (e) {
+                                            //$(div_respuesta).html(data);
+                                        }
+                
+                                    })
+                                    .fail(function (jqXHR, response) {
+                //                        $(div_respuesta).html(response);
+                                        get_mensaje_general('Ocurrió un error durante el proceso, inténtelo más tarde.', 'warning', 5000);
+                                    })
+                                    .always(function () {
+                                        ocultar_loader();
+                                    });
+                
+                        } else {
+                            return false;
+                        }
+                    });
+   
 }
