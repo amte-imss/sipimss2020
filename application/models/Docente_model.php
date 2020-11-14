@@ -148,8 +148,8 @@ class Docente_model extends MY_Model {
             //pr($parametros_docente);       
             if($parametros_docente['is_entidad_designada']){
 
-                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = d.clave_delegacional', 'left');            
-                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad', 'left'); 
+                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = d.clave_delegacional and doc.id_usuario = '. $parametros_docente['ooad_usuario'], 'left');            
+                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad and doc.id_usuario = '. $parametros_docente['umae_usuario'], 'left'); 
                 $filtro_umae_ooad = array();           
                 if(isset($parametros_docente['user_validadorn1'])){
                     $filtro_umae_ooad[] = 'doc.id_usuario IN(' . $parametros_docente['user_validadorn1'] . ')';
