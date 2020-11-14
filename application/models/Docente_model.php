@@ -30,22 +30,35 @@ class Docente_model extends MY_Model {
             $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol and urol.clave_rol = \''.LNiveles_acceso::Docente.'\'');     
             //pr($parametros_docente);       
             if($parametros_docente['is_entidad_designada']){
+                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = del.clave_delegacional and doc.id_usuario = '. $parametros_docente['ooad_usuario'], 'left');            
+                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad and doc.id_usuario = '. $parametros_docente['umae_usuario'], 'left'); 
 
-                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = del.clave_delegacional', 'left');            
-                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad', 'left'); 
                 $filtro_umae_ooad = array();           
                 if(isset($parametros_docente['user_validadorn1'])){
                     
                     $filtro_umae_ooad[] = 'doc.id_usuario IN(' . $parametros_docente['user_validadorn1'] . ')';
                 }
                 if(isset($parametros_docente['ooad_usuario'])){
-                    $filtro_umae_ooad[] = 'del.clave_delegacional in(' . $parametros_docente['ooad'].')'; 
+                    if(is_null($parametros_docente['ooad'])){
+                        $filtro_umae_ooad[] = 'del.clave_delegacional is null'; 
+
+                    }else{                    
+                        $filtro_umae_ooad[] = 'del.clave_delegacional in(' . $parametros_docente['ooad'].')'; 
+                    }
                     //$this->db->where('d.clave_delegacional', $parametros_docente['ooad_usuario']);//Rol del docente
                 }
+
                 if(isset($parametros_docente['umae_usuario'])){
-                    $filtro_umae_ooad[] = 'u.clave_unidad in(' . $parametros_docente['umae'].')'; 
+                    if(is_null($parametros_docente['umae'])){
+                        $filtro_umae_ooad[] = 'u.clave_unidad is null'; 
+
+                    }else{
+                        $filtro_umae_ooad[] = 'u.clave_unidad in(' . $parametros_docente['umae'].')'; 
+                    }
                     //$this->db->where_in('u.clave_unidad' ,$parametros_docente['umae_usuario']);//Rol del docente                    
                 }
+
+                
                 if(!empty($filtro_umae_ooad)){
                     $string = implode(' or ',$filtro_umae_ooad);
                     $string = '('. $string . ')';
