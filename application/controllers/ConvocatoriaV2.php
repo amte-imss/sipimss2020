@@ -231,8 +231,38 @@ class ConvocatoriaV2 extends MY_Controller implements IWorkflow
         }
     }
 
-    public function notificaciones($id_linea_tiempo = 0){
+    public function notificaciones(){
+        try
+        {
+            
+            $this->db->schema = 'ui';
+            $crud = $this->new_crud();
+            $crud->set_table('notificaciones_estaticas');
+            $crud->set_primary_key('clave'); //Definir llaves primarias, asegurar correcta relación 
+            $crud->set_primary_key('clave_rol'); //Definir llaves primarias, asegurar correcta relación 
 
+            //$crud->unset_delete();
+            $crud->columns('clave', 'nombre', 'descripcion', 'activa', 'fecha_inicio', 'fecha_fin', 'clave_rol','id_normativo');
+            $crud->fields('clave', 'nombre', 'descripcion', 'activa','fecha_inicio', 'fecha_fin');
+            $crud->add_fields('clave', 'nombre', 'descripcion', 'activa', 'fecha_inicio', 'fecha_fin', 'clave_rol'); //Definir campos que se van a agregar y su orden
+            $crud->edit_fields('clave', 'nombre', 'descripcion', 'activa', 'fecha_inicio', 'fecha_fin','clave_rol', 'id_normativo'); //Definir campos que se van a editar y su orden
+            $cat_rol = $this->sesion->get_niveles_acceso_cat(true);
+            $crud->change_field_type('clave_rol', 'dropdown', $cat_rol );
+            
+            $datos_sesion = $this->get_datos_sesion();
+            $convocatoria =$datos_sesion['convocatoria']; 
+            //pr($datos_sesion['convocatoria']);
+            $conv_cat[$convocatoria['clave']] = $convocatoria['nombre'];
+            $crud->change_field_type('clave', 'dropdown', $conv_cat);
+            
+            $output = $crud->render();
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
+            $this->template->setMainContent($main_content);
+            $this->template->getTemplate();
+        }catch (Exception $e)
+        {
+            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+        }
     }
 
     /**
@@ -305,6 +335,54 @@ class ConvocatoriaV2 extends MY_Controller implements IWorkflow
             {
                 redirect('inicio');
             }
+        }
+    }
+
+    public function convocatoria_crud() {
+        try {
+            $this->db->schema = 'convocatoria';
+            //pr($this->db->list_tables()); //Muestra el listado de tablas pertenecientes al esquema seleccionado
+
+            $crud = $this->new_crud();
+            $crud->set_table('convocatorias');
+
+            $crud->set_subject('Convocatorias');
+            $crud->display_as('clave', 'Clave de la convocatoria');
+            $crud->display_as('nombre', 'Nombre de la convocatoria');
+            $crud->display_as('fechas_inicio', 'Fechas de inicio');
+            $crud->display_as('fechas_fin', 'Fechas de fin');
+            $crud->display_as('activa', 'Activa');
+            $crud->display_as('is_confirmado_cierre_registro_censo', 'Cerro registro');
+            
+
+            $crud->set_primary_key('id_convocatoria', 'regiones'); //Definir llaves primarias, asegurar correcta relación
+            
+
+            
+            $crud->columns('clave', 'nombre', 'fechas_inicio', 'fechas_fin', 'activa', 'is_confirmado_cierre_registro_censo'); //Definir columnas a mostrar en el listado y su orden
+            $crud->add_fields('clave', 'nombre', 'fechas_inicio', 'fechas_fin', 'activa'); //Definir campos que se van a agregar y su orden
+            $crud->edit_fields('nombre', 'fechas_inicio', 'fechas_fin', 'activa', 'is_confirmado_cierre_registro_censo'); //Definir campos que se van a editar y su orden
+
+            //$crud->change_field_type('activo', 'true_false', array(0 => 'Inactivo', 1 => 'Activo'));
+            //$crud->change_field_type('is_confirmado_cierre_registro_censo', 'true_false', array(0 => 'No', 1 => 'Sí'));
+            $crud->change_field_type('activa', 'true_false');
+            $crud->change_field_type('is_confirmado_cierre_registro_censo', 'true_false');
+
+            $crud->set_rules('nombre', 'Nombre de convocatoria', 'trim|required');
+            $crud->set_rules('clave', 'Clave convocatoria', 'trim|required');
+            //$crud->set_rules('activo', 'Activo', 'required');
+           
+            $crud->unset_delete();
+            $output = $crud->render();
+            $output['$viewExtra'] = '<a href="/notificaciones/">Ver detalle</a>';
+            $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
+            //pr($view['contenido']); exit();
+            //$main_content = $this->load->view('admin/admin', $view, true);
+            $main_content = $view['contenido'];
+            $this->template->setMainContent($main_content);
+            $this->template->getTemplate();
+        } catch (Exception $e) {
+            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
         }
     }
 

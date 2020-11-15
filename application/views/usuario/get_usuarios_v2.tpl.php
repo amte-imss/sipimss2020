@@ -3,6 +3,12 @@
 <script src="<?php echo base_url(); ?>assets/third-party/jsgrid-1.5.3/dist/jsgrid.min.js"></script>
 <?php echo js('usuario/lista.js'); ?>
 <div id="page-inner">
+  <div class="col-md-12" id="div_error" style='display:none'>
+      <div id="alerta"  class="alert alert-danger" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <span id="msg"></span>
+      </div>
+  </div>
     <div class="col-sm-12">
         <h1 class="page-head-line">
             Lista de usuarios
@@ -36,7 +42,7 @@
   <div class="modal-dialog modal-lg" >
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button  type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Entrar como...</h4>
       </div>
       <div class="modal-body">
@@ -46,6 +52,29 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
      <form id="form_entrar_como" method="post">
         <input type="submit" class="btn btn-primary" value="Continuar">
+     </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modal_eliminar_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false" data-keyboard="false">
+  <div class="modal-dialog modal-lg" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <button id="close_delete" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Eliminar usuario...</h4>
+      </div>
+      <div class="modal-body">
+        <p>Al seleccionar continuar, eliminará todo registro relacionado con el usuario </p>
+        <p>¿Confirma que desea eliminar el usuario? </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+     <form id="form_eliminar_usuario" method="post">
+
+        <input id="usuario_expuesto" type="hidden"  value="">
+        <input type="button" class="btn btn-primary" onclick="elimina_usuario_registro(this);" value="Continuar">
      </form>
       </div>
     </div><!-- /.modal-content -->

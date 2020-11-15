@@ -221,8 +221,9 @@ function permite_edicion_docente(element) {
                             })
                                     .done(function (data) {
                                         try {//Cacha el error
-                                            var resp = $.parseJSON(data);
-                                            console.log(resp);
+                                            //var resp = $.parseJSON(data);
+                                            var resp = data;
+                                            //console.log(resp);
                                             if (typeof resp.success !== 'undefined' && (resp.success == 1 || resp.success == "1")) {
                                                 console.log("resp");
                                                 location.reload();

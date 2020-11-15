@@ -248,6 +248,29 @@ class Sesion_model extends CI_Model {
         }
         return $niveles;
     }
+    
+    public function get_niveles_acceso_cat($agrupadas_catalogo){
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $select = array(
+            'B.clave_rol', 'B.nombre rol'
+        );
+        $this->db->select($select);        
+        $this->db->where('B.activo', true);
+        $niveles = $this->db->get('sistema.roles B')->result_array();
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        if($agrupadas_catalogo)
+        {
+            $tmp = [];
+            foreach ($niveles as $row)
+            {
+                $tmp[$row['clave_rol']] = $row['rol'];
+            }
+            $niveles = $tmp;
+        }
+        return $niveles;
+    }
 
     /**
      * Funcion que obtiene la notificacion estatica

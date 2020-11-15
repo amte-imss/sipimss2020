@@ -300,6 +300,53 @@ class Usuario extends MY_Controller
         $this->template->getTemplate();
     }
 
+    public function eliminar()
+    {
+        
+        if ($this->input->is_ajax_request()) {
+            if ($this->input->post()){
+                $respuesta = ['tp_msg'=>'success', 'mensaje'=>''];
+                $post = $this->input->post(null, true);
+                $id_usuario = $post['usuario_expuesto'];
+                $this->load->model('Usuario_model', 'usuario');
+                $id_docente = $this->usuario->get_docente_por_user($id_usuario);
+                if(!is_null($id_docente)){
+                    $id_docente = $id_docente['id_docente'];
+                    //pr($post);
+                    //$datos_sesion = $this->get_datos_sesion();
+                    $niveles_acceso = $this->sesion->get_niveles_acceso($id_usuario, true);
+                    //pr($niveles_acceso);
+                    if(!$this->roles_no_permitidos($niveles_acceso)){
+                        $respuesta['mensaje'] = 'El usuario no puede ser eliminado, el rol designado no es permitido';
+                        $respuesta['tp_msg'] = 'danger';
+                    }else{
+                        $params['id_usuario'] = $id_usuario;
+                        $params['id_docente'] = $id_docente;
+                        $respuesta = $this->usuario->delete_user($params);
+                    }
+                }else{
+                    $respuesta['mensaje'] = 'No se encontro información del usuario';
+                    $respuesta['tp_msg'] = 'danger';
+                }
+                //pr($niveles_acceso);
+                header('Content-Type: application/json; charset=utf-8;');
+                echo json_encode($respuesta);
+                exit();
+            }
+        }
+    }
+
+    private function roles_no_permitidos($roles){
+        $roles_bloqueados = array(LNiveles_acceso::Normativo, LNiveles_acceso::Super, LNiveles_acceso::Admin, LNiveles_acceso::Mesa);
+        foreach($roles_bloqueados as $key => $value){
+            if(isset($roles[$value])){
+                return false;
+            }
+        }
+        return true;
+        
+    }
+    
     private function filtra_datos_form($datos = [])
     {
         $nuevo = [];

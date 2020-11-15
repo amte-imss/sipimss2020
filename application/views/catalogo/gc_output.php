@@ -5,6 +5,9 @@ foreach($css_files as $file): ?>
 <?php foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
+<?php if(isset($viewExtra)){ 
+  echo $viewExtra;
+} ?>
 
 <div ng-class="panelClass" class="row">
     <div class="col col-sm-12">

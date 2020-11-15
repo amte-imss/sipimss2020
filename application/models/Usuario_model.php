@@ -340,6 +340,21 @@ class Usuario_model extends MY_Model {
         }
         return $docente;
     }
+    public function get_docente_por_user($id_usuario)
+    {
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $this->db->select('id_docente');
+        $this->db->where('id_usuario', $id_usuario);        
+        $docente = $this->db->get('censo.docente')->result_array();
+        if(!empty($docente))
+        {
+            $docente = $docente[0];
+        }else{
+            $docente = null;
+        }
+        return $docente;
+    }
 
     private function localiza_unidad($clave) {
         $this->db->flush_cache();
@@ -891,5 +906,99 @@ class Usuario_model extends MY_Model {
     {
         return json_decode($data['detalle_registro'], true);
     }
+
+    
+    private function tablas_relacionadas($param) {
+        //pr($param);
+        $delete = array(
+            //'validacion.fin_registro_censo' => array('where' => '(id_docente = ' . $param['id_docente'] . ' )', 'entidad' => 'Registro del censo',),
+            'censo.censo_info' => array('where' => 'id_censo in (select id_censo from censo.censo cp where cp.id_docente = '. $param['id_docente'] .')', 'entidad' => 'Censo info',),
+            'censo.censo' => array('where' => '(id_docente = ' . $param['id_docente'] . ' )', 'entidad' => 'Censo',),
+            'sistema.usuario_rol' => array('where' => '(id_usuario = ' . $param['id_usuario'] . ' )', 'entidad' => 'Rol de usuario',),
+            'sistema.usuario_ooad' => array('where' => '(id_usuario = ' . $param['id_usuario'] . ' )', 'entidad' => 'Asignación OOAD',),
+            'sistema.usuario_umae' => array('where' => '(id_usuario = ' . $param['id_usuario'] . ' )', 'entidad' => 'Asignación UMAE',),
+            'censo.historico_datos_docente' => array('where' => '(id_docente = ' . $param['id_docente'] . ' )', 'entidad' => 'Historico docente',),
+            'sistema.usuarios_modulos' => array('where' => '(id_usuario = ' . $param['id_usuario'] . ' )', 'entidad' => 'Modulo de usuario',),
+            'censo.docente' => array('where' => '(id_usuario = ' . $param['id_usuario'] . ' )', 'entidad' => 'Docentes',),
+            'sistema.control_registro_usuarios' => array('where' => '(id_usuario_registra = ' . $param['id_usuario'] . ' or id_usuario_registrado = '. $param['id_usuario'] .' )', 'entidad' => 'Docentes',),
+            'sistema.usuarios' => array('where' => '(id_usuario = ' . $param['id_usuario'] . ' )', 'entidad' => 'Usuarios',),
+            
+        );
+        $select = array(
+                'validacion.validacionN1_finaliza' => array('where' => 'id_docente = ' . $param['id_docente'] . ' or id_validador = ' . $param['id_docente'] ,
+                'mensaje' => 'No es posible eliminar un usuario que presente actividad en la finalización de la validacion',
+                'tp_msg' => 'danger'
+            ),
+                'validacion.validacionN1_seccion' => array('where' => 'id_docente = ' . $param['id_docente'] . ' or id_validador = ' . $param['id_docente'] ,
+                'mensaje' => 'No es posible eliminar un usuario que presente actividad en la validación de las secciones del censo',
+                'tp_msg' => 'danger'
+            ),
+                'validacion.ratificador' => array('where' => 'id_docente = ' . $param['id_docente'] . ' or id_ratificador_validador = ' . $param['id_docente'] ,
+                'mensaje' => 'No es posible eliminar un usuario que presente actividad en la ratificación',
+                'tp_msg' => 'danger'
+            ),
+                /*'sistema.control_registro_usuarios' => array('where' => 'id_usuario_registra = ' . $param['id_usuario'] ,
+                'mensaje' => 'No es posible eliminar un usuario que presente actividad en la control de registro de docentes',
+                'tp_msg' => 'danger'
+            ),*/
+                'validacion.fin_registro_censo' => array('where' => '(id_docente = ' . $param['id_docente'] . ' )' ,
+                'mensaje' => 'No es posible eliminar un usuario que presente actividad en la finalización del registro del censo',
+                'tp_msg' => 'danger'
+            ),
+        );
+        
+        $conf['delete'] = $delete;
+        $conf['select'] = $select;
+        return $conf;
+    } 
+
+    public function delete_user($param) {
+        $respuesta = ['tp_msg'=>'success', 'mensaje'=>'Eliminación exitosa'];
+        $conf_borrado = $this->tablas_relacionadas($param);
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        $salida = false;
+        //Validamos que se pueda borrar
+        foreach($conf_borrado['select'] as $key => $value){
+            $this->db->reset_query();
+            $this->db->select('count(*) total');
+            $this->db->where($value['where'], null);
+            $query = $this->db->get($key);
+            
+            $total = $query->result_array()[0];
+            if($total['total'] > 0){
+                $respuesta['mensaje'] = $value['mensaje']; 
+                $respuesta['tp_msg'] = $value['tp_msg']; 
+                return $respuesta;
+            }
+        }
+        //Inicia borrado de las tablas 
+    $this->db->trans_begin();
+        $is_borrado_exitoso = 1;
+        foreach($conf_borrado['delete'] as $key => $value){
+            $this->db->reset_query();
+            
+            $this->db->where($value['where'], null);
+            $query = $this->db->delete($key);
+            if ($this->db->trans_status() === FALSE) {
+                $respuesta['mensaje'] = 'Error al borrar información de ' . $value['entidad'];
+                $respuesta['tp_msg'] = 'danger' ;
+                $is_borrado_exitoso = 0;
+                break;
+            }            
+        }
+
+        if ($is_borrado_exitoso == 0) {
+            $this->db->trans_rollback();
+            
+        } else {
+            $this->db->trans_commit();            
+        }
+        
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        return $respuesta;
+    }
+
 
 }

@@ -77,4 +77,31 @@ class Notificacion extends MY_Controller
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
         }
     }
+   
+    public function gestion(){
+        try
+        {
+            $this->db->schema = 'ui';
+            $crud = $this->new_crud();
+            $crud->set_table('notificaciones_estaticas');
+            $crud->set_primary_key('clave'); //Definir llaves primarias, asegurar correcta relación 
+            $crud->set_primary_key('clave_rol'); //Definir llaves primarias, asegurar correcta relación 
+
+            //$crud->unset_delete();
+            $crud->columns('clave', 'nombre', 'descripcion', 'activa', 'fecha_inicio', 'fecha_fin', 'clave_rol','id_normativo');
+            $crud->fields('clave', 'nombre', 'descripcion', 'activa','fecha_inicio', 'fecha_fin');
+            $crud->add_fields('clave', 'nombre', 'descripcion', 'activa', 'fecha_inicio', 'fecha_fin', 'clave_rol'); //Definir campos que se van a agregar y su orden
+            $crud->edit_fields('clave', 'nombre', 'descripcion', 'activa', 'fecha_inicio', 'fecha_fin','clave_rol', 'id_normativo'); //Definir campos que se van a editar y su orden
+            $cat_rol = $this->sesion->get_niveles_acceso_cat(true);
+            $crud->change_field_type('clave_rol', 'dropdown', $cat_rol );
+            
+            $output = $crud->render();
+            $main_content = $this->load->view('catalogo/gc_output', $output, true);
+            $this->template->setMainContent($main_content);
+            $this->template->getTemplate();
+        }catch (Exception $e)
+        {
+            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+        }
+    }
 }
