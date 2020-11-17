@@ -374,7 +374,7 @@ class ConvocatoriaV2 extends MY_Controller implements IWorkflow
            
             $crud->unset_delete();
             $output = $crud->render();
-            $output['$viewExtra'] = '<a href="/notificaciones/">Ver detalle</a>';
+            //$output['$viewExtra'] = '<a href="/notificaciones/">Ver detalle</a>';
             $view['contenido'] = $this->load->view('catalogo/gc_output', $output, true);
             //pr($view['contenido']); exit();
             //$main_content = $this->load->view('admin/admin', $view, true);
