@@ -229,7 +229,7 @@ class Inicio extends MY_Controller
                 //$datos['tmp'] = $result; 
                 if(!is_null($result)){
                     $datos['recovery'] = true;
-                    $this->enviar_correo($result['email'], $result, "Recuperación de contraseña", "sesion/mail_recovery_password.tpl.php");
+                    $this->enviar_correo($result['email'], $result, "Recuperaci&oacute;n de contrase&ntilde;a", "sesion/mail_recovery_password.tpl.php");
                     //$this->enviar_correo('cenitluis.pumas@gmail.com', $result, "Recuperación de contraseña", "sesion/mail_recovery_password.tpl.php");
                 }else{
                     
