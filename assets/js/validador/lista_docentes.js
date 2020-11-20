@@ -204,6 +204,7 @@ function exportar_lista_docentes(element) {
 //    var headers = obtener_cabeceras_implementaciones();
     export_xlsx_grid(namegrid, headers, 'docentes', 'docentes');
 }
+
 function permite_edicion_docente(element) {
     var docente = $(element).data('docente');
     var url = url_ctr + "/habilita_edicion";
@@ -226,6 +227,50 @@ function permite_edicion_docente(element) {
                                             //console.log(resp);
                                             if (typeof resp.success !== 'undefined' && (resp.success == 1 || resp.success == "1")) {
                                                 console.log("resp");
+                                                location.reload();
+                                            }
+                                        } catch (e) {
+                                            //$(div_respuesta).html(data);
+                                        }
+                
+                                    })
+                                    .fail(function (jqXHR, response) {
+                //                        $(div_respuesta).html(response);
+                                        get_mensaje_general('Ocurrió un error durante el proceso, inténtelo más tarde.', 'warning', 5000);
+                                    })
+                                    .always(function () {
+                                        ocultar_loader();
+                                    });
+                
+                        } else {
+                            return false;
+                        }
+                    });
+   
+}
+
+function habilita_edicion_general(element) {
+    var docente = $(element).data('docente');
+    var url = url_ctr + "/habilita_edicion_general";
+    apprise('Confirme que realmente desea activar la edición del registro del censo para aquellos que tienen cero registros', {verify: true}, function (btnClick) {
+        if (btnClick) {//Continua con el guardado de las secciones
+            $.ajax({                
+                    type: "POST",                
+                    url: site_url + url,
+                    data: {docente:docente},
+                    dataType: "json",
+                    beforeSend: function (xhr) {
+                //            $('#tabla_actividades_docente').html(create_loader());
+                                    mostrar_loader();
+                                }
+                            })
+                                    .done(function (data) {
+                                        try {//Cacha el error
+                                            //var resp = $.parseJSON(data);
+                                            var resp = data;
+                                            //console.log(resp);
+                                            if (typeof resp.success !== 'undefined' && (resp.success == 1 || resp.success == "1")) {
+                                                //console.log("resp");
                                                 location.reload();
                                             }
                                         } catch (e) {

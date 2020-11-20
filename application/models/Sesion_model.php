@@ -120,8 +120,10 @@ class Sesion_model extends CI_Model {
                 $this->db->update('sistema.usuarios');
                 //pr($this->db->last_query());
             }
-            $this->send_recovery_mail($usuario);
+            //$this->send_recovery_mail($usuario);
+            return $usuario;
         }
+        return null;
     }
 
     private function send_recovery_mail($usuario)

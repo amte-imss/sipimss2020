@@ -66,6 +66,7 @@
                   <p >Contraseña actualizada con éxito</p>
                   <?php
               } else {
+                //pr($tmp);
                   ?>
                   <p >El sistema ha recibido tu solicud con éxito, recibirás un enlace para crear una contraseña nueva por correo electrónico.</p>
                   <?php

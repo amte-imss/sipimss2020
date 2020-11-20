@@ -867,7 +867,11 @@ class ConvocatoriaV2_model extends MY_Model
         $status = array('success' => false, 'message' => 'No se agrego correctamente el registro', 'data'=>[]);
         try
         {
-            $this->db->where('id_docente', $datos['id_docente']);
+            if(!is_array($datos['id_docente'])){
+                $this->db->where('id_docente', $datos['id_docente']);
+            }else{
+                $this->db->where_in('id_docente', $datos['id_docente']);
+            }
             $this->db->where('id_convocatoria', $datos['id_convocatoria']);
             $registros = $this->db->get('validacion.fin_registro_censo')->result_array();
             // pr($registros);
@@ -875,13 +879,26 @@ class ConvocatoriaV2_model extends MY_Model
             {
                 
                 $this->db->reset_query();
+                if(!is_array($datos['id_docente'])){
+                    $this->db->where('id_docente', $datos['id_docente']);
+                }else{
+                    $this->db->where_in('id_docente', $datos['id_docente']);
+                }   
+                $this->db->trans_begin(); //Inicia la transacción
                 
-                $this->db->where('id_docente', $datos['id_docente']);
                 $this->db->where('id_convocatoria', $datos['id_convocatoria']);
                 $activo = array('activo_edicion'=>true);
-                $this->db->update('validacion.fin_registro_censo', $activo);                
-                $status['success'] = 1;
-                $status['message'] = 'La edición se habilito con éxito';    
+                $this->db->update('validacion.fin_registro_censo', $activo);
+                
+                if ($this->db->trans_status() === FALSE) {
+                    $status['success'] = 0;
+                    $status['message'] = 'No se pudo actualizar la edición del registro del censo';
+                    $this->db->trans_rollback();
+                }else{
+                    $status['success'] = 1;
+                    $status['message'] = 'La edición se habilito con éxito';    
+                    $this->db->trans_commit();
+                }                
             }else{
                 $status['success'] = 0;
                 $status['message'] = 'No se pudo actualizar la edición del registro del censo';

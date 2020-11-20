@@ -31,6 +31,11 @@ $controlador = '/' . $this->uri->rsegment(1);
                 <a href="#" type="button" class="btn btn-theme animated flipInY visible pull-right" aria-expanded="false" onclick="exportar_lista_docentes(this);" data-namegrid="js_grid_lista_docentes">
                     <span>Exportar</span>
                 </a>
+                <?php if(isset($btn_activar_registro_docentes_masivo) && $btn_activar_registro_docentes_masivo==1){?>
+                <a type="button" class="btn btn-theme animated flipInY visible pull-right" aria-expanded="false" onclick="habilita_edicion_general(this);" data-namegrid="js_grid_lista_docentes">
+                    <span>Habilitar edición registro docente</span>
+                </a>
+                <?php }?>
             </div><br>
         <?php } ?>
         <p>Dado el cambio en el proceso e inicio de una nueva etapa, se ha modificado el número de registros a mostrar para los CCEIS y JDES, ahora solo dispondrá de los que ha registrado para que pueda validarlos.</p>

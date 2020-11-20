@@ -225,8 +225,16 @@ class Inicio extends MY_Controller
             $this->form_validation->set_rules('usuario', 'Usuario', 'required');
             if ($this->form_validation->run() == TRUE)
             {
-                $this->sesion->recuperar_password($usuario);
-                $datos['recovery'] = true;
+                $result = $this->sesion->recuperar_password($usuario);
+                //$datos['tmp'] = $result; 
+                if(!is_null($result)){
+                    $datos['recovery'] = true;
+                    $this->enviar_correo($result['email'], $result, "Recuperación de contraseña", "sesion/mail_recovery_password.tpl.php");
+                    //$this->enviar_correo('cenitluis.pumas@gmail.com', $result, "Recuperación de contraseña", "sesion/mail_recovery_password.tpl.php");
+                }else{
+                    
+                    $datos['recovery'] = false;
+                }
             }
         } else if ($this->input->post() && $code != null)
         {

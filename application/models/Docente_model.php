@@ -112,8 +112,10 @@ class Docente_model extends MY_Model {
      * @return type
      */
     public function get_historico_datos_generales($id_docente = null, $OOAD = null , $parametros_docente =[]) {
-        $select = array(
-            "dd.id_historico_docente", "dd.fecha echa_ultima_actualizacion"
+        if(!isset($parametros_docente['select'])){
+
+            $select = array(
+                "dd.id_historico_docente", "dd.fecha echa_ultima_actualizacion"
             , "dd.id_departamento_instituto", "di.clave_departamental", "concat(di.nombre,' (',di.clave_departamental,')' ) departamento"
             , "u.id_unidad_instituto", "u.clave_unidad", "u.nombre nom_unidad", "u.nivel_atencion"
             , "u.id_tipo_unidad", "tu.nombre nom_tipo_unidad"
@@ -122,6 +124,9 @@ class Docente_model extends MY_Model {
             "r.id_region", "r.nombre region",
             "cc.id_categoria", "cc.clave_categoria", "concat(cc.nombre, ' (', cc.clave_categoria, ')') categoria"
         );
+        }else{
+            $select = $parametros_docente['select'];
+        }
         if(!empty($parametros_docente)){
             $convocatoria = $parametros_docente['convocatoria'];
             $censo_reg = "(select count(*) total_registros_censo from censo.censo cc where cc.id_docente = doc.id_docente) total_registros_censo";
@@ -134,7 +139,9 @@ class Docente_model extends MY_Model {
             $censo_reg,
             $ratificado
             ];
-            $select = array_merge($select, $select_p);
+            if(!isset($parametros_docente['select'])){
+                $select = array_merge($select, $select_p);
+            }
         }
         if(!is_null($id_docente)){
             $this->db->where('dd.id_docente', $id_docente);
@@ -199,8 +206,9 @@ class Docente_model extends MY_Model {
                         $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = doc.id_usuario', 'left');
                         $select_aux[] = "(case when cru.id_usuario_registrado is null then 0 else 1 end) permite_validacion";                         
                         $select_aux[] = "(case when ((ooad.ooad is not null and ooad.ooad = d.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
-                        $select = array_merge($select, $select_aux);
-                        
+                        if(!isset($parametros_docente['select'])){
+                            $select = array_merge($select, $select_aux);
+                        }
                     }
 
                 }

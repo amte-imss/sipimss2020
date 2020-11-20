@@ -335,6 +335,7 @@ class Validacion extends Informacion_docente {
         $rol_aplica = $this->get_rol_aplica($datos_sesion);
         $output['editar_reg_doc_nuevamente'] = $rol_aplica['editar_reg_doc_nuevamente'];    
         $output['bloquea_delegacion'] = $rol_aplica['bloquea_delegacion'];
+        $output['btn_activar_registro_docentes_masivo'] = $rol_aplica['btn_activar_registro_docentes_masivo'];
         $output['catalogos']['result_delegacional'] = $this->normativo->get_delegacional();
         array_unshift($output['catalogos']['result_delegacional'], ['clave_delegacional'=>'',"nombre"=>'Selecciona OOAD']); 
         $output['catalogos']['fase_carrera_docente'] = $this->cm->get_fase_carrera_docente();
@@ -407,7 +408,7 @@ class Validacion extends Informacion_docente {
     private function get_rol_aplica($datos_sesion, $data_post = null){
         $claves_rol = $this->get_roles_usuario(2);
         $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente, 'bloquea_delegacion' => 0, 
-        'is_entidad_designada' => false,'aplica_bandera_separarV1_v2' => 0, 'editar_reg_doc_nuevamente' => 0 
+        'is_entidad_designada' => false,'aplica_bandera_separarV1_v2' => 0, 'editar_reg_doc_nuevamente' => 0 , 'btn_activar_registro_docentes_masivo' => 0,
         ];
         $conf['rol_docente']=LNiveles_acceso::Docente;
         $conf['convocatoria'] = $datos_sesion['convocatoria']['id_convocatoria'];
@@ -415,6 +416,7 @@ class Validacion extends Informacion_docente {
             $conf['rol_aplica'] = LNiveles_acceso::Normativo;
             $conf['roles_filtro'] = [LNiveles_acceso::Normativo];
             $conf['editar_reg_doc_nuevamente'] = 1;
+            $conf['btn_activar_registro_docentes_masivo'] = 1;
             if(!is_null($data_post) && !empty($data_post['clave_delegacional'])){
                 $conf['filtros']['where']['d.clave_delegacional'] = $data_post['clave_delegacional'];
                 $conf['filtros']['where']['d.clave_delegacional'] = $data_post['clave_delegacional'];
@@ -589,6 +591,7 @@ class Validacion extends Informacion_docente {
     public function habilita_edicion(){
         if ($this->input->is_ajax_request()) {
             if($this->input->post()){
+               
                $post =   $this->input->post(null, true);
                $datos_sesion = $this->get_datos_sesion();
                               $this->load->model('ConvocatoriaV2_model', 'convocatoria');
@@ -596,11 +599,44 @@ class Validacion extends Informacion_docente {
                     'id_docente' => $post['docente'],
                     'id_convocatoria' => $datos_sesion['convocatoria']['id_convocatoria'],
                 );
+            
                $datos_validacion_seccion = $this->convocatoria->registro_editar_nuevamete($output);
                header('Content-Type: application/json; charset=utf-8;');
                echo json_encode($datos_validacion_seccion);
                exit();
             }
+        }
+    }
+
+    public function habilita_edicion_general(){
+        if ($this->input->is_ajax_request()) {
+            $datos_validacion_seccion= ['success'=> 0];
+            
+            $datos_sesion = $this->get_datos_sesion();
+            $this->load->model('ConvocatoriaV2_model', 'convocatoria');
+            $output = array(                
+                'id_convocatoria' => $datos_sesion['convocatoria']['id_convocatoria'],
+            );
+            $rol_aplica = $this->get_rol_aplica($datos_sesion,null);
+            $rol_aplica['filtros']['where']['(select count(*) total_registros_censo from censo.censo cc where cc.id_docente = doc.id_docente) = 0'] = null;
+            $est_fin = En_estado_validacion_registro::FINALIZA_REGISTRO_CONVOCATORIA;
+            $rol_aplica['filtros']['where']['censo.estado_validacion_docente(doc.id_docente) = '.$est_fin] = null;
+            //pr($rol_aplica);
+            $rol_aplica['select'] = 'doc.id_docente';
+            $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
+            $output['id_docente'] = [];
+            if(count($output['datos_docentes'])>0){
+                foreach($output['datos_docentes'] as $key => $value){
+                    $output['id_docente'][] = $value['id_docente'];
+                }
+                //pr($output);
+                $datos_validacion_seccion = $this->convocatoria->registro_editar_nuevamete($output);
+            }
+            //pr($output['datos_docentes']);
+            header('Content-Type: application/json; charset=utf-8;');
+            echo json_encode($datos_validacion_seccion);
+            exit();
+        
         }
     }
     
