@@ -73,14 +73,17 @@ class MY_Controller extends CI_Controller {
     }
 
     private function boton_finaliza_etapa(){
-        if(isset($this->get_datos_sesion()['convocatoria'])){
-            $this->load->model('ConvocatoriaV2_model', 'convV2');
-            //$this->load->model('Sesion_model', 'sesion');
-            $convocatoria = $this->get_datos_sesion()['convocatoria'];
-            if($this->convV2->validar_cerrar_convocatoria($convocatoria['id_convocatoria'])){
-                $vista_cierre = $this->load->view('convocatoria/cerrar_registro_censo_normativo.php',null, true);
-                return $vista_cierre;
-            }                        
+        $roles = $this->get_roles_usuario();
+        if(isset($roles[LNiveles_acceso::Normativo])){
+            if(isset($this->get_datos_sesion()['convocatoria'])){
+                $this->load->model('ConvocatoriaV2_model', 'convV2');
+                //$this->load->model('Sesion_model', 'sesion');
+                $convocatoria = $this->get_datos_sesion()['convocatoria'];
+                if($this->convV2->validar_cerrar_convocatoria($convocatoria['id_convocatoria'])){
+                    $vista_cierre = $this->load->view('convocatoria/cerrar_registro_censo_normativo.php',null, true);
+                    return $vista_cierre;
+                }                        
+            }
         }
         return '';
         //pr($this->get_datos_sesion()['convocatoria']);
