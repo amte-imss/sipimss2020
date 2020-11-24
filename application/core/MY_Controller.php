@@ -73,7 +73,7 @@ class MY_Controller extends CI_Controller {
     }
 
     private function boton_finaliza_etapa(){
-        $roles = $this->get_roles_usuario();
+        $roles = $this->get_roles_usuario(2);
         if(isset($roles[LNiveles_acceso::Normativo])){
             if(isset($this->get_datos_sesion()['convocatoria'])){
                 $this->load->model('ConvocatoriaV2_model', 'convV2');
