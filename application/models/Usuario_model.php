@@ -320,9 +320,34 @@ class Usuario_model extends MY_Model {
         return $resultado;
     }
 
-    public function save_control_registro_usuarios($data){
-        $this->db->insert('sistema.control_registro_usuarios', $data); //nombre de la tabla en donde se insertaran
+    public function save_control_registro_usuarios($data, $tipo = 'insert'){
+        $result = ['mensaje'=>'', 'tp_msg'=>'danger'];
+        $this->db->flush_cache();
+        $this->db->reset_query();
+        if($tipo == 'insert'){
+            $this->db->insert('sistema.control_registro_usuarios', $data); //nombre de la tabla en donde se insertaran
+        }else{//update
+           //pr($data);
+            $this->db->trans_begin(); //Definir inicio de transacción
+            $this->db->where('id_usuario_registra', $data['condicion']['id_usuario_registra']); //nombre de la tabla en donde se insertaran
+            $this->db->where_in('id_usuario_registrado', $data['condicion']['id_usuario_registrado']); //nombre de la tabla en donde se insertaran
+            
+            $this->db->update('sistema.control_registro_usuarios', $data['datos']); //nombre de la tabla en donde se insertaran
+            //pr($this->db->last_query());
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $result['mensaje'] = 'Error al guardar. Por favor intente más tarde';
+                $result['tp_msg'] = 'danger';
+            } else {
+                $this->db->trans_commit();
+                
+                $result['mensaje'] = 'La información se guardo correctamente';
+                $result['tp_msg'] = 'success';
+            }
+        }
+        return $result;
     }
+    
 
     private function get_docente($matricula = '')
     {

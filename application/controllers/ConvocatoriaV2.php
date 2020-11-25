@@ -317,7 +317,7 @@ class ConvocatoriaV2 extends MY_Controller implements IWorkflow
     }
 
     /**
-     * Función que crea un registro para finalizar la convocatoria
+     * Función que crea un registro para finalizar la convocatoria. Finaliza convocatoria y cierra la edicion de registro censo de cada docente faltante
      * @author LEAS
      * 29/10/2020
      */

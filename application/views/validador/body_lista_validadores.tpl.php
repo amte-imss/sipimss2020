@@ -11,11 +11,16 @@
 <?php 
 $controlador = '/' . $this->uri->rsegment(1);
 //pr($catalogos['result_delegacional']);
+//pr($cambiar_validador1);
+//
 ?>
 <script>
+  
     var url_ctr = "<?php echo $controlador; ?>";
+    var cambiar_validadorN1 =  "<?php echo $cambiar_validador1; ?>";
     var delegaciones =  <?php echo json_encode($catalogos['result_delegacional']); ?>;
     var nivel_acceso =  <?php echo json_encode($catalogos['nivel_acceso']); ?>;
+    
     //console.log(delegaciones);
     //console.log(nivel_acceso);
 </script>

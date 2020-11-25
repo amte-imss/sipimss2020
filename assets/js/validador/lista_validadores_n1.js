@@ -3,6 +3,22 @@ $(document).ready(function () {
     lista_validadores();
 });
 
+
+
+function selecciona_todo(element){
+    var data  = $(element);
+    
+    var value = data.prop("checked");
+    
+
+    $(".lista_docentes").each(function (index) {
+        //console.log(this);
+        //console.log(index);
+        //console.log(this.name);
+        $(this).prop("checked", value);
+    });
+}
+
 function lista_validadores(){
     //console.log(site_url + url_ctr + "/docentes/");
     $(function() {
@@ -47,7 +63,7 @@ function lista_validadores(){
 
               $.ajax({
                   type: "POST",
-                  url: site_url + url_ctr + "/validadores/",
+                  url: site_url + url_ctr + "/validadores_nivel1/",
                   data: filter,
                   dataType: "json"
               }).done(function (result) {
@@ -77,8 +93,7 @@ function lista_validadores(){
             {name: 'clave_delegacional', title: "OOAD", type: "select", items: delegaciones,valueField: "clave_delegacional", textField: "nombre",  visible:true},
             {name: 'matricula', type: "text", title: "Matrícula", visible:true},
             {name: 'nombre_docente', type: "text", title: "Nombre validador", visible:true},
-            {name: 'email', title:"Correos", type: "text",  visible:true},
-            {name: 'clave_rol', type: "text", title: "Rol", type: "select", items:nivel_acceso, valueField: "clave_rol", textField: "descripcion", visible:true},
+            {name: 'email', title:"Correos", type: "text",  visible:true},            
             {name: 'umae', type: "text", title: "UMAE", visible:true},
             {name: 'total', type: "number", title: "# docentes registrados", visible:true, filtering:false},
             //{name: 'id_elemento_catalogo_padre', title: 'Elemento padre', type: 'select', items: json_elementos_catalogo_padre, valueField: "id_elemento_catalogo", textField: "label"},
@@ -92,10 +107,8 @@ function lista_validadores(){
                 cancelEditButtonTooltip: "Cancelar", // tooltip of cancel editing button
                 itemTemplate: function (value, item) {
                     //console.log(cambiar_validadorN1);
-                    var rutas = '<a href="'+site_url+'/usuario/get_usuarios/'+item.id_usuario+'/1">Editar</a> | <a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'/2">Ver detalle</a>';
-                    if(cambiar_validadorN1 == item.clave_rol && item.total>0){
-                        rutas += '| <a href="'+site_url+url_ctr+'/registros_validador/'+item.id_docente+'">Cambiar validador N1</a>' 
-                    }
+                    var rutas = '<input class="validador_nuevo" name="validador_nuevo" type="radio" value="'+item.id_usuario+'">';
+                   
                     return rutas;
                 }
             }
@@ -116,3 +129,73 @@ function lista_validadores(){
             $("#js_grid_lista_docentes").jsGrid("option", "pageSize", page);
         });*/
 }
+
+function guarda_cambio_validador(elemento){
+    var data_element = $(elemento);
+    var seccion = data_element.data("seccion");
+    var path = site_url + url_ctr + "/guarda_cambio_validador";
+    var formulario = "form_cambio_validador";
+    var dataSend = new FormData($('#' + formulario)[0]);    
+    //var dataSend = $('#' +formulario).serialize();
+    var div_respuesta = '';
+    //console.log(formulario);
+    //console.log(path);
+    //console.log(dataSend);
+    //break;
+    $.ajax({
+
+    url: path,
+    data: dataSend,
+    type: 'POST',
+    mimeType: "multipart/form-data",
+    contentType: false,
+//                contentType: "charset=utf-8",
+    cache: false,
+    processData: false,
+//                dataType: 'JSON',
+    beforeSend: function (xhr) {
+//            $('#tabla_actividades_docente').html(create_loader());
+        mostrar_loader();
+    }
+})
+        .done(function (data) {
+            try {//Cacha el error
+                $(div_respuesta).empty();
+                var resp = $.parseJSON(data);
+                //console.log(resp);                    
+                if (typeof resp.mensaje !== 'undefined') {//Muestra mensaje al usuario si este existe
+                    if (resp.tp_msg === 'success') {                        
+                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 5000, 'div_error','alerta','msg');                                                
+                        $("#btn_guardar_cambio_val").css("display", "none");   
+                        setTimeout("location.reload()", 4000);        
+                                           
+                    }else{
+                        get_mensaje_general_validacion(resp.mensaje, resp.tp_msg, 10000, 'div_error','alerta','msg');                       
+                    }
+                }
+                
+            } catch (e) {
+                console.log("Error");
+                //$(div_respuesta).html(data);
+            }
+
+        })
+        .fail(function (jqXHR, response) {
+//                        $(div_respuesta).html(response);
+            get_mensaje_general_validacion('Ocurrió un error durante el proceso, inténtelo más tarde.', 'danger', 5000, 'div_error','alerta','msg');
+        })
+        .always(function () {
+            ocultar_loader();
+        });
+
+}
+
+function get_mensaje_general_validacion(mensaje, tipo_mensaje, timeout, div_padre, div_tipo_msg, div_msg) {   
+    div_padre = "#"+div_padre;
+    $('#'+div_tipo_msg).removeClass('alert-danger').removeClass('alert-success').removeClass('alert-info').removeClass('alert-warning');
+    $('#'+div_tipo_msg).addClass('alert-' + tipo_mensaje);
+    $('#'+div_msg).html(mensaje);
+    $(div_padre).show();
+    setTimeout("$('"+div_padre+"').hide()", timeout);
+}
+

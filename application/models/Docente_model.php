@@ -97,6 +97,8 @@ class Docente_model extends MY_Model {
 
         $this->db->select($select);
         $resultado = $this->db->get('censo.docente doc')->result_array();
+  //      pr($this->db->last_query()); exit();
+  
         if ($resultado) {
             $usuario = $resultado[0];
         }
@@ -122,7 +124,7 @@ class Docente_model extends MY_Model {
             , "d.id_delegacion", "d.clave_delegacional", "concat(d.nombre,' (',d.clave_delegacional,')' ) delegacion"
             , "tc.cve_tipo_contratacion", "tc.tipo_contratacion",
             "r.id_region", "r.nombre region",
-            "cc.id_categoria", "cc.clave_categoria", "concat(cc.nombre, ' (', cc.clave_categoria, ')') categoria"
+            "cc.id_categoria", "cc.clave_categoria", "concat(cc.nombre, ' (', cc.clave_categoria, ')') categoria", 
         );
         }else{
             $select = $parametros_docente['select'];
@@ -232,7 +234,11 @@ class Docente_model extends MY_Model {
         $this->db->select($select);
         $result = $this->db->get('censo.historico_datos_docente dd');
         $array_result = $result->result_array();
-        //pr($this->db->last_query()); exit();
+        //if(isset($parametros_docente['imprime'])){
+
+          //  pr($this->db->last_query()); exit();
+        //}
+        
         if (!empty($array_result) && empty($parametros_docente)) {
             return $array_result[0]; //retorna un array con los datos del historico o del docente
         }

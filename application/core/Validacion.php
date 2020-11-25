@@ -362,6 +362,7 @@ class Validacion extends Informacion_docente {
         //pr($output);
         array_unshift($output['catalogos']['nivel_acceso'], ['clave_rol'=>'',"descripcion"=>'Selecciona...']); 
         $this->template->setTitle('Listado de validadores');
+        $output['cambiar_validador1'] = LNiveles_acceso::Validador1;
         $main_content = $this->load->view('validador/body_lista_validadores.tpl.php', $output, true);
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
@@ -409,6 +410,7 @@ class Validacion extends Informacion_docente {
         $claves_rol = $this->get_roles_usuario(2);
         $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente, 'bloquea_delegacion' => 0, 
         'is_entidad_designada' => false,'aplica_bandera_separarV1_v2' => 0, 'editar_reg_doc_nuevamente' => 0 , 'btn_activar_registro_docentes_masivo' => 0,
+        'cambiar_validadorN1'=>0
         ];
         $conf['rol_docente']=LNiveles_acceso::Docente;
         $conf['convocatoria'] = $datos_sesion['convocatoria']['id_convocatoria'];
@@ -465,6 +467,7 @@ class Validacion extends Informacion_docente {
                     
                 $ids_usuario_registrados = $this->get_usuarios_registro_validador($datos_sesion[En_datos_sesion::ID_USUARIO]);
                 $stringIds = implode(',',$ids_usuario_registrados);
+                $conf['cambiar_validadorN1'] = 1;
                 if(!empty($ids_usuario_registrados)){
                     $conf['user_validadorn1'] = $stringIds;                
                 }
@@ -607,7 +610,121 @@ class Validacion extends Informacion_docente {
             }
         }
     }
+    
+    public function registros_validador($docente = null){
+        if(!is_null($docente)){
+            $datos_sesion = $this->get_datos_sesion();
+            $aux_param['rol_docente'] = array(LNiveles_acceso::Validador1);
+            $aux_param['is_entidad_designada'] = false;            
+            $aux_param['convocatoria'] = $datos_sesion['convocatoria']['id_convocatoria'];
+            $aux_param['filtros']['where']['dd.id_docente'] = $docente;
+            $output['datos_docente_validador_actual'] = $this->docente->get_historico_datos_generales($docente,null,$aux_param);
+            if(count($output['datos_docente_validador_actual'])>0){
+                $output['datos_docente_validador_actual'] = $output['datos_docente_validador_actual'][0];
+                //pr($output['datos_docente_validador_actual']);
+                $datos_sesion = $this->get_datos_sesion();
+                $ids_usuario_registrados = $this->get_usuarios_registro_validador($output['datos_docente_validador_actual']['id_usuario']);
+                if(count($ids_usuario_registrados)>0){
+                    $output['catalogos']['result_delegacional'] = $this->normativo->get_delegacional();
+                    array_unshift($output['catalogos']['result_delegacional'], ['clave_delegacional'=>'',"nombre"=>'Selecciona OOAD']); 
+                    //pr($ids_usuario_registrados);exit();
+                    $stringIds = implode(',',$ids_usuario_registrados);
+                    $auxFiltro = 'doc.id_usuario IN(' . $stringIds . ')';
+                    $rol_aplica['filtros']['where'][$auxFiltro] = null;
+                    $rol_aplica['rol_docente'] = array(LNiveles_acceso::Docente);
+                    $rol_aplica['convocatoria'] = $datos_sesion['convocatoria']['id_convocatoria'];
+                    $rol_aplica['is_entidad_designada'] = false;            
+                    
+                    $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
+                    //$output['datos_docentes'] = [];
+                    $output['listado_docentes'] = $this->load->view('validador/listado_docentes.php', $output, true);
+                    $main_content = $this->load->view('validador/cambio_validador_n1.tpl.php', $output, true);
+                    $this->template->setTitle("Validador N1 ");
+                    $this->template->setMainContent($main_content);
+                    $this->template->getTemplate();
+                }else{
+                    $main_content = $this->load->view('validador/no_docentes_registrados.php', $output, true);                    
+                    $this->template->setMainContent($main_content);
+                    $this->template->getTemplate();
+                }
+        
+            }else{
+                show_404();//            
+            }
+        }else{
+            show_404();//            
+        }
+    }
 
+    public function validadores_nivel1($docente = null){
+        $datos_sesion = $this->get_datos_sesion();
+        //pr($datos_sesion);
+        $data_post = null;
+        if($this->input->post()){
+            $data_post = $this->input->post(null, true);
+        }
+        $rol_aplica = $this->get_rol_aplica($datos_sesion,$data_post);
+        $rol_aplica['rol_docente'] = array(LNiveles_acceso::Validador1);
+        //pr($rol_aplica);
+        //$rol_aplica['imprime'] = 1;
+        $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
+        //pr($output['datos_docentes']);
+        header('Content-Type: application/json; charset=utf-8;');
+        echo json_encode($output);
+        
+    }
+    public function guarda_cambio_validador(){
+        if ($this->input->is_ajax_request()) {
+            if($this->input->post()){
+                $post = $this->input->post(null,true);
+                $output = $this->valida_datos_cambio_validador_n1($post);
+                if($output['tp_msg']=='success'){
+                    $data['datos'] = [
+                        'id_usuario_registra'=>$post['validador_nuevo']
+                    ];
+                    $data['condicion'] = [
+                        'id_usuario_registra'=>$post['validador_actual'],
+                        'id_usuario_registrado'=>$post['docentes'],
+                    ];
+                    $this->load->model('Usuario_model', 'usuario');
+                   $output = $this->usuario->save_control_registro_usuarios($data, 'update');   
+                }
+
+                header('Content-Type: application/json; charset=utf-8;');
+                echo json_encode($output);
+            }
+        }else{
+            show_404();
+        }
+    }
+    public function valida_datos_cambio_validador_n1($post){
+        $result = ['mensaje'=>'', 'tp_msg'=>'success'];
+        $separador = '';
+        $error = false;
+
+        if(!isset($post['validador_actual']) ||is_null($post['validador_actual'])){
+            $result['mensaje'] .= $separador.'No existe un validador actualmente.';
+            $separador = '<br>';
+            $result['tp_msg'] = 'danger';
+            
+        }
+        if(!isset($post['docentes']) || is_null($post['docentes'])){
+            $result['mensaje'] .= $separador .'Debe seleccionar docentes.';
+            $separador = '<br>';
+            $result['tp_msg'] = 'danger';
+            
+            
+        }
+        if(!isset($post['validador_nuevo']) || is_null($post['validador_nuevo'])){
+            $result['mensaje'] .= $separador.'Debe seleccionar un validador.';
+            $separador = '<br>';
+            $result['tp_msg'] = 'danger';
+            
+        }
+        return $result;
+
+    }
+    
     public function habilita_edicion_general(){
         if ($this->input->is_ajax_request()) {
             $datos_validacion_seccion= ['success'=> 0];
