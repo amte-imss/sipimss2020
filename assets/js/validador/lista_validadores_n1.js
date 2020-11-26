@@ -80,6 +80,7 @@ function lista_validadores(){
                             && (!filter.email || (registro.email !== null && registro.email.toLowerCase().indexOf(filter.email.toString().toLowerCase()) > -1))
                             && (!filter.clave_rol || (registro.clave_rol != null && (registro.clave_rol == filter.clave_rol)))
                             && (!filter.umae || (registro.umae !== null && registro.umae.toLowerCase().indexOf(filter.umae.toString().toLowerCase()) > -1))
+                            && (!filter.nom_unidad || (registro.nom_unidad !== null && registro.nom_unidad.toLowerCase().indexOf(filter.nom_unidad.toString().toLowerCase()) > -1))
                             && (!filter.total || (registro.total !== null && registro.total.toLowerCase().indexOf(filter.total.toString().toLowerCase()) > -1))
                           });
                           d.resolve(res);
@@ -94,6 +95,7 @@ function lista_validadores(){
             {name: 'matricula', type: "text", title: "Matrícula", visible:true},
             {name: 'nombre_docente', type: "text", title: "Nombre validador", visible:true},
             {name: 'email', title:"Correos", type: "text",  visible:true},            
+            {name: 'nom_unidad', type: "text", title: "UNIDAD", visible:true},
             {name: 'umae', type: "text", title: "UMAE", visible:true},
             {name: 'total', type: "number", title: "# docentes registrados", visible:true, filtering:false},
             //{name: 'id_elemento_catalogo_padre', title: 'Elemento padre', type: 'select', items: json_elementos_catalogo_padre, valueField: "id_elemento_catalogo", textField: "label"},
