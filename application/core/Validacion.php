@@ -470,6 +470,8 @@ class Validacion extends Informacion_docente {
                 $conf['cambiar_validadorN1'] = 1;
                 if(!empty($ids_usuario_registrados)){
                     $conf['user_validadorn1'] = $stringIds;                
+                }else{
+                    $conf['user_validadorn1'] = null;
                 }
             }                                
             

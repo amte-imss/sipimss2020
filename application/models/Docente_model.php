@@ -67,13 +67,15 @@ class Docente_model extends MY_Model {
                 }
                 if($parametros_docente['aplica_bandera_separarV1_v2'] == 1){
                     $select_aux = [];
-                    if(isset($parametros_docente['user_validadorn1'])){
+                    //pr($parametros_docente);
+                    //if(isset($parametros_docente['user_validadorn1'])){
+                        //if(is_null($parametros_docente['user_validadorn1']))
                         $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = doc.id_usuario', 'left');
                         $select .= ",(case when cru.id_usuario_registrado is null then 0 else 1 end) permite_validacion";                         
                         $select .= ",(case when ((ooad.ooad is not null and ooad.ooad = del.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
                         
                         
-                    }
+                    //}
 
                 }
             }
