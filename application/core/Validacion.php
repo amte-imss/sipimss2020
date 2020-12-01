@@ -480,6 +480,8 @@ class Validacion extends Informacion_docente {
             $conf['roles_filtro'] = [LNiveles_acceso::Validador1];
             $conf['bloquea_delegacion'] = 1;      
             //$where['d.clave_delegacional'] =  
+            $auxFiltroValidador = '(SELECT "count"(*) from sistema.control_registro_usuarios x where x.id_usuario_registra = '.$datos_sesion[En_datos_sesion::ID_USUARIO] .' and active )>0';
+            $conf['filtros']['where'][$auxFiltroValidador] = null;                
             $ids_usuario_registrados = $this->get_usuarios_registro_validador($datos_sesion[En_datos_sesion::ID_USUARIO]);
             if(!empty($ids_usuario_registrados)){
                 $stringIds = implode(',',$ids_usuario_registrados);
