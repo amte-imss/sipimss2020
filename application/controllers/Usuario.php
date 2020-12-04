@@ -63,7 +63,9 @@ class Usuario extends MY_Controller
            'F.id_categoria', 'F.nombre categoria', 'C.cve_tipo_contratacion',
            'docentes.curp', 'docentes.rfc', 'docentes.telefono_particular',
            'docentes.telefono_laboral', 'docentes.email', 'usuarios.activo usuario_activo',
-           'D.clave_departamental', 'F.clave_categoria', '(select activo_edicion from validacion.fin_registro_censo frc where frc.id_docente = docentes.id_docente) activo_edicion'
+           'D.clave_departamental', 'F.clave_categoria', 
+           //'(select activo_edicion from validacion.fin_registro_censo frc where frc.id_docente = docentes.id_docente) activo_edicion'
+           '(select activo_edicion from validacion.fin_registro_censo frc where frc.id_fin_registro = (select max(id_fin_registro) from validacion.fin_registro_censo frc where frc.id_docente = docentes.id_docente))'
         );
         $resultado = $this->usuario->get_usuarios($params);
         if (count($resultado) == 1)
