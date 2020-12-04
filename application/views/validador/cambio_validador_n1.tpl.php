@@ -41,6 +41,7 @@ $controlador = '/' . $this->uri->rsegment(1);
         <?php echo form_open('', array('id' => 'form_cambio_validador')); ?>
         <input id="validador_actual" type="hidden" name="validador_actual" value="<?php echo $datos_docente_validador_actual['id_usuario'];?>">
         <div><?php echo $listado_docentes; ?></div>
+        <div><?php echo $listado_docentes_limbo; ?></div>
         <h4>Listado validadores nivel 1</h4>
         <div id="js_grid_lista_validadores"><div>
         <?php echo form_close()?>

@@ -18,7 +18,19 @@ function selecciona_todo(element){
         $(this).prop("checked", value);
     });
 }
+function selecciona_todo_limbo(element){
+    var data  = $(element);
+    
+    var value = data.prop("checked");
+    
 
+    $(".lista_docentes_limbo").each(function (index) {
+        //console.log(this);
+        //console.log(index);
+        //console.log(this.name);
+        $(this).prop("checked", value);
+    });
+}
 function lista_validadores(){
     //console.log(site_url + url_ctr + "/docentes/");
     $(function() {

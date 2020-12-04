@@ -327,23 +327,47 @@ class Usuario_model extends MY_Model {
         if($tipo == 'insert'){
             $this->db->insert('sistema.control_registro_usuarios', $data); //nombre de la tabla en donde se insertaran
         }else{//update
-           //pr($data);
+            //pr($data);
             $this->db->trans_begin(); //Definir inicio de transacción
-            $this->db->where('id_usuario_registra', $data['condicion']['id_usuario_registra']); //nombre de la tabla en donde se insertaran
-            $this->db->where_in('id_usuario_registrado', $data['condicion']['id_usuario_registrado']); //nombre de la tabla en donde se insertaran
-            
-            $this->db->update('sistema.control_registro_usuarios', $data['datos']); //nombre de la tabla en donde se insertaran
-            //pr($this->db->last_query());
-            if ($this->db->trans_status() === FALSE) {
+            $is_error = false;
+            $error_guardar_limbo = false;
+            if(isset($data['condicion'])){
+                $this->db->where('id_usuario_registra', $data['condicion']['id_usuario_registra']); //nombre de la tabla en donde se insertaran
+                $this->db->where_in('id_usuario_registrado', $data['condicion']['id_usuario_registrado']); //nombre de la tabla en donde se insertaran            
+                $this->db->update('sistema.control_registro_usuarios', $data['datos']); //nombre de la tabla en donde se insertaran
+                if ($this->db->trans_status() === FALSE) {
+                    $this->db->trans_rollback();
+                    $result['mensaje'] = 'Error al guardar. Por favor intente más tarde';
+                    $result['tp_msg'] = 'danger';
+                    $is_error = true;
+                }
+
+            }
+            if(isset($data['limbo'])){
+                $datos['id_usuario_registra'] =$data['limbo']['id_usuario_registra'];
+                $error_guardar_limbo = false;
+                foreach($data['limbo']['id_usuario_registrado'] as $key => $value){
+                    $datos['id_usuario_registrado'] = $value;
+                    
+                    $this->db->insert('sistema.control_registro_usuarios', $datos); //nombre de la tabla en donde se insertaran
+                    if ($this->db->trans_status() === FALSE) {
+                        $error_guardar_limbo = true;
+                        break;
+                    }
+                } 
+            }
+
+            if(!$is_error && !$error_guardar_limbo){//
+                $this->db->trans_commit();                    
+                $result['mensaje'] = 'La información se guardo correctamente';
+                $result['tp_msg'] = 'success';
+            }else{
                 $this->db->trans_rollback();
                 $result['mensaje'] = 'Error al guardar. Por favor intente más tarde';
                 $result['tp_msg'] = 'danger';
-            } else {
-                $this->db->trans_commit();
-                
-                $result['mensaje'] = 'La información se guardo correctamente';
-                $result['tp_msg'] = 'success';
             }
+            
+            
         }
         return $result;
     }

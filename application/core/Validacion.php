@@ -640,8 +640,13 @@ class Validacion extends Informacion_docente {
                     $rol_aplica['is_entidad_designada'] = false;            
                     
                     $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
+                    unset($rol_aplica['filtros']);
+                    $rol_aplica['filtros']['where']['doc.id_usuario not in(select id_usuario_registrado from sistema.control_registro_usuarios)'] = null;
+                    $output['datos_docentes_limbo'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
+                    //pr(count($output['datos_docentes_imbo']));
                     //$output['datos_docentes'] = [];
                     $output['listado_docentes'] = $this->load->view('validador/listado_docentes.php', $output, true);
+                    $output['listado_docentes_limbo'] = $this->load->view('validador/listado_docentes_limbo.php', $output, true);
                     $main_content = $this->load->view('validador/cambio_validador_n1.tpl.php', $output, true);
                     $this->template->setTitle("Validador N1 ");
                     $this->template->setMainContent($main_content);
@@ -686,10 +691,19 @@ class Validacion extends Informacion_docente {
                     $data['datos'] = [
                         'id_usuario_registra'=>$post['validador_nuevo']
                     ];
-                    $data['condicion'] = [
-                        'id_usuario_registra'=>$post['validador_actual'],
-                        'id_usuario_registrado'=>$post['docentes'],
-                    ];
+                    if(isset($post['docentes']) && !is_null($post['docentes'])){
+                        $data['condicion'] = [
+                            'id_usuario_registra'=>$post['validador_actual'],
+                            'id_usuario_registrado'=>$post['docentes'],
+                        ];
+                    }
+                    if(isset($post['docentes_limbo']) && !is_null($post['docentes_limbo'])){
+
+                        $data['limbo'] = [
+                            'id_usuario_registra'=>$post['validador_nuevo'],
+                            'id_usuario_registrado'=>$post['docentes_limbo'],
+                        ];
+                    }
                     $this->load->model('Usuario_model', 'usuario');
                    $output = $this->usuario->save_control_registro_usuarios($data, 'update');   
                 }
@@ -712,7 +726,9 @@ class Validacion extends Informacion_docente {
             $result['tp_msg'] = 'danger';
             
         }
-        if(!isset($post['docentes']) || is_null($post['docentes'])){
+        $valida_docentes_seleccionados = !isset($post['docentes']) || is_null($post['docentes']);
+        $valida_docentes_seleccionados_limbo = !isset($post['docentes_limbo']) || is_null($post['docentes_limbo']);
+        if($valida_docentes_seleccionados && $valida_docentes_seleccionados_limbo){            
             $result['mensaje'] .= $separador .'Debe seleccionar docentes.';
             $separador = '<br>';
             $result['tp_msg'] = 'danger';
