@@ -391,14 +391,29 @@ class Validacion extends Informacion_docente {
         $datos_sesion = $this->get_datos_sesion();
         //pr($datos_sesion);
         $data_post = null;
-        if($this->input->post()){
-            $data_post = $this->input->post(null, true);
-        }
         $rol_aplica = $this->get_rol_aplica($datos_sesion,$data_post);
         $rol_aplica['rol_docente'] = array(LNiveles_acceso::Validador1, LNiveles_acceso::Validador2);
+        $applica_consulta = true;
+        if($this->input->post()){
+            $data_post = $this->input->post(null, true);
+            if(isset($data_post['docentes_designados']) && !is_null($data_post['docentes_designados']) && strlen(trim($data_post['docentes_designados']))>0){
+                if(isset($datos_sesion['niveles_acceso_cves'][LNiveles_acceso::Super]) || isset($datos_sesion['niveles_acceso_cves'][LNiveles_acceso::Normativo])){
+                    $respuesta =  $this->get_usuarios_registro_validadorN1_filtro($data_post['docentes_designados'], ['doc.matricula',"concat(doc.nombre,doc.apellido_p,doc.apellido_m)"]);
+                    if(!empty($respuesta)){
+                        $rol_aplica['filtros']['where_in']['doc.id_usuario'] = $respuesta;
+                    }else{
+                        $applica_consulta = false;
+                    }
+                    //pr($respuesta);
+                }
+            }
+        }
         //pr($rol_aplica);
-        
-        $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
+        if($applica_consulta){
+            $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
+        }else{
+            $output['datos_docentes'] = [];
+        }
         //pr($output['datos_docentes']);
         header('Content-Type: application/json; charset=utf-8;');
         echo json_encode($output);
@@ -506,6 +521,28 @@ class Validacion extends Informacion_docente {
         if(!empty($result)){
             foreach($result as $val){
                 $idsUserResult[] = $val['id_usuario_registrado'];
+            }
+        }
+        return $idsUserResult;
+    }
+
+    private function get_usuarios_registro_validadorN1_filtro($text, $condiciones = array('doc.nombre')){
+
+
+        $this->load->model('Catalogo_model', 'cm');        
+        $params['select'] = array('id_usuario_registra');
+        $text_query = str_replace(" ", "", strtoupper($text));
+        //pr($text_query); 
+        foreach($condiciones as $key => $val){
+            $params['or_like']["replace(UPPER(".$val."),' ','')"] = $text_query;
+        }
+        $params['join'][] = ['table'=>'censo.docente doc','condition'=>'doc.id_usuario = cru.id_usuario_registrado','type'=>'inner'];
+        
+        $result = $this->cm->get_registros("sistema.control_registro_usuarios cru", $params);
+        $idsUserResult = [];
+        if(!empty($result)){
+            foreach($result as $val){
+                $idsUserResult[] = $val['id_usuario_registra'];
             }
         }
         return $idsUserResult;

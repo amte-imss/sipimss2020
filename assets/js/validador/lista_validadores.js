@@ -41,7 +41,7 @@ function lista_validadores(){
         controller: {
           loadData: function (filter) {
               mostrar_loader();
-              //console.log(filter);
+              console.log(filter);
               var d = $.Deferred();
               //var result = null;
 
@@ -80,7 +80,8 @@ function lista_validadores(){
             {name: 'email', title:"Correos", type: "text",  visible:true},
             {name: 'clave_rol', type: "text", title: "Rol", type: "select", items:nivel_acceso, valueField: "clave_rol", textField: "descripcion", visible:true},
             {name: 'umae', type: "text", title: "UMAE", visible:true},
-            {name: 'total', type: "number", title: "# docentes registrados", visible:true, filtering:false},
+            {name: 'total', type: "number", title: "# docentes registrados", visible:true, filtering:false},            
+            {name: 'docentes_designados', type: "text", title: "Docentes designados", visible:true},
             //{name: 'id_elemento_catalogo_padre', title: 'Elemento padre', type: 'select', items: json_elementos_catalogo_padre, valueField: "id_elemento_catalogo", textField: "label"},
             //{name: 'id_elemento_catalogo_hijo', title: 'Elemento hijo', type: 'select', items: json_elementos_catalogo_hijo, valueField: "id_elemento_catalogo", textField: "label"},
             {type: "control", editButton: false, deleteButton: false, visible:true,

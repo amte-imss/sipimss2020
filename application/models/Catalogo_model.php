@@ -526,6 +526,11 @@ class Catalogo_model extends MY_Model {
                 $this->db->like($key, $value);
             }
         }
+        if (isset($params['or_like'])) {
+            foreach ($params['or_like'] as $key => $value) {
+                $this->db->or_like($key, $value);
+            }
+        }
 //        $this->db->where('date(fecha) = current_date', null, false);
         if (isset($params['limit']) && isset($params['offset']) && !isset($params['total'])) {
             $this->db->limit($params['limit'], $params['offset']);
