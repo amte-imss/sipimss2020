@@ -377,8 +377,8 @@ class Validacion extends Informacion_docente {
         }
         $rol_aplica = $this->get_rol_aplica($datos_sesion,$data_post);
         //pr($rol_aplica);
-        
-        $output['datos_docentes'] = $this->docente->get_historico_datos_generales(null, null, $rol_aplica);
+        //exit();
+        $output['datos_docentes'] = $this->docente->get_historico_datos_generales_docentes(null, null, $rol_aplica);
         //pr($output['datos_docentes']);
         header('Content-Type: application/json; charset=utf-8;');
         echo json_encode($output);

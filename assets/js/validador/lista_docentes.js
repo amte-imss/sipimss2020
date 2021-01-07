@@ -68,7 +68,7 @@ function lista_docentes(){
                             && (!filter.fase_carrera || (registro.fase_carrera != null && (registro.fase_carrera == filter.fase_carrera)))
                             && (!filter.id_status_validacion || (registro.id_status_validacion != null && (registro.id_status_validacion == filter.id_status_validacion)))
                             && (!filter.total_registros_censo || (registro.total_registros_censo != null && (registro.total_registros_censo == filter.total_registros_censo)))
-                            && (!filter.ratificado || (registro.ratificado != null && (registro.ratificado == filter.ratificado)))
+                            //&& (!filter.ratificado || (registro.ratificado != null && (registro.ratificado == filter.ratificado)))
                             && (!filter.nom_unidad || (registro.nom_unidad !== null && registro.nom_unidad.toLowerCase().replace(/ /g, "").indexOf(filter.nom_unidad.toString().toLowerCase().replace(/ /g, "")) > -1))
                             && (!filter.umae || (registro.umae !== null && registro.umae.toLowerCase().replace(/ /g, "").indexOf(filter.umae.toString().toLowerCase().replace(/ /g, "")) > -1))
                           });
@@ -89,7 +89,7 @@ function lista_docentes(){
             {name: 'id_docente_carrera', title: "Docente de carrera", type: "select", items:fase_carrera_docente, valueField: "id_docente_carrera", textField: "descripcion", visible:true},
             //{name: 'fase_carrera', title: "Docente de carrera", type: "select", items:fase_carrera_docente, valueField: "fase_carrera", textField: "descripcion", visible:false},
             {name: 'id_status_validacion', title: "Estado validación", type: "select", items:estados_validacion, valueField: "id", textField: "label", visible:true},
-            {name: 'ratificado', title: "Ratificado", type: "select", items:ratificado, valueField: "id", textField: "label", visible:false},
+            //{name: 'ratificado', title: "Ratificado", type: "select", items:ratificado, valueField: "id", textField: "label", visible:false},
             {name: 'total_registros_censo', title: "Total registros", type: "text", visible:true},
             //{name: 'id_elemento_catalogo_padre', title: 'Elemento padre', type: 'select', items: json_elementos_catalogo_padre, valueField: "id_elemento_catalogo", textField: "label"},
             //{name: 'id_elemento_catalogo_hijo', title: 'Elemento hijo', type: 'select', items: json_elementos_catalogo_hijo, valueField: "id_elemento_catalogo", textField: "label"},
@@ -187,7 +187,7 @@ function obtener_cabeceras() {
         fase_carrera: 'Fase docente de carrera',
         id_status_validacion: 'ID estatus',
         status_validacion: 'Estatus',
-        ratificado: 'Ratificado',
+        //ratificado: 'Ratificado',
         total_registros_censo: 'Total de registros'
     }
 

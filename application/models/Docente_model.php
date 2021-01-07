@@ -139,7 +139,7 @@ class Docente_model extends MY_Model {
             "doc.telefono_laboral", "doc.telefono_particular", "doc.id_docente_carrera", "dca.descripcion fase_carrera", "rol.clave_rol", "rol.nombre",
             "case when u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE') then u.nombre_unidad_principal else null end umae",
             "(select count(*) from sistema.control_registro_usuarios cru where cru.id_usuario_registra = doc.id_usuario) total, doc.id_usuario",
-            "censo.estado_validacion_docente(doc.id_docente) id_status_validacion","est.nombre status_validacion",
+            "censo.estado_validacion_docente(doc.id_docente) id_status_validacion",//"case est. end status_validacion",
             $censo_reg,
             $ratificado
             ];
@@ -169,7 +169,7 @@ class Docente_model extends MY_Model {
             
             $this->db->join('sistema.usuario_rol  urol', 'urol.id_usuario = doc.id_usuario and urol.activo');
             $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol'); 
-            $this->db->join('ui.validacion_registro est', 'est.id_validacion_registro = censo.estado_validacion_docente(doc.id_docente)');     
+            //$this->db->join('ui.validacion_registro est', 'est.id_validacion_registro = censo.estado_validacion_docente(doc.id_docente)');     
             //pr($parametros_docente);       
             if($parametros_docente['is_entidad_designada']){
 
@@ -240,6 +240,125 @@ class Docente_model extends MY_Model {
         //if(isset($parametros_docente['imprime'])){
 
           //  pr($this->db->last_query()); exit();
+        //}
+        
+        if (!empty($array_result) && empty($parametros_docente)) {
+            return $array_result[0]; //retorna un array con los datos del historico o del docente
+        }
+        return $array_result;
+    }
+
+    public function get_historico_datos_generales_docentes($id_docente = null, $OOAD = null , $parametros_docente =[]) {
+        $select = array(
+                //"dd.id_historico_docente", "dd.fecha echa_ultima_actualizacion"
+            "dd.id_departamento_instituto", "di.clave_departamental", "concat(di.nombre,' (',di.clave_departamental,')' ) departamento"
+            , "u.id_unidad_instituto", "u.clave_unidad", "u.nombre nom_unidad"
+            , "u.id_tipo_unidad", "tu.nombre nom_tipo_unidad"
+            , "d.id_delegacion", "d.clave_delegacional", "concat(d.nombre,' (',d.clave_delegacional,')' ) delegacion",
+            //"cc.id_categoria", "cc.clave_categoria", "concat(cc.nombre, ' (', cc.clave_categoria, ')') categoria", 
+            "doc.id_docente", "doc.matricula", "doc.email", "concat(doc.nombre, ' ', doc.apellido_p, ' ', doc.apellido_m) nombre_docente", 
+            "doc.id_docente_carrera", "dca.descripcion fase_carrera",
+            "case when u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE') then u.nombre_unidad_principal else null end umae",
+            //"(select count(*) from sistema.control_registro_usuarios cru where cru.id_usuario_registra = doc.id_usuario) total", 
+            //"doc.id_usuario",
+            "censo.estado_validacion_docente(doc.id_docente) id_status_validacion",//"est.nombre status_validacion",
+            "(select count(*) total_registros_censo from censo.censo cc where cc.id_docente = doc.id_docente) total_registros_censo",
+            //"(select ratificado from validacion.ratificador rat where rat.id_docente = doc.id_docente and rat.id_convocatoria = ".$parametros_docente['convocatoria'].") ratificado"
+        );
+        
+        /*if(!is_null($id_docente)){
+            $this->db->where('dd.id_docente', $id_docente);
+        }*/
+        $this->db->where('dd.actual', 1);
+        /*if(!is_null($OOAD)){
+            $this->db->where('d.clave_delegacional', $OOAD);
+            //$this->db->where('d.id_delegacion', $OOAD);
+        }*/
+        
+        $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = dd.id_departamento_instituto');
+        //$this->db->join('catalogo.categorias cc', 'cc.id_categoria = dd.id_categoria', 'left');
+        $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad and u.anio = (select max(un.anio) from catalogo.unidades_instituto un )', 'left');
+        $this->db->join('catalogo.delegaciones d', 'd.id_delegacion = u.id_delegacion', 'left');
+        $this->db->join('catalogo.tipos_unidades tu', 'tu.id_tipo_unidad = u.id_tipo_unidad', 'left');
+        //$this->db->join('catalogo.regiones r', 'r.id_region = d.id_region', 'left');
+        //$this->db->join('catalogo.tipo_contratacion tc', 'tc.cve_tipo_contratacion = dd.cve_tipo_contratacion', 'left');
+        if(!empty($parametros_docente)){
+            $this->db->join('censo.docente doc', 'doc.id_docente = dd.id_docente', 'left');
+            $this->db->join('censo.docente_carrera  dca', 'dca.id_docente_carrera = doc.id_docente_carrera', 'left');
+            
+            $this->db->join('sistema.usuario_rol  urol', 'urol.id_usuario = doc.id_usuario and urol.activo');
+            //$this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol'); 
+            //$this->db->join('ui.validacion_registro est', 'est.id_validacion_registro = censo.estado_validacion_docente(doc.id_docente)');     
+            //pr($parametros_docente);       
+            if($parametros_docente['is_entidad_designada']){
+
+                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = d.clave_delegacional and doc.id_usuario = '. $parametros_docente['ooad_usuario'], 'left');            
+                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad and doc.id_usuario = '. $parametros_docente['umae_usuario'], 'left'); 
+                $filtro_umae_ooad = array();           
+                if(isset($parametros_docente['user_validadorn1'])){
+                    $filtro_umae_ooad[] = 'doc.id_usuario IN(' . $parametros_docente['user_validadorn1'] . ')';
+                }
+                if(isset($parametros_docente['ooad_usuario'])){
+                    if(is_null($parametros_docente['ooad'])){
+                        $filtro_umae_ooad[] = 'd.clave_delegacional is null'; 
+
+                    }else{                    
+                        $filtro_umae_ooad[] = 'd.clave_delegacional in(' . $parametros_docente['ooad'].')'; 
+                    }
+                    //$this->db->where('d.clave_delegacional', $parametros_docente['ooad_usuario']);//Rol del docente
+                }
+
+                if(isset($parametros_docente['umae_usuario'])){
+                    if(is_null($parametros_docente['umae'])){
+                        $filtro_umae_ooad[] = 'u.clave_unidad is null'; 
+
+                    }else{
+                        $filtro_umae_ooad[] = 'u.clave_unidad in(' . $parametros_docente['umae'].')'; 
+                    }
+                    //$this->db->where_in('u.clave_unidad' ,$parametros_docente['umae_usuario']);//Rol del docente                    
+                }
+                //pr($filtro_umae_ooad);
+                if(!empty($filtro_umae_ooad)){
+                    $string = implode(' or ',$filtro_umae_ooad);
+                    $string = '('. $string . ')';
+                    $this->db->where($string, null);//Rol del docente                    
+                    
+                }
+                if($parametros_docente['aplica_bandera_separarV1_v2'] == 1){
+                    $select_aux = [];
+                    if(isset($parametros_docente['user_validadorn1'])){
+                        $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = doc.id_usuario', 'left');
+                        $select_aux[] = "(case when cru.id_usuario_registrado is null then 0 else 1 end) permite_validacion";                         
+                        $select_aux[] = "(case when ((ooad.ooad is not null and ooad.ooad = d.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
+                        if(!isset($parametros_docente['select'])){
+                            $select = array_merge($select, $select_aux);
+                        }
+                    }
+
+                }
+            }
+            
+            if(isset($parametros_docente['rol_docente'])){
+                if(is_array($parametros_docente['rol_docente'])){
+                    $this->db->where_in('urol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
+                } else {
+                    $this->db->where('urol.clave_rol' ,$parametros_docente['rol_docente']);//Rol del docente
+                }
+            }
+            if (isset($parametros_docente['filtros']) && !is_null($parametros_docente['filtros'])) {
+                foreach ($parametros_docente['filtros'] as $key => $value) {
+                    foreach($value as $keyApp => $valApp){
+                        $this->db->{$key}($keyApp, $valApp);
+                    }
+                }
+            }            
+        }
+        $this->db->select($select);
+        $result = $this->db->get('censo.historico_datos_docente dd');
+        $array_result = $result->result_array();
+        //if(isset($parametros_docente['imprime'])){
+
+            //pr($this->db->last_query()); exit();
         //}
         
         if (!empty($array_result) && empty($parametros_docente)) {
