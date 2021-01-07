@@ -12,3 +12,7 @@ insert into sistema.roles_modulos (clave_modulo, clave_rol, activo) values ('ELI
 
 insert into sistema.modulos (clave_modulo, nombre, url, activo, modulo_padre_clave, orden, clave_configurador_modulo) values ('GEST_CONV_CRUD', 'Gestión convocatoría crud', '/convocatoriav2/convocatoria_crud', true, null, 1, 'MENU');
 insert into sistema.roles_modulos (clave_modulo, clave_rol, activo) values ('GEST_CONV_CRUD', 'NORMATIVO',true);
+
+update sistema.control_registro_usuarios set id_usuario_registra = (select id_usuario from sistema.usuarios where username='98351897')
+where id_usuario_registra in (select id_usuario from sistema.usuarios where username='99374249')
+;

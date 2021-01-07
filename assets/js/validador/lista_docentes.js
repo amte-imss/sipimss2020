@@ -65,6 +65,7 @@ function lista_docentes(){
                             && (!filter.nombre_docente || (registro.nombre_docente !== null && registro.nombre_docente.toLowerCase().indexOf(filter.nombre_docente.toString().toLowerCase()) > -1))
                             && (!filter.email || (registro.email !== null && registro.email.toLowerCase().indexOf(filter.email.toString().toLowerCase()) > -1))
                             && (!filter.id_docente_carrera || (registro.id_docente_carrera != null && (registro.id_docente_carrera == filter.id_docente_carrera)))
+                            && (!filter.fase_carrera || (registro.fase_carrera != null && (registro.fase_carrera == filter.fase_carrera)))
                             && (!filter.id_status_validacion || (registro.id_status_validacion != null && (registro.id_status_validacion == filter.id_status_validacion)))
                             && (!filter.total_registros_censo || (registro.total_registros_censo != null && (registro.total_registros_censo == filter.total_registros_censo)))
                             && (!filter.ratificado || (registro.ratificado != null && (registro.ratificado == filter.ratificado)))
@@ -86,6 +87,7 @@ function lista_docentes(){
             {name: 'nombre_docente', type: "text", title: "Nombre docente", visible:true},
             {name: 'email', title:"Correos", type: "text",  visible:true},
             {name: 'id_docente_carrera', title: "Docente de carrera", type: "select", items:fase_carrera_docente, valueField: "id_docente_carrera", textField: "descripcion", visible:true},
+            //{name: 'fase_carrera', title: "Docente de carrera", type: "select", items:fase_carrera_docente, valueField: "fase_carrera", textField: "descripcion", visible:false},
             {name: 'id_status_validacion', title: "Estado validación", type: "select", items:estados_validacion, valueField: "id", textField: "label", visible:true},
             {name: 'ratificado', title: "Ratificado", type: "select", items:ratificado, valueField: "id", textField: "label", visible:false},
             {name: 'total_registros_censo', title: "Total registros", type: "text", visible:true},
@@ -181,8 +183,10 @@ function obtener_cabeceras() {
         matricula: 'Matrícula',
         nombre_docente: 'Nombre docente',
         email: 'Correo electrónico',
-        id_docente_carrera: 'Fase docente de carrera',
-        id_status_validacion: 'Estatus',
+        id_docente_carrera: 'ID Fase docente de carrera',
+        fase_carrera: 'Fase docente de carrera',
+        id_status_validacion: 'ID estatus',
+        status_validacion: 'Estatus',
         ratificado: 'Ratificado',
         total_registros_censo: 'Total de registros'
     }

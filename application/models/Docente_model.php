@@ -139,7 +139,7 @@ class Docente_model extends MY_Model {
             "doc.telefono_laboral", "doc.telefono_particular", "doc.id_docente_carrera", "dca.descripcion fase_carrera", "rol.clave_rol", "rol.nombre",
             "case when u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE') then u.nombre_unidad_principal else null end umae",
             "(select count(*) from sistema.control_registro_usuarios cru where cru.id_usuario_registra = doc.id_usuario) total, doc.id_usuario",
-            "censo.estado_validacion_docente(doc.id_docente) id_status_validacion",
+            "censo.estado_validacion_docente(doc.id_docente) id_status_validacion","est.nombre status_validacion",
             $censo_reg,
             $ratificado
             ];
@@ -168,7 +168,8 @@ class Docente_model extends MY_Model {
             $this->db->join('censo.docente_carrera  dca', 'dca.id_docente_carrera = doc.id_docente_carrera', 'left');
             
             $this->db->join('sistema.usuario_rol  urol', 'urol.id_usuario = doc.id_usuario and urol.activo');
-            $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol');     
+            $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol'); 
+            $this->db->join('ui.validacion_registro est', 'est.id_validacion_registro = censo.estado_validacion_docente(doc.id_docente)');     
             //pr($parametros_docente);       
             if($parametros_docente['is_entidad_designada']){
 
