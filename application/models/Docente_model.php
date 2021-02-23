@@ -261,8 +261,9 @@ class Docente_model extends MY_Model {
             "case when u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE') then u.nombre_unidad_principal else null end umae",
             //"(select count(*) from sistema.control_registro_usuarios cru where cru.id_usuario_registra = doc.id_usuario) total", 
             //"doc.id_usuario",
-            "censo.estado_validacion_docente(doc.id_docente) id_status_validacion",//"est.nombre status_validacion",
-            "(select count(*) total_registros_censo from censo.censo cc where cc.id_docente = doc.id_docente) total_registros_censo",
+            "(case when trc.id_status_validacion is null then (select censo.estado_validacion_docente_complemento(doc.id_docente)) else trc.id_status_validacion end ) id_status_validacion",//"censo.estado_validacion_docente(doc.id_docente) id_status_validacion",//"est.nombre status_validacion",
+            //"(select count(*) total_registros_censo from censo.censo cc where cc.id_docente = doc.id_docente) total_registros_censo",
+            "(case when trc.total_registros_censo is null then 0 else trc.total_registros_censo end) total_registros_censo",
             //"(select ratificado from validacion.ratificador rat where rat.id_docente = doc.id_docente and rat.id_convocatoria = ".$parametros_docente['convocatoria'].") ratificado"
         );
         
@@ -353,6 +354,7 @@ class Docente_model extends MY_Model {
                 }
             }            
         }
+        $this->db->join('(select cc.id_docente, count(cc.id_censo) total_registros_censo, censo.estado_validacion_docente(cc.id_docente) id_status_validacion from censo.censo cc GROUP BY cc.id_docente) trc', 'trc.id_docente = doc.id_docente', 'left');
         $this->db->select($select);
         $result = $this->db->get('censo.historico_datos_docente dd');
         $array_result = $result->result_array();

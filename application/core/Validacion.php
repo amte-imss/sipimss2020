@@ -421,7 +421,7 @@ class Validacion extends Informacion_docente {
     }
 
     
-    private function get_rol_aplica($datos_sesion, $data_post = null){
+    protected function get_rol_aplica($datos_sesion, $data_post = null){
         $claves_rol = $this->get_roles_usuario(2);
         $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente, 'bloquea_delegacion' => 0, 
         'is_entidad_designada' => false,'aplica_bandera_separarV1_v2' => 0, 'editar_reg_doc_nuevamente' => 0 , 'btn_activar_registro_docentes_masivo' => 0,
@@ -429,9 +429,11 @@ class Validacion extends Informacion_docente {
         ];
         $conf['rol_docente']=LNiveles_acceso::Docente;
         $conf['convocatoria'] = $datos_sesion['convocatoria']['id_convocatoria'];
+        $conf['reporte_docentes'] = 0;
         if(isset($claves_rol[LNiveles_acceso::Normativo])){
             $conf['rol_aplica'] = LNiveles_acceso::Normativo;
             $conf['roles_filtro'] = [LNiveles_acceso::Normativo];
+            $conf['reporte_docentes'] = 1;
             $conf['editar_reg_doc_nuevamente'] = 1;
             $conf['btn_activar_registro_docentes_masivo'] = 1;
             if(!is_null($data_post) && !empty($data_post['clave_delegacional'])){
@@ -442,6 +444,7 @@ class Validacion extends Informacion_docente {
             $conf['rol_aplica'] = LNiveles_acceso::Validador2;      
             $conf['roles_filtro'] = [LNiveles_acceso::Validador2];
             $conf['bloquea_delegacion'] = 1;      
+            $conf['reporte_docentes'] = 1;
             //Entidad designada
             $this->load->model('Catalogo_model', 'catalogo');
             $output =[];
@@ -474,7 +477,7 @@ class Validacion extends Informacion_docente {
             //pr($claves_rol);
             if(isset($claves_rol[LNiveles_acceso::Validador1])){
                 $conf['roles_filtro'] = [LNiveles_acceso::Validador2, LNiveles_acceso::Validador1];
-                
+                    
                     $conf['aplica_bandera_separarV1_v2'] = 1;
                     $conf['editar_reg_doc_nuevamente'] = 1;
                     
