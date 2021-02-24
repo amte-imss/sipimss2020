@@ -83,11 +83,11 @@ $db['default'] = array(
     'password' => 'nPgEoXCqd/?gV.,',
     'database' => 'sipimss_test',
 */
-    'dsn' => 'pgsql:host=localhost;port=5432;dbname=sipimss_0920_pruebas',
+    'dsn' => 'pgsql:host=localhost;port=5433;dbname=censo_190221',
     'hostname' => 'localhost',
     'username' => 'innovaedu',
     'password' => 'innovaedu',
-    'database' => 'sipimss_0920_pruebas',
+    'database' => 'sipimss_prod2',
 
     // 'dsn' => 'pgsql:host=localhost;port=5432;dbname=sipims_dev',
     // 'hostname' => 'localhost',
@@ -113,7 +113,7 @@ $db['default'] = array(
     'char_set' => 'utf8',
     'dbcollat' => 'utf8_general_ci',
     'swap_pre' => '',
-    'schema' => 'sistema,catalogo,ui,censo,workflow,bitacora',
+    'schema' => 'sistema,catalogo,ui,censo,workflow,bitacora,convocatoria',
     'encrypt' => FALSE,
     'compress' => FALSE,
     'stricton' => FALSE,
@@ -129,7 +129,7 @@ $db['bitacoras'] = array(
     'password' => 'nPgEoXCqd/?gV.,',
     'database' => 'sipimss_test',
 */
-    'dsn' => 'pgsql:host=localhost;port=5432;dbname=sipimss_0920_pruebas',
+    'dsn' => 'pgsql:host=localhost;port=5433;dbname=censo_190221',
     'hostname' => 'localhost',
     'username' => 'innovaedu',
     'password' => 'innovaedu',

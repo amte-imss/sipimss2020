@@ -191,10 +191,10 @@ class Docente_model extends MY_Model {
 
                 if(isset($parametros_docente['umae_usuario'])){
                     if(is_null($parametros_docente['umae'])){
-                        $filtro_umae_ooad[] = 'u.clave_unidad is null'; 
+                        $filtro_umae_ooad[] = 'u.clave_unidad_principal is null'; 
 
                     }else{
-                        $filtro_umae_ooad[] = 'u.clave_unidad in(' . $parametros_docente['umae'].')'; 
+                        $filtro_umae_ooad[] = 'u.clave_unidad_principal in(' . $parametros_docente['umae'].')'; 
                     }
                     //$this->db->where_in('u.clave_unidad' ,$parametros_docente['umae_usuario']);//Rol del docente                    
                 }
@@ -312,10 +312,10 @@ class Docente_model extends MY_Model {
 
                 if(isset($parametros_docente['umae_usuario'])){
                     if(is_null($parametros_docente['umae'])){
-                        $filtro_umae_ooad[] = 'u.clave_unidad is null'; 
+                        $filtro_umae_ooad[] = 'u.clave_unidad_principal is null'; 
 
                     }else{
-                        $filtro_umae_ooad[] = 'u.clave_unidad in(' . $parametros_docente['umae'].')'; 
+                        $filtro_umae_ooad[] = 'u.clave_unidad_principal in(' . $parametros_docente['umae'].')'; 
                     }
                     //$this->db->where_in('u.clave_unidad' ,$parametros_docente['umae_usuario']);//Rol del docente                    
                 }

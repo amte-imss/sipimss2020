@@ -122,10 +122,10 @@ class Reporte_model extends MY_Model {
         
         if($filtros['is_entidad_designada']){
             if(isset($filtros['ooad']) && !empty($filtros['ooad']) && isset($filtros['umae']) && !empty($filtros['umae'])){
-                $this->db->where("(u.clave_unidad in (select umae from sistema.usuario_umae where id_usuario = ". $filtros['umae_usuario']. " )
+                $this->db->where("(u.clave_unidad_principal in (select umae from sistema.usuario_umae where id_usuario = ". $filtros['umae_usuario']. " )
                 or (d.clave_delegacional in ( select ooad from sistema.usuario_ooad where id_usuario = " . $filtros['ooad_usuario'] ." ) and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null)) )", null);
             }else if(isset($filtros['umae']) && !empty($filtros['umae'])){                
-                $this->db->where('u.clave_unidad in (select umae from sistema.usuario_umae where id_usuario = '. $filtros['umae_usuario']. ' )', null);
+                $this->db->where('u.clave_unidad_principal in (select umae from sistema.usuario_umae where id_usuario = '. $filtros['umae_usuario']. ' )', null);
             }else if(isset($filtros['ooad']) && !empty($filtros['ooad'])){                            
                 $this->db->where("d.clave_delegacional in (select ooad from sistema.usuario_ooad where id_usuario = ". $filtros['ooad_usuario'] . ") and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null)", null);                
             }else{

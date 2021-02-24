@@ -100,7 +100,7 @@ class Normativo_model extends CI_Model
         $this->db->join('('.$subquery.') as t', 't.clave_unidad = u2.clave_unidad', 'left');
         $this->db->join('('.$subquery2.') as t2', 't2.clave_unidad = u2.clave_unidad', 'left');
         $this->db->where("(u2.umae = true or u2.grupo_tipo_unidad in ('UMAE','CUMAE')) and anio = 2020");
-        $this->db->group_by('u2.unidad_principal, u2.nombre_unidad_principal, u2.clave_unidad');
+        $this->db->group_by('u2.unidad_principal, u2.nombre_unidad_principal');
         $this->db->order_by('u2.nombre_unidad_principal');
         $result = $this->db->get()->result_array();
         //pr($this->db->last_query());
