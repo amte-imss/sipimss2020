@@ -139,7 +139,7 @@ function lista_docentes(){
                         name_boton = 'Ver validación';
                         if((item.id_status_validacion != 1 || item.id_status_validacion != '1') && item.total_registros_censo > 0){
                             if(item.id_status_validacion == 7 || item.id_status_validacion == '7' || item.id_status_validacion == 3 || item.id_status_validacion == '3'){
-                                name_boton = 'Ver ratificación';
+                                name_boton = 'Ver validación';
                             }
                             liga +='<br><a href="'+site_url + url_ctr+'/detalle_censo_docente/'+item.id_docente+'">'+name_boton+'</a>';                         
                         }

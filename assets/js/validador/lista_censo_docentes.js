@@ -51,7 +51,7 @@ function reporte_docentes(){
                   data: filter,
                   dataType: "json"
               }).done(function (result) {
-                  console.log(result);
+                  //console.log(result);
                   $("#docentes_registrados").text(result.docentes_reporte.length + " docentes registrados");
                           /*d.resolve({
                               data: result.datos_docentes,

@@ -114,7 +114,7 @@ class Reporte_model extends MY_Model {
         //$this->db->join('censo.docente doc1', 'doc1.id_usuario = cru.id_usuario_registra', 'left');
         //$this->db->join('(select cc.id_docente, count(cc.id_censo) total_registros_censo, censo.estado_validacion_docente(cc.id_docente) id_status_validacion from censo.censo cc GROUP BY cc.id_docente) trc', 'trc.id_docente = doc.id_docente', 'left');
         $this->db->join('(select cc.id_docente, count(cc.id_censo) total_registros_censo from censo.censo cc GROUP BY cc.id_docente) trc', 'trc.id_docente = doc.id_docente', 'left');
-        $this->db->join('censo.total_registros_censo_docente as t1', 't1.id_docente = doc.id_docente ', 'left');
+        $this->db->join('total_registros_censo_docente as t1', 't1.id_docente = doc.id_docente ', 'left');
         
         $this->db->where('dd.actual', 1);
         //$this->db->where('doc.matricula', '11666706');
@@ -122,12 +122,12 @@ class Reporte_model extends MY_Model {
         
         if($filtros['is_entidad_designada']){
             if(isset($filtros['ooad']) && !empty($filtros['ooad']) && isset($filtros['umae']) && !empty($filtros['umae'])){
-                $this->db->where('(u.clave_unidad in (select umae from sistema.usuario_umae where id_usuario = '. $filtros['umae_usuario']. ' )
-                or d.clave_delegacional in ( select ooad from sistema.usuario_ooad where id_usuario = '. $filtros['ooad_usuario'] .' ))', null);
+                $this->db->where("(u.clave_unidad in (select umae from sistema.usuario_umae where id_usuario = ". $filtros['umae_usuario']. " )
+                or (d.clave_delegacional in ( select ooad from sistema.usuario_ooad where id_usuario = " . $filtros['ooad_usuario'] ." ) and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null)) )", null);
             }else if(isset($filtros['umae']) && !empty($filtros['umae'])){                
                 $this->db->where('u.clave_unidad in (select umae from sistema.usuario_umae where id_usuario = '. $filtros['umae_usuario']. ' )', null);
             }else if(isset($filtros['ooad']) && !empty($filtros['ooad'])){                            
-                $this->db->where('d.clave_delegacional in (select ooad from sistema.usuario_ooad where id_usuario = '. $filtros['ooad_usuario'] . ' )', null);                
+                $this->db->where("d.clave_delegacional in (select ooad from sistema.usuario_ooad where id_usuario = ". $filtros['ooad_usuario'] . ") and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null)", null);                
             }else{
                 return [];//Retorna vacio el modulo
             }
