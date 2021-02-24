@@ -59,13 +59,14 @@ function reporte_docentes(){
                           });*/
                           var res = $.grep(result.docentes_reporte, function (registro) {
                             registro.status_validacion = get_status(registro.id_status_validacion);
-                            return (!filter.clave_delegacional || (registro.clave_delegacional != null && (registro.clave_delegacional == filter.clave_delegacional)))
+                            return true;
+                            /*return (!filter.clave_delegacional || (registro.clave_delegacional != null && (registro.clave_delegacional == filter.clave_delegacional)))
                             && (!filter.matricula || (registro.matricula !== null && registro.matricula.toLowerCase().indexOf(filter.matricula.toString().toLowerCase()) > -1))
                             && (!filter.nombre_docente || (registro.nombre_docente !== null && registro.nombre_docente.toLowerCase().indexOf(filter.nombre_docente.toString().toLowerCase()) > -1))
                             && (!filter.email || (registro.email !== null && registro.email.toLowerCase().indexOf(filter.email.toString().toLowerCase()) > -1))
                             //&& (!filter.clave_rol || (registro.clave_rol != null && (registro.clave_rol == filter.clave_rol)))
                             && (!filter.umae || (registro.umae !== null && registro.umae.toLowerCase().indexOf(filter.umae.toString().toLowerCase()) > -1))
-                            && (!filter.total || (registro.total !== null && registro.total.toLowerCase().indexOf(filter.total.toString().toLowerCase()) > -1))
+                            && (!filter.total || (registro.total !== null && registro.total.toLowerCase().indexOf(filter.total.toString().toLowerCase()) > -1))*/
                           });
                           d.resolve(res);
                       });
@@ -74,15 +75,24 @@ function reporte_docentes(){
           },         
         },
         fields: [
-            {name: 'id_usuario', title: "#", visible: false},
+            {name: 'clave_departamental', title: "Clave departamental", type: "text", visible:true},
+            {name: 'departamento', title: "Departamento", type: "text", visible:true},
+            {name: 'clave_unidad', title: "Clave unidad", type: "text", visible:true},
+            {name: 'nom_unidad', title: "Unidad", type: "text", visible:true},
+            {name: 'nom_tipo_unidad', title: "Tipo unidad", type: "text", visible:true},            
             {name: 'clave_delegacional', title: "OOAD", type: "select", items: delegaciones,valueField: "clave_delegacional", textField: "nombre",  visible:true},
-            {name: 'matricula', type: "text", title: "Matrícula", visible:true},
-            {name: 'nombre_docente', type: "text", title: "Nombre docente", visible:true},
-            {name: 'email', title:"Correos", type: "text",  visible:true},
-            //{name: 'clave_rol', type: "text", title: "Rol", type: "select", items:nivel_acceso, valueField: "clave_rol", textField: "descripcion", visible:true},
-            {name: 'umae', type: "text", title: "UMAE", visible:true},
+            {name: 'clave_categoria', title: "Clave categoría", type: "text", visible:true},
+            {name: 'categoria', title: "Categoría", type: "text", visible:true},
+            {name: 'id_docente', title: "ID docente", type: "text", visible:true},
+            {name: 'matricula', title: "Matrícula", type: "text", visible:true},
+            {name: 'curp', title: "CURP", type: "text", visible:true, with:"60"},
+            {name: 'email', title: "Correo electrónico", type: "text", visible:true, with:"80"},
+            {name: 'nombre_docente', title: "Nombre docente", type: "text", visible:true},
+            {name: 'telefono_laboral', title: "Teléfono laboral", type: "text", visible:true},
+            {name: 'telefono_particular', title: "Teléfono particular", type: "text", visible:true},
+            {name: 'fase_carrera', title: "Fase carrera docente", type: "text", visible:true},
+            {name: 'umae', title: "UMAE", type: "text", visible:true},
             {name: 'id_status_validacion', title: "Estado validación", type: "select", items:estados_validacion, valueField: "id", textField: "label", visible:true},
-            //{name: 'total', type: "number", title: "# docentes registrados", visible:true, filtering:false},            
             
 			{name:'experiencia_docente_previa', type: "text", title: "Experiencia docente previa", visible:true},
             {name:'experiencia_actual', type: "text", title: "Experiencia actual", visible:true},
@@ -140,12 +150,19 @@ function reporte_docentes(){
 }
 
 function get_status(id){
-    Object.keys(estados_validacion).forEach(function (c, index) {
-//        console.log(c);
-        if (c.id == id) {
-            return c.label;
+    //console.log(estados_validacion);
+    //console.log(id);
+    for (var i = 0; i < estados_validacion.length; ++i) {
+        if (!estados_validacion[i])
+            continue;
+        valor = estados_validacion[i];
+        if (typeof valor === 'object') {
+            if (valor['id'] == id) {
+                return valor['label'];
+            }
         }
-    });
+    }
+    
 }
 
 function exportar_reporte(element) {
@@ -195,7 +212,7 @@ function obtener_cabeceras() {
         educacion_distancia: 'Educación a distancia', 
         diplomado_educacion: 'Diplomado en educación y afines', 
         especialidad_educacion: 'Especialidad en educación y afines', 
-        maestria_educacion: 'Maestria en educación y afines', 
+        maestria_educacion: 'Maestría en educación y afines', 
         doctorado_educacion: 'Doctorado en educación y afines'
 
     }

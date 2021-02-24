@@ -6,7 +6,6 @@ insert into sistema.modulos (clave_modulo, nombre, url, activo, modulo_padre_cla
 insert into sistema.roles_modulos (clave_modulo, clave_rol, activo) values ('REPOR_GRID_DOC1', 'VALIDADOR2',true);
 
 
-
 --Se crea vista para simplificar registros y consulta. y optimizar consulta
 create or replace view censo.total_registros_censo as
 select "CC"."id_docente",--"ES".id_elemento_seccion, "ES".label, count(distinct "CC".id_censo),
@@ -129,6 +128,11 @@ begin
 	end if;		
 END;
 $$;
+
+insert into sistema.roles_modulos (clave_modulo, clave_rol, activo) values ('REPOR_GRID_DOC1', 'NORMATIVO',true);
+insert into sistema.roles_modulos (clave_modulo, clave_rol, activo) values ('REPOR_DOC1', 'NORMATIVO',true);
+insert into sistema.inicio_rol_modulo (id_inicio, clave_modulo, clave_rol, orden) values ('validador2_perfil', 'REPOR_DOC1', 'VALIDADOR2', 1);
+
 
 
 
