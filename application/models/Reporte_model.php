@@ -114,7 +114,7 @@ class Reporte_model extends MY_Model {
         //$this->db->join('censo.docente doc1', 'doc1.id_usuario = cru.id_usuario_registra', 'left');
         //$this->db->join('(select cc.id_docente, count(cc.id_censo) total_registros_censo, censo.estado_validacion_docente(cc.id_docente) id_status_validacion from censo.censo cc GROUP BY cc.id_docente) trc', 'trc.id_docente = doc.id_docente', 'left');
         $this->db->join('(select cc.id_docente, count(cc.id_censo) total_registros_censo from censo.censo cc GROUP BY cc.id_docente) trc', 'trc.id_docente = doc.id_docente', 'left');
-        $this->db->join('total_registros_censo_docente as t1', 't1.id_docente = doc.id_docente ', 'left');
+        $this->db->join('censo.total_registros_censo_docente as t1', 't1.id_docente = doc.id_docente ', 'left');
         
         $this->db->where('dd.actual', 1);
         //$this->db->where('doc.matricula', '11666706');
