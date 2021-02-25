@@ -295,8 +295,8 @@ class Docente_model extends MY_Model {
             //pr($parametros_docente);       
             if($parametros_docente['is_entidad_designada']){
 
-                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = d.clave_delegacional and doc.id_usuario = '. $parametros_docente['ooad_usuario'], 'left');            
-                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad and doc.id_usuario = '. $parametros_docente['umae_usuario'], 'left'); 
+                //$this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = d.clave_delegacional and doc.id_usuario = '. $parametros_docente['ooad_usuario'], 'left');            
+                //$this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad and doc.id_usuario = '. $parametros_docente['umae_usuario'], 'left'); 
                 $filtro_umae_ooad = array();           
                 if(isset($parametros_docente['user_validadorn1'])){
                     $filtro_umae_ooad[] = 'doc.id_usuario IN(' . $parametros_docente['user_validadorn1'] . ')';
@@ -306,14 +306,14 @@ class Docente_model extends MY_Model {
                         $filtro_umae_ooad[] = 'd.clave_delegacional is null'; 
 
                     }else{                    
-                        $filtro_umae_ooad[] = '(d.clave_delegacional in(' . $parametros_docente['ooad']. ") and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') ) )"; 
+                        $filtro_umae_ooad[] = '(d.clave_delegacional in(' . $parametros_docente['ooad']. ") and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null) )"; 
                     }
                     //$this->db->where('d.clave_delegacional', $parametros_docente['ooad_usuario']);//Rol del docente
                 }
 
                 if(isset($parametros_docente['umae_usuario'])){
                     if(is_null($parametros_docente['umae'])){
-                        $filtro_umae_ooad[] = 'u.unidad_principal is null'; 
+                        //$filtro_umae_ooad[] = 'u.unidad_principal is null'; 
 
                     }else{                        
                         $filtro_umae_ooad[] = 'u.unidad_principal in(select upa.unidad_principal from catalogo.unidades_instituto upa where  upa.clave_unidad_principal = ' . $parametros_docente['umae'].')'; 
@@ -362,7 +362,7 @@ class Docente_model extends MY_Model {
         $array_result = $result->result_array();
         //if(isset($parametros_docente['imprime'])){
 
-            //pr($this->db->last_query()); exit();
+        //pr($this->db->last_query()); exit();
         //}
         
         if (!empty($array_result) && empty($parametros_docente)) {
