@@ -87,7 +87,7 @@ $db['default'] = array(
     'hostname' => 'localhost',
     'username' => 'innovaedu',
     'password' => 'innovaedu',
-    'database' => 'sipimss_prod2',
+    'database' => 'sipimss_0920_pruebas',
 
     // 'dsn' => 'pgsql:host=localhost;port=5432;dbname=sipims_dev',
     // 'hostname' => 'localhost',
@@ -113,7 +113,7 @@ $db['default'] = array(
     'char_set' => 'utf8',
     'dbcollat' => 'utf8_general_ci',
     'swap_pre' => '',
-    'schema' => 'sistema,catalogo,ui,censo,workflow,bitacora,convocatoria',
+    'schema' => 'sistema,catalogo,ui,censo,workflow,bitacora',
     'encrypt' => FALSE,
     'compress' => FALSE,
     'stricton' => FALSE,

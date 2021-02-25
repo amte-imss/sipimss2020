@@ -306,7 +306,7 @@ class Docente_model extends MY_Model {
                         $filtro_umae_ooad[] = 'd.clave_delegacional is null'; 
 
                     }else{                    
-                        $filtro_umae_ooad[] = '(d.clave_delegacional in(' . $parametros_docente['ooad']. ") and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null) )"; 
+                        $filtro_umae_ooad[] = '(d.clave_delegacional in(' . $parametros_docente['ooad']. ") and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') ) )"; 
                     }
                     //$this->db->where('d.clave_delegacional', $parametros_docente['ooad_usuario']);//Rol del docente
                 }
@@ -362,7 +362,7 @@ class Docente_model extends MY_Model {
         $array_result = $result->result_array();
         //if(isset($parametros_docente['imprime'])){
 
-           // pr($this->db->last_query()); exit();
+            //pr($this->db->last_query()); exit();
         //}
         
         if (!empty($array_result) && empty($parametros_docente)) {
