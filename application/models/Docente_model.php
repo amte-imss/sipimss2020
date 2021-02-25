@@ -99,7 +99,7 @@ class Docente_model extends MY_Model {
 
         $this->db->select($select);
         $resultado = $this->db->get('censo.docente doc')->result_array();
-  //      pr($this->db->last_query()); exit();
+  //     pr($this->db->last_query()); exit();
   
         if ($resultado) {
             $usuario = $resultado[0];
@@ -191,10 +191,10 @@ class Docente_model extends MY_Model {
 
                 if(isset($parametros_docente['umae_usuario'])){
                     if(is_null($parametros_docente['umae'])){
-                        $filtro_umae_ooad[] = 'u.clave_unidad_principal is null'; 
+                        $filtro_umae_ooad[] = 'u.unidad_principal is null'; 
 
                     }else{
-                        $filtro_umae_ooad[] = 'u.clave_unidad_principal in(' . $parametros_docente['umae'].')'; 
+                        $filtro_umae_ooad[] = 'u.unidad_principal in(select upa.unidad_principal from catalogo.unidades_instituto upa where  upa.clave_unidad_principal = ' . $parametros_docente['umae'].')'; 
                     }
                     //$this->db->where_in('u.clave_unidad' ,$parametros_docente['umae_usuario']);//Rol del docente                    
                 }
@@ -239,7 +239,7 @@ class Docente_model extends MY_Model {
         $array_result = $result->result_array();
         //if(isset($parametros_docente['imprime'])){
 
-          //  pr($this->db->last_query()); exit();
+            pr($this->db->last_query()); exit();
         //}
         
         if (!empty($array_result) && empty($parametros_docente)) {
@@ -249,6 +249,7 @@ class Docente_model extends MY_Model {
     }
 
     public function get_historico_datos_generales_docentes($id_docente = null, $OOAD = null , $parametros_docente =[]) {
+        //pr("que pex");
         $select = array(
                 //"dd.id_historico_docente", "dd.fecha echa_ultima_actualizacion"
             "dd.id_departamento_instituto", "di.clave_departamental", "concat(di.nombre,' (',di.clave_departamental,')' ) departamento"
@@ -312,10 +313,10 @@ class Docente_model extends MY_Model {
 
                 if(isset($parametros_docente['umae_usuario'])){
                     if(is_null($parametros_docente['umae'])){
-                        $filtro_umae_ooad[] = 'u.clave_unidad_principal is null'; 
+                        $filtro_umae_ooad[] = 'u.unidad_principal is null'; 
 
-                    }else{
-                        $filtro_umae_ooad[] = 'u.clave_unidad_principal in(' . $parametros_docente['umae'].')'; 
+                    }else{                        
+                        $filtro_umae_ooad[] = 'u.unidad_principal in(select upa.unidad_principal from catalogo.unidades_instituto upa where  upa.clave_unidad_principal = ' . $parametros_docente['umae'].')'; 
                     }
                     //$this->db->where_in('u.clave_unidad' ,$parametros_docente['umae_usuario']);//Rol del docente                    
                 }
