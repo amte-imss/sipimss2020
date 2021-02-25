@@ -239,7 +239,7 @@ class Docente_model extends MY_Model {
         $array_result = $result->result_array();
         //if(isset($parametros_docente['imprime'])){
 
-            pr($this->db->last_query()); exit();
+            //pr($this->db->last_query()); exit();
         //}
         
         if (!empty($array_result) && empty($parametros_docente)) {
