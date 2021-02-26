@@ -30,8 +30,8 @@ class Docente_model extends MY_Model {
             $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol and urol.clave_rol = \''.LNiveles_acceso::Docente.'\'');     
             //pr($parametros_docente);       
             if($parametros_docente['is_entidad_designada']){
-                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = del.clave_delegacional and doc.id_usuario = '. $parametros_docente['ooad_usuario'], 'left');            
-                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad and doc.id_usuario = '. $parametros_docente['umae_usuario'], 'left'); 
+                //$this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = del.clave_delegacional and doc.id_usuario = '. $parametros_docente['ooad_usuario'], 'left');            
+                //$this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad and doc.id_usuario = '. $parametros_docente['umae_usuario'], 'left'); 
 
                 $filtro_umae_ooad = array();           
                 if(isset($parametros_docente['user_validadorn1'])){
@@ -72,7 +72,7 @@ class Docente_model extends MY_Model {
                         //if(is_null($parametros_docente['user_validadorn1']))
                         $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = doc.id_usuario', 'left');
                         $select .= ",(case when cru.id_usuario_registrado is null then 0 else 1 end) permite_validacion";                         
-                        $select .= ",(case when ((ooad.ooad is not null and ooad.ooad = del.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
+                        //$select .= ",(case when ((ooad.ooad is not null and ooad.ooad = del.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
                         
                         
                     //}
@@ -173,8 +173,8 @@ class Docente_model extends MY_Model {
             //pr($parametros_docente);       
             if($parametros_docente['is_entidad_designada']){
 
-                $this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = d.clave_delegacional and doc.id_usuario = '. $parametros_docente['ooad_usuario'], 'left');            
-                $this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad and doc.id_usuario = '. $parametros_docente['umae_usuario'], 'left'); 
+                //$this->db->join('sistema.usuario_ooad ooad', 'ooad.ooad = d.clave_delegacional and doc.id_usuario = '. $parametros_docente['ooad_usuario'], 'left');            
+                //$this->db->join('sistema.usuario_umae umae', 'umae.umae = u.clave_unidad and doc.id_usuario = '. $parametros_docente['umae_usuario'], 'left'); 
                 $filtro_umae_ooad = array();           
                 if(isset($parametros_docente['user_validadorn1'])){
                     $filtro_umae_ooad[] = 'doc.id_usuario IN(' . $parametros_docente['user_validadorn1'] . ')';
@@ -210,7 +210,7 @@ class Docente_model extends MY_Model {
                     if(isset($parametros_docente['user_validadorn1'])){
                         $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = doc.id_usuario', 'left');
                         $select_aux[] = "(case when cru.id_usuario_registrado is null then 0 else 1 end) permite_validacion";                         
-                        $select_aux[] = "(case when ((ooad.ooad is not null and ooad.ooad = d.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
+                        //$select_aux[] = "(case when ((ooad.ooad is not null and ooad.ooad = d.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
                         if(!isset($parametros_docente['select'])){
                             $select = array_merge($select, $select_aux);
                         }
@@ -239,7 +239,7 @@ class Docente_model extends MY_Model {
         $array_result = $result->result_array();
         //if(isset($parametros_docente['imprime'])){
 
-            //pr($this->db->last_query()); exit();
+        //pr($this->db->last_query()); exit();
         //}
         
         if (!empty($array_result) && empty($parametros_docente)) {
@@ -332,7 +332,7 @@ class Docente_model extends MY_Model {
                     if(isset($parametros_docente['user_validadorn1'])){
                         $this->db->join('sistema.control_registro_usuarios cru', 'cru.id_usuario_registrado = doc.id_usuario', 'left');
                         $select_aux[] = "(case when cru.id_usuario_registrado is null then 0 else 1 end) permite_validacion";                         
-                        $select_aux[] = "(case when ((ooad.ooad is not null and ooad.ooad = d.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
+                        //$select_aux[] = "(case when ((ooad.ooad is not null and ooad.ooad = d.clave_delegacional) or (umae.umae is not null and umae.umae = u.clave_unidad)) then 1 else 0 end) permite_ratificacion";                         
                         if(!isset($parametros_docente['select'])){
                             $select = array_merge($select, $select_aux);
                         }
