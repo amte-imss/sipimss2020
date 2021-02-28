@@ -70,7 +70,8 @@ class Validacion extends Informacion_docente {
                 $this->template_item_perfil->set_status_validacion($datos_generales['id_status_validacion']);
                 if($rol_valida['aplica_bandera_separarV1_v2']){
                     $this->template_item_perfil->set_permite_validacion($datos_generales['permite_validacion']);
-                    $this->template_item_perfil->set_permite_ratificacion($datos_generales['permite_ratificacion']);
+                    //$this->template_item_perfil->set_permite_ratificacion($datos_generales['permite_ratificacion']);
+                    $this->template_item_perfil->set_permite_ratificacion(0);
                 }
                 $this->load->library('curp', array('curp' => $datos_generales['curp'])); //Ingresa datos del curp
                 $datos_generales['edad'] = $this->curp->getEdad(); //Calcula la edad del usuario
