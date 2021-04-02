@@ -68,6 +68,8 @@ class Inicio extends MY_Controller
                         $die_sipimss['usuario'] = $this->usuario->get_usuarios($params)[0];
                         $die_sipimss['usuario']['is_alias_sesion'] = $datos_usuario['is_alias'];
                         $die_sipimss['usuario']['niveles_acceso'] = $this->sesion->get_niveles_acceso($die_sipimss['usuario']['id_usuario']);
+                        //
+
                         
                         //** Roles por clave */
                         $roles = $die_sipimss['usuario']['niveles_acceso'];
@@ -77,7 +79,8 @@ class Inicio extends MY_Controller
                         }
                         $die_sipimss['usuario']['niveles_acceso_cves'] = $roles_clave;
                         //** fin rol por claves  */                        
-                        $die_sipimss['usuario']['convocatoria'] = $this->sesion->get_info_convocatoria_censo();
+                        //$die_sipimss['usuario']['convocatoria'] = $this->sesion->get_info_convocatoria_censo();
+                        $die_sipimss['usuario']['convocatoria'] = $this->get_convocatoria_actual();
                         if(!empty($die_sipimss['usuario']['convocatoria']) && isset($roles_clave[LNiveles_acceso::Docente])){
                             //pr($die_sipimss['usuario']['convocatoria']);
                             //pr($roles_clave[LNiveles_acceso::Docente]);

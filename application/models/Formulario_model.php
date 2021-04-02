@@ -748,7 +748,10 @@ class Formulario_model extends MY_Model {
         }
 
         $select = array(
-            'CC.id_censo', 'CC.id_validacion_registro', 'UVR.nombre nombre_validacion',
+            'CC.id_censo', 
+            //'CC.id_validacion_registro', 
+            //'UVR.nombre nombre_validacion',
+            'censo.estado_validacion_docente("CC".id_docente) id_validacion_registro', "' ' nombre_validacion",
             'CC.is_carga_sistema', 'CC.fecha',
             'S.id_seccion', 'S.nombre nom_seccion', 'S.label lbl_seccion',
             'catalogo.get_arbol_secciones_pinta_padres("ES"."id_elemento_seccion") arbol_secciones',
@@ -889,6 +892,14 @@ class Formulario_model extends MY_Model {
         $datos_docente_actividad = $this->get_datos_actividad_docente($id_docente, $id_seccion, $id_censo, $id_elemento_seccion);
         //Obtiene todos los registros elemento sección sin repetir
         $get_sub_secciones = $this->get_sub_secciones($id_docente, $id_seccion, $id_censo);
+        //Carga estados de validación
+        $this->load->model('Catalogo_model', 'cat');
+        $estados_validacion = $this->cat->get_estados_validacion_censo();
+        $estados_validacion = $this->get_estados_val_por_clave($estados_validacion);        
+        //*********************** */
+        $estados_validacion_seccion = $this->get_estados_seccion($id_docente, $id_seccion);
+        //pr($other);
+        //pr($estados_validacion_seccion);
         $array_result = array();
         $array_general = array();
         $array_campos = array();
@@ -896,8 +907,12 @@ class Formulario_model extends MY_Model {
         //pr($datos_docente_actividad);
         foreach ($datos_docente_actividad as $value) {
             $llave_cross = $value['id_censo'] . '-' . $value['id_formulario'] . '-' . $value['id_elemento_seccion'];
+            $elemento_seccion_validado = (!empty($estados_validacion_seccion) && isset($estados_validacion_seccion[$id_docente.$id_seccion.$value['id_censo']])) ? 
+            $estados_validacion_seccion[$id_docente.$id_seccion.$value['id_censo']] : 'no';
             if (!isset($array_general[$llave_cross])) {
-                $id_validacion_censo = $this->get_id_validacion_registro($value['id_validacion_registro'], $id_docente, $other);
+                //$id_validacion_censo = $this->get_id_validacion_registro($value['id_validacion_registro'], $id_docente, $other);//Evaluar este registro, modificado 28/02/2021
+                $id_validacion_censo = $value['id_validacion_registro'];
+                $nombre_validacion = (isset($estados_validacion[$value['id_validacion_registro']]))?$estados_validacion[$value['id_validacion_registro']]:'NA';
                 $array_general[$llave_cross] = array(
                     'id_elemento_seccion' => $value['id_elemento_seccion'],
                     'nom_elemento_seccion' => $value['nom_elemento_seccion'],
@@ -909,8 +924,8 @@ class Formulario_model extends MY_Model {
                     'is_carga_sistema' => $value['is_carga_sistema'],
                     //'id_validacion_registro' => $value['id_validacion_registro'],
                     'id_validacion_registro' => $id_validacion_censo,
-                    'nombre_validacion' => $value['nombre_validacion'],
-                    'acciones' => $this->acciones($id_validacion_censo, $value['is_carga_sistema']),
+                    'nombre_validacion' => $nombre_validacion,
+                    'acciones' => $this->acciones($id_validacion_censo, $value['is_carga_sistema'], $elemento_seccion_validado, $other),
                 );
             }
             if ($value['mostrar_datatable']) {
@@ -956,11 +971,59 @@ class Formulario_model extends MY_Model {
         return $resultado;
     }
 
+    private  function get_estados_seccion($id_docente, $id_seccion){        
+        if (is_null($id_docente)) {
+            return null;
+        }
+        if (!is_numeric($id_seccion)) {
+            return null;
+        }
+        $respuesta = [];
+        $select = array(            
+            'vs.id_docente', 'vs.id_seccion', 'vs.elementos_censo'                        
+        );
 
+        $this->db->select($select);
+        //Agrega implicitamente si son activos los campos de formulario
+//            $params = array_merge($params, array('cf.activo' => true, 'f.activo' => TRUE, 'c.activo' => TRUE, 'tc.activo' => TRUE));
+        $this->db->where('vs.activo', true);
+        $this->db->where('vs.id_docente', $id_docente);
+        $this->db->where('vs.id_seccion', $id_seccion);
+        $resultado = $this->db->get('validacion.validacionN1_seccion vs');
+        
+        if(count($resultado->result_array())>0){
+            foreach ($resultado->result_array() as $value) {
+                $elementos_validados = json_decode($value['elementos_censo'], true);
+                foreach ($elementos_validados as $key_ev => $value_ev) {
+                    $respuesta[$id_docente.$id_seccion.$key_ev] = $value_ev;                    
+                }                
+            }
+        }
+//            pr($this->db->last_query());
+        return $respuesta;
+    }
 
-    private function acciones($id_validacion_registro, $is_carga_sistema) {
-        $result['editar'] = false;
-        $result['eliminar'] = false;
+    private  function get_estados_val_por_clave($catalogo_estados){
+        $respuesta = [];
+        foreach ($catalogo_estados as $value) {
+            //pr($value);
+            $respuesta[$value['id']] = $value['label'];
+        }
+        return $respuesta;
+
+    }
+
+    private function acciones($id_validacion_registro, $is_carga_sistema, $elemento_seccion_validado, $convocatoria) {
+        //pr($convocatoria);
+        if(isset($convocatoria['convocatoria']) && !empty($convocatoria['convocatoria'])){
+            $exc_action = ($elemento_seccion_validado == 'si') ? false : true;            
+        }else{
+            $exc_action = false ;
+        }
+        //pr("Se valido la seccion -> ".$elemento_seccion_validado);
+        $result['editar'] = $exc_action;
+        $result['eliminar'] = $exc_action;
+        $result['insertar'] = $exc_action;
         $result['ver'] = true;
         //pr('-> ' . $is_carga_sistema);
         //if (!empty($is_carga_sistema) && is_bool($is_carga_sistema) === FALSE) {

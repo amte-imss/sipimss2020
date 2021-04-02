@@ -95,7 +95,7 @@ function carga_grid_actividad_docente(datos, seccion) {
                 //console.log(filter);
                 var d = $.Deferred();
                 //var result = null;
-               //console.log(datos.datos_actividad_docente);
+               console.log(datos.datos_actividad_docente);
                
                 var res = $.grep(datos.datos_actividad_docente, function (registro) {
                     var result = true;

@@ -475,6 +475,12 @@ class Template {
         // pr($this->elements['notificaciones_estaticas']);
     }
 
+    function add_data_element($key, $value)
+    {
+        $this->elements[$key] = $value;
+        
+    }
+
     /**
      * Método que crea links de paginación y mensaje sobre registros mostrados
      * @autor 		: Jesús Díaz P.

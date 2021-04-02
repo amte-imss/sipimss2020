@@ -134,12 +134,12 @@
                     <i class="dashboard"></i>De clic aquí para finalizar el registro de convocatoria</a>
                 </li> -->
                 <?php
-                if(isset($datos_sesion['registro_censo']) && $datos_sesion['registro_censo']){                    
+                if(isset($fin_registro_datos_censo_docente) && $fin_registro_datos_censo_docente){                    
                         ?>
                         <li>
                             <a id="item-contacto" href="#item-contacto" class="tablero-menu-item"
                             data-toggle="modal" data-target="#admin-finalizacenso" style="text-decoration: none; background-color: #006a62 !important; color: #fff;">
-                            <i class="dashboard"></i>De clic aquí para finalizar el registro docente</a>
+                            <i class="dashboard"></i>De clic aquí para finalizar el registro de datos y envíar a validación</a>
                         </li>
                         <?php
                     

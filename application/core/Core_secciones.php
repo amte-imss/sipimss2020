@@ -84,17 +84,23 @@ class Core_secciones extends Informacion_docente {
 
         $parametros_boton_agregar_seccion = array_merge($this->template->getParametrorBoton(),$parametros_boton_agregar_seccion); //Obtiene todos los parametros del botón            
         $parametros_boton_agregar_seccion['seccion'] = $this->seccion; //Agrega la sección a la que pertenece el modulo
-        $parametros_boton_agregar_seccion['fin_registro_censo'] = $datos_sesion['registro_censo']; //Agrega la sección a la que pertenece el modulo
+        //$parametros_boton_agregar_seccion['fin_registro_censo'] = $datos_sesion['registro_censo']; //Agrega la sección a la que pertenece el modulo
+        $convocatoria_actual = $this->get_convocatoria_actual();
+        $id_convocatoria = (!empty($convocatoria_actual))?$convocatoria_actual['id_convocatoria']: null;
+        $parametros_boton_agregar_seccion['fin_registro_censo'] = $this->sesion->get_fin_registro_censo($datos_sesion['id_docente'], $id_convocatoria); //Agrega la sección a la que pertenece el modulo
+        //pr($parametros_boton_agregar_seccion);
+        
         //$parametros_boton_agregar_seccion['is_seccion_static'] = $seccion[0]['is_seccion_static'];
+        $this->template->add_data_element("fin_registro_datos_censo_docente", $parametros_boton_agregar_seccion['fin_registro_censo']);
         $this->template->setBotonAgregarGeneral($parametros_boton_agregar_seccion);
         $this->template->setFormularioSecciones($data);
         $this->template->getTemplate();
 
-        $this->benchmark->mark('code_end');
+        //$this->benchmark->mark('code_end');
         //echo $this->benchmark->elapsed_time('code_start', 'code_end');
 //        echo $this->benchmark->memory_usage();
 //        $this->output->enable_profiler(TRUE);
-        $this->output->parse_exec_vars = TRUE;
+        //$this->output->parse_exec_vars = TRUE;
         //$this->output->append_output($this->benchmark->memory_usage());
     }
 
@@ -168,7 +174,7 @@ class Core_secciones extends Informacion_docente {
         $data_post = $this->input->post(null, TRUE);
         $string_value = get_elementos_lenguaje(array(En_catalogo_textos::DATA_TABLE_SECCIONES_CONFIG));
         $id_docente = $data_sesion[En_datos_sesion::ID_DOCENTE]; //Obtiene el id del docente
-        $other['convocatoria'] = $data_sesion['convocatoria'];
+        $other['convocatoria'] =  $this->get_convocatoria_actual();//$data_sesion['convocatoria'];
         $other['registro_censo'] = $data_sesion['registro_censo'];
         $datos_actividad = $this->get_datos_actividad_docente_c($id_docente, $this->seccion, null,null, $other);
         $datos_actividad['id_validacion_registro'] = $this->get_estados_validacion_censo_c();        
