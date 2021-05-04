@@ -54,7 +54,8 @@ class Template {
             "blank" => null,
             'date_picker' => true,
             'notificaciones_estaticas' => null,
-            'finaliza_etapas' => null
+            'finaliza_etapas' => null,
+            'aviso_privacidad' => 0
         );
 
         $this->comprobante = null;
@@ -74,6 +75,10 @@ class Template {
         );
 
         $this->set_Boton_cancelar();
+    }
+
+    public function set_aviso_privacidad($bandera = 0){
+        $this->elements['aviso_privacidad'] = $bandera;
     }
 
     /**
@@ -288,6 +293,8 @@ class Template {
      */
 
     function getTemplate($tipo = FALSE, $tpl = 'tc_template/index.tpl.php') {
+        
+        //pr("El valor es: " . $this->elements['aviso_privacidad'] . " para " . $this->CI->uri->rsegment(1));
         if ($this->multiligual) {
             $this->CI->lang->load('interface', $this->lang);
             $this->elements["string_tpl"] = $this->CI->lang->line('interface_tpl');

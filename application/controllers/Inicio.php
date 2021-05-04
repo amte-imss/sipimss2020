@@ -78,6 +78,7 @@ class Inicio extends MY_Controller
                             $roles_clave[$values['clave_rol']] = $values; 
                         }
                         $die_sipimss['usuario']['niveles_acceso_cves'] = $roles_clave;
+                        
                         //** fin rol por claves  */                        
                         //$die_sipimss['usuario']['convocatoria'] = $this->sesion->get_info_convocatoria_censo();
                         $die_sipimss['usuario']['convocatoria'] = $this->get_convocatoria_actual();
@@ -89,6 +90,7 @@ class Inicio extends MY_Controller
                             $die_sipimss['usuario']['registro_censo'] = false;
                         }
                         //exit();
+                        $die_sipimss['aviso_privacidad'] = 1;
                         $this->session->set_userdata('die_sipimss', $die_sipimss);
                         // $this->valida_info_siap($die_sipimss['usuario']); //Esta linea se necesita en productivo y desarrollo en el imss
                         // $this->seguridad->token();//Genera un token
@@ -144,6 +146,10 @@ class Inicio extends MY_Controller
     public function inicio(){
         //pr($this->get_roles_usuario());
         $roles = $this->get_roles_usuario();
+        //Para controlar aviso de privacidad 
+        $tmp = $this->session->userdata('die_sipimss');
+        $tmp['aviso_privacidad'] = 1;
+        $this->session->set_userdata('die_sipimss', $tmp);
         //Para el inicio del rol. la tabla que configura es : sistema.inicio_rol_modulo
         //pr($roles);
         if(!is_null($roles)){
@@ -169,8 +175,12 @@ class Inicio extends MY_Controller
             $output['usuario'] = $this->get_datos_sesion();
             $output['modal_siap'] = $this->load->view('sesion/modal_siap.tpl.php', $output, true);
         }
+        //$this->session->set_userdata('die_sipimss', $die_sipimss);
+         
+        $this->template->set_aviso_privacidad(1);
         $this->template->setTitle('Inicio');
         $main_content = $this->load->view('sesion/index.tpl.php', $output, true);
+
         $this->template->setMainContent($main_content);
         $this->template->getTemplate();
     }

@@ -27,6 +27,7 @@
     var url = "<?php echo base_url(); ?>";
     var site_url = "<?php echo site_url(); ?>";
     var img_url_loader = "<?php echo base_url('assets/img/loader.gif'); ?>";
+    var aviso_privacidad = "<?php echo $aviso_privacidad; ?>";
     </script>
     <?php echo css('estilo_perfil.css'); ?>
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -287,6 +288,7 @@
 
     <div class="col-md-5">
         <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b><a href="http://educacionensalud.imss.gob.mx/?q=es/aviso-de-privacidad" target="_blank">Aviso de privacidad</a></b>        
         <br>
         <br>
         &copy; <a href="#" target="_blank">IMSS 2020</a>
@@ -356,6 +358,23 @@ $('#info_siap_modal').modal('show');
                 <a href="<?php echo site_url('convocatoriaV2/guardar_registro_finaliza_convocatoria_docente_censo/'); ?>" class="btn btn-primary">
                     Finalizar registro
                 </a>
+                <!-- <button type="submit" class="btn btn-primary" onclick="finalizar_censo(this)">Finalizar censo</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="aviso_privacidad" tabindex="-1" role="dialog" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header text-center"  style="padding:35px 50px;" > 
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 ><span class="glyphicon glyphicon-lock"></span >Aviso</h4>
+            </div>
+            <div class="modal-body" style="padding:40px 50px;">
+                <h4><p>Consulta el Aviso de privacidad de la Coordinaci&oacute;n de</p></h4>
+                <h4><p>Educaci&oacute;n en Salud en:</p></h4>                 
+                <br>
+                <h4><p><a href="http://educacionensalud.imss.gob.mx/?q=es/aviso-de-privacidad" >http://educacionensalud.imss.gob.mx/?q=es/aviso-de-privacidad</a></p></h4>
                 <!-- <button type="submit" class="btn btn-primary" onclick="finalizar_censo(this)">Finalizar censo</button>-->
             </div>
         </div>

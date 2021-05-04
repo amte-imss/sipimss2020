@@ -50,12 +50,22 @@ class MY_Controller extends CI_Controller {
             $data['finaliza_etapas'] = $this->boton_finaliza_etapa();
             //$data['finaliza_etapas'] = '';
             $this->template->set_finaliza_etapas_cierre($data['finaliza_etapas']);
+            
 
             // pr($data);
             $notificaciones = $this->load->view('notificaciones/estaticas_libres.tpl.php', $data, true);
              //pr($notificaciones);
             $this->template->set_notificaciones_estaticas($notificaciones);
             $this->carga_imagen();
+
+            /** control de aviso de privacidad */
+            if(isset($this->session->userdata('die_sipimss')['aviso_privacidad']) && $this->session->userdata('die_sipimss')['aviso_privacidad'] == 1){
+                //pr("El valor es: " . $this->session->userdata('die_sipimss')['aviso_privacidad'] . " para " . $this->uri->rsegment(1));
+                $this->template->set_aviso_privacidad(1);
+                $tmp = $this->session->userdata('die_sipimss');
+                $tmp['aviso_privacidad'] = 0;
+                $this->session->set_userdata('die_sipimss', $tmp);
+            }
             //pr($menu);
 //            $perfil = $this->load->view('tc_template/perfil.tpl.php', $usuario, true);
 //            $this->template->setPerfilUsuario($perfil);
