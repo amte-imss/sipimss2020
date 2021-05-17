@@ -239,7 +239,7 @@ class Docente_model extends MY_Model {
         $array_result = $result->result_array();
         //if(isset($parametros_docente['imprime'])){
 
-        //pr($this->db->last_query()); exit();
+        //pr($this->db->last_query()); //exit();
         //}
         
         if (!empty($array_result) && empty($parametros_docente)) {
@@ -266,6 +266,7 @@ class Docente_model extends MY_Model {
             "censo.estado_validacion_docente(doc.id_docente) id_status_validacion",//"est.nombre status_validacion",
             //"(select count(*) total_registros_censo from censo.censo cc where cc.id_docente = doc.id_docente) total_registros_censo",
             "(case when trc.total_registros_censo is null then 0 else trc.total_registros_censo end) total_registros_censo",
+            "(select concat(doc2.nombre,' ',doc2.apellido_p,' ',doc2.apellido_m) from sistema.control_registro_usuarios cru inner join censo.docente doc2 on cru.id_usuario_registra = doc2.id_usuario where id_usuario_registrado = doc.id_usuario ) usuario_registra"
             //"(select ratificado from validacion.ratificador rat where rat.id_docente = doc.id_docente and rat.id_convocatoria = ".$parametros_docente['convocatoria'].") ratificado"
         );
         

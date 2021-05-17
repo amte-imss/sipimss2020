@@ -214,7 +214,7 @@
             {
                 // pr ($menu);
                 //echo $menu;
-                echo render_menu($menu['lateral'], null, $menu['secciones']);
+                echo render_menu($menu['lateral'], null, $menu['secciones'], current_url(true));
             }
             ?>
 
