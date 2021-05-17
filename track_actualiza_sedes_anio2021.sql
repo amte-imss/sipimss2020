@@ -1,5 +1,5 @@
 --Funcion para actualizar unidades del censo
-
+BEGIN;
 CREATE OR REPLACE FUNCTION catalogo.actualizar_unidades_anio_actual(anio_referente int) RETURNS varchar
     LANGUAGE plpgsql
     AS $$

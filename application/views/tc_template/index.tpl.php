@@ -175,6 +175,10 @@
                                 target="_blank"/>
                             </a>
                         </li-->
+                        <li class="" style="list-style-type: none;">
+                            <a href="<?php echo site_url('inicio/cerrar_sesion'); ?>" id="tablero-menu-item-Mrs6sGg9ud" class="tablero-menu-item " style="color: #fff; background: #059d92; text-shadow: none; border-bottom: 1px solid #FFF; padding: 30px; margin-right: 25px; font-weight: bold; font-size: 14px;">
+                                <i class="dashboard"></i>Cerrar sesión</a>
+                        </li>
                         <li>
                             <!-- <a href="#"><img img-responsive class"logos" height="70px" src="assets/img/template_sipimss/ces.png" alt=""></a> -->
                             <a href="http://educacionensalud.imss.gob.mx">
