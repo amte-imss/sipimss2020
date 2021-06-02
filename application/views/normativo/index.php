@@ -9,6 +9,8 @@ if ( !is_null($result_delegacional) ){
             <td>'.$ooad['nombre'].'</td>
             <td>'.$ooad['total2'].'</td>
             <td>'.$ooad['total'].'</td>
+            <td>'.$ooad['total3'].'</td>
+            <td>'.$ooad['total4'].'</td>
         </tr>';
         $total_ooad += $ooad['total'];
         $total_ooad_r += $ooad['total2'];
@@ -25,6 +27,8 @@ if ( !is_null($result_umae) ){
             <td>'.$umae['nombre_unidad_principal'].'</td>
             <td>'.$umae['total2'].'</td>
             <td>'.$umae['total'].'</td>
+            <td>'.$umae['total3'].'</td>
+            <td>'.$umae['total4'].'</td>
         </tr>';
         $total_umae += $umae['total'];
         $total_umae_r    += $umae['total2'];
@@ -60,6 +64,8 @@ if ( !is_null($result_umae) ){
                                 <th>OOAD</th>
                                 <th># de docentes registrados</th>
                                 <th># de docentes en proceso de registro de información</th>
+                                <th># de docentes validados</th>
+                                <th># de docentes en proceso de validación</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,6 +80,8 @@ if ( !is_null($result_umae) ){
                                 <th>UMAE</th>
                                 <th># de docentes registrados</th>
                                 <th># de docentes en proceso de registro de información</th>
+                                <th># de docentes validados</th>
+                                <th># de docentes en proceso de validación</th>
                             </tr>
                         </thead>
                         <tbody>

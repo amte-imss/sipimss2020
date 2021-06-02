@@ -1049,5 +1049,16 @@ class Usuario_model extends MY_Model {
         return $respuesta;
     }
 
-
+    public function actualizar_aviso_privacidad($params = [])
+    {
+       $salida = array('result'=>false, 'msg'=>'Debe confirmar la lectura del aviso de privacidad.');
+       try {
+           $this->db->set('aviso_privacidad', ($params['aviso_privacidad'] == 1 ) ? true : false);
+           $this->db->where('id_docente', $params['id_docente']);
+           $this->db->update('censo.docente');
+           $salida = array('result'=>true, 'msg'=>'Gracias por su atención.');
+       } catch(Exception $ex){ }
+       $this->db->reset_query();
+       return $salida;
+    }    
 }

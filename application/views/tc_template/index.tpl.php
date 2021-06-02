@@ -27,7 +27,7 @@
     var url = "<?php echo base_url(); ?>";
     var site_url = "<?php echo site_url(); ?>";
     var img_url_loader = "<?php echo base_url('assets/img/loader.gif'); ?>";
-    var aviso_privacidad = "<?php echo $aviso_privacidad; ?>";
+    //var aviso_privacidad = "<?php //echo $aviso_privacidad; ?>";
     </script>
     <?php echo css('estilo_perfil.css'); ?>
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
@@ -176,7 +176,7 @@
                             </a>
                         </li-->
                         <li class="" style="list-style-type: none;">
-                            <a href="<?php echo site_url('inicio/cerrar_sesion'); ?>" id="tablero-menu-item-Mrs6sGg9ud" class="tablero-menu-item " style="color: #fff; background: #059d92; text-shadow: none; border-bottom: 1px solid #FFF; padding: 30px; margin-right: 25px; font-weight: bold; font-size: 14px;">
+                            <a href="<?php echo site_url('inicio/cerrar_sesion'); ?>" id="tablero-menu-item-Mrs6sGg9ud" class="tablero-menu-item " style="color: #fff; background: #07cec0; text-shadow: none; border-bottom: 1px solid #FFF; padding: 30px; margin-right: 25px; font-weight: bold; font-size: 14px;">
                                 <i class="dashboard"></i>Cerrar sesión</a>
                         </li>
                         <li>
@@ -367,22 +367,56 @@ $('#info_siap_modal').modal('show');
         </div>
     </div>
 </div>
-<div class="modal fade" id="aviso_privacidad" tabindex="-1" role="dialog" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header text-center"  style="padding:35px 50px;" > 
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 ><span class="glyphicon glyphicon-lock"></span >Aviso</h4>
-            </div>
-            <div class="modal-body" style="padding:40px 50px;">
-                <h4><p>Consulta el Aviso de privacidad de la Coordinaci&oacute;n de</p></h4>
-                <h4><p>Educaci&oacute;n en Salud en:</p></h4>                 
-                <br>
-                <h4><p><a href="http://educacionensalud.imss.gob.mx/?q=es/aviso-de-privacidad" >http://educacionensalud.imss.gob.mx/?q=es/aviso-de-privacidad</a></p></h4>
-                <!-- <button type="submit" class="btn btn-primary" onclick="finalizar_censo(this)">Finalizar censo</button>-->
+<?php
+//pr($this->session->userdata('die_sipimss')['usuario']); exit();
+if(!$this->session->userdata('die_sipimss')['usuario']['aviso_privacidad']){
+    //pr($this->session->userdata('die_sipimss'));
+    ?>
+    <div class="modal fade" id="aviso_privacidad" tabindex="-1" role="dialog" style="display: none;" data-backdrop="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center"  style="padding:35px 50px;" > 
+                    <!--button type="button" class="close" data-dismiss="modal">&times;</button-->
+                    <h4 ><span class="glyphicon glyphicon-lock"></span >Aviso</h4>
+                </div>
+                <div class="modal-body" style="padding:40px 50px;">
+                    <h4><p>Consulta el Aviso de privacidad de la Coordinaci&oacute;n de</p></h4>
+                    <h4><p>Educaci&oacute;n en Salud en:</p></h4>                 
+                    <br>
+                    <h4><p><a href="http://educacionensalud.imss.gob.mx/?q=es/aviso-de-privacidad" target="_blank">http://educacionensalud.imss.gob.mx/?q=es/aviso-de-privacidad</a></p></h4>
+                    <br>
+                    <form id="form_aviso" name="form_aviso">
+                    <label><input type="checkbox" value="1" id="confirm_privacidad" name="confirm_privacidad"> Confirmo que he leído el aviso de privacidad.</label><br>
+                    <div class="text-center"><button type="submit" id="btn_confirm_privacidad" class="btn btn-primary" onclick="confirmar_aviso_privacidad();">Confirmar</button></div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <div id="resultado_aviso_privacidad"></div>
+    <script>
+    $(document).ready(function () {
+        //if (typeof aviso_privacidad !== 'undefined' && (aviso_privacidad == 1 || aviso_privacidad == "1")){
+            $("#aviso_privacidad").modal();
+            $("#btn_confirm_privacidad").attr('disabled', 'disabled').css('cursor', 'no-drop');
+            $("#confirm_privacidad").change(function() {
+                if(this.checked) {
+                    $("#btn_confirm_privacidad").removeAttr('disabled').css('cursor', 'pointer');
+                } else {
+                    $("#btn_confirm_privacidad").attr('disabled', 'disabled').css('cursor', 'no-drop');
+                }
+            });
+        //}
+    });
+    function confirmar_aviso_privacidad(){
+        $('#form_aviso').submit(function(event){
+            event.preventDefault();
+            data_ajax(site_url + '/inicio/confirmar_aviso_privacidad', '#form_aviso', '#resultado_aviso_privacidad', function(){
+                location.reload();
+            });
+        });
+    }
+    </script>
+<?php } ?>
 </body>
 </html>

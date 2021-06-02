@@ -63,6 +63,7 @@ class Inicio extends MY_Controller
                                 'F.id_categoria', 'F.nombre categoria', 'C.cve_tipo_contratacion',
                                 'docentes.curp', 'docentes.rfc', 'docentes.telefono_particular',
                                 'docentes.telefono_laboral', 'docentes.email', 'G.clave_delegacional', 'G.nombre delegacion',
+                                'docentes.aviso_privacidad'
                             )
                         );
                         $die_sipimss['usuario'] = $this->usuario->get_usuarios($params)[0];
@@ -90,7 +91,8 @@ class Inicio extends MY_Controller
                             $die_sipimss['usuario']['registro_censo'] = false;
                         }
                         //exit();
-                        $die_sipimss['aviso_privacidad'] = 1;
+                        //$die_sipimss['aviso_privacidad'] = 1;
+                        //pr($die_sipimss);
                         $this->session->set_userdata('die_sipimss', $die_sipimss);
                         // $this->valida_info_siap($die_sipimss['usuario']); //Esta linea se necesita en productivo y desarrollo en el imss
                         // $this->seguridad->token();//Genera un token
@@ -148,7 +150,7 @@ class Inicio extends MY_Controller
         $roles = $this->get_roles_usuario();
         //Para controlar aviso de privacidad 
         $tmp = $this->session->userdata('die_sipimss');
-        $tmp['aviso_privacidad'] = 1;
+        //$tmp['aviso_privacidad'] = 1;
         $this->session->set_userdata('die_sipimss', $tmp);
         //Para el inicio del rol. la tabla que configura es : sistema.inicio_rol_modulo
         //pr($roles);
@@ -359,6 +361,18 @@ class Inicio extends MY_Controller
     {
     
     
+    }
+
+    public function confirmar_aviso_privacidad(){
+        if ($this->input->is_ajax_request()) {
+            
+            $datos_sesion = $this->get_datos_sesion();
+            $output = $this->usuario->actualizar_aviso_privacidad(array('id_docente'=>$datos_sesion['id_docente'], 'aviso_privacidad'=>$this->input->post('confirm_privacidad')));
+            
+            $_SESSION['die_sipimss']['usuario']['aviso_privacidad'] = true;
+            
+            echo $output['msg'];
+        }
     }
 }
         

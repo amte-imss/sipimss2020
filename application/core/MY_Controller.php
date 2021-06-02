@@ -20,6 +20,7 @@ class MY_Controller extends CI_Controller {
 //        $usuario = $this->session->userdata('usuario');
         $usuario = $this->get_datos_sesion(En_datos_sesion::ID_USUARIO);
         //pr($usuario);
+        //exit();
         if (!is_null($usuario)) {
             $data['usuario'] = $this->get_datos_sesion();
             $this->load->model('Menu_model', 'menu');
@@ -70,7 +71,7 @@ class MY_Controller extends CI_Controller {
 //            $perfil = $this->load->view('tc_template/perfil.tpl.php', $usuario, true);
 //            $this->template->setPerfilUsuario($perfil);
         }
-
+        //pr($this->session->userdata('die_sipimss'));
         //$this->output->parse_exec_vars = TRUE;
 //        echo ' ';
         //$this->output->append_output($this->benchmark->memory_usage());

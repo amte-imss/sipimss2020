@@ -1,14 +1,3 @@
-$(document).ready(function () {
- //$('[data-toggle="tooltip"]').tooltip(); //Llamada a tooltip
- //alert("Saludos");
-    //console.log("aviso_privacidad");
-    //console.log(aviso_privacidad);
-    if (typeof aviso_privacidad !== 'undefined' && (aviso_privacidad == 1 || aviso_privacidad == "1")){
-        $("#aviso_privacidad").modal();
-    
-    }
- });
-
 /**
  *	Método que muestra una imagen (gif animado) que indica que algo esta cargando
  *	@return	string	Contenedor e imagen del cargador.

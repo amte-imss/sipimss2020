@@ -141,7 +141,7 @@ class Reporte_model extends MY_Model {
         }
         $resultado = $this->db->get('censo.historico_datos_docente dd');
         
-      //pr($this->db->last_query());
+        //pr($this->db->last_query()); exit;
         return $resultado->result_array();
     }
 
@@ -180,5 +180,36 @@ class Reporte_model extends MY_Model {
         return $resultado->result_array();
     }
 
-    
+    /*
+     * @author LEAS
+     * @fecha 18/05/2021
+     * @return type catálogo de las delegaciones
+     */
+    public function reporte_formacion_docente() {
+        $this->db->select(array("dd.id_departamento_instituto", "di.clave_departamental", 
+            "concat(di.nombre,' (',di.clave_departamental,')' ) departamento", "u.id_unidad_instituto", "u.clave_unidad", 
+            "u.nombre nom_unidad", "u.nivel_atencion", "u.id_tipo_unidad",  
+            "d.clave_delegacional", "concat(d.nombre,' (',d.clave_delegacional,')' ) delegacion", "cc.clave_categoria", 
+            "concat(cc.nombre, ' (', cc.clave_categoria, ')') categoria", "doc.id_docente", "doc.matricula", "doc.curp", 
+            "doc.email", "concat(doc.nombre, ' ', doc.apellido_p, ' ', doc.apellido_m) nombre_docente", "doc.telefono_laboral", "doc.telefono_particular", 
+            "case when u.umae = true or u.grupo_tipo_unidad in ('UMAE','CUMAE') then u.nombre_unidad_principal else null end umae", 
+            "censo.estado_validacion_docente(doc.id_docente) id_status_validacion", "t1.*"
+            ));
+        
+        $this->db->join('censo.docente doc', 'doc.id_docente = dd.id_docente', 'inner');
+        $this->db->join('catalogo.departamentos_instituto di', 'di.id_departamento_instituto = dd.id_departamento_instituto', 'inner');
+        $this->db->join('catalogo.categorias cc', 'cc.id_categoria = dd.id_categoria', 'left');
+        $this->db->join('catalogo.unidades_instituto u', 'u.clave_unidad = di.clave_unidad and u.anio = (select max(un.anio) from catalogo.unidades_instituto un )', 'inner');
+        $this->db->join('catalogo.delegaciones d', 'd.id_delegacion = u.id_delegacion', 'inner');
+        $this->db->join('sistema.usuario_rol urol', 'urol.id_usuario = doc.id_usuario and urol.activo', 'inner');
+        $this->db->join('sistema.roles rol', 'rol.clave_rol = urol.clave_rol', 'inner');
+        $this->db->join('censo.total_registros_censo_docente as t1', 't1.id_docente = doc.id_docente', 'left');
+
+        $this->db->where("dd.actual = 1 AND rol.clave_rol = 'DOCENTE'");
+        //$this->db->limit(50);
+        
+        $resultado = $this->db->get('censo.historico_datos_docente dd');
+        //pr($this->db->last_query());
+        return $resultado->result_array();
+    }
 }
