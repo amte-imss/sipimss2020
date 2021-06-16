@@ -65,19 +65,30 @@ class Censo extends Validacion {
                 //$resultado['D'][$data['delegacion']]['datos'][] = $data;
                 $resultado['D'][$data['delegacion']]['total'] = (!isset($resultado['D'][$data['delegacion']]['total'])) ? 1 : $resultado['D'][$data['delegacion']]['total'] + 1;
                 $resultado['D'][$data['delegacion']]['cumplen'] = (!isset($resultado['D'][$data['delegacion']]['cumplen'])) ? (($data['cumplimiento'] > 0) ? 1 : 0) : $resultado['D'][$data['delegacion']]['cumplen'] + $data['cumplimiento'];
+                $resultado['D'][$data['delegacion']]['curso_corto_educacion_cumple'] = (!isset($resultado['D'][$data['delegacion']]['curso_corto_educacion_cumple'])) ? (($data['curso_corto_educacion_cumple'] > 0) ? 1 : 0) : $resultado['D'][$data['delegacion']]['curso_corto_educacion_cumple'] + $data['curso_corto_educacion_cumple'];
+                $resultado['D'][$data['delegacion']]['diplomado_educacion_cumple'] = (!isset($resultado['D'][$data['delegacion']]['diplomado_educacion_cumple'])) ? (($data['diplomado_educacion_cumple'] > 0) ? 1 : 0) : $resultado['D'][$data['delegacion']]['diplomado_educacion_cumple'] + $data['diplomado_educacion_cumple'];
+                $resultado['D'][$data['delegacion']]['especialidad_educacion_cumple'] = (!isset($resultado['D'][$data['delegacion']]['especialidad_educacion_cumple'])) ? (($data['especialidad_educacion_cumple'] > 0) ? 1 : 0) : $resultado['D'][$data['delegacion']]['especialidad_educacion_cumple'] + $data['especialidad_educacion_cumple'];
+                $resultado['D'][$data['delegacion']]['maestria_educacion_cumple'] = (!isset($resultado['D'][$data['delegacion']]['maestria_educacion_cumple'])) ? (($data['maestria_educacion_cumple'] > 0) ? 1 : 0) : $resultado['D'][$data['delegacion']]['maestria_educacion_cumple'] + $data['maestria_educacion_cumple'];
+                $resultado['D'][$data['delegacion']]['doctorado_educacion_cumple'] = (!isset($resultado['D'][$data['delegacion']]['doctorado_educacion_cumple'])) ? (($data['doctorado_educacion_cumple'] > 0) ? 1 : 0) : $resultado['D'][$data['delegacion']]['doctorado_educacion_cumple'] + $data['doctorado_educacion_cumple'];
             } else {
                 //$resultado['U'][$data['umae']]['datos'][] = $data;
                 //pr($data);
                 $resultado['U'][$data['umae']]['total'] = (!isset($resultado['U'][$data['umae']]['total'])) ? 1 : $resultado['U'][$data['umae']]['total'] + 1;
                 $resultado['U'][$data['umae']]['cumplen'] = (!isset($resultado['U'][$data['umae']]['cumplen'])) ? (($data['cumplimiento'] > 0) ? 1 : 0) : $resultado['U'][$data['umae']]['cumplen'] + $data['cumplimiento'];
+                $resultado['U'][$data['umae']]['curso_corto_educacion_cumple'] = (!isset($resultado['U'][$data['umae']]['curso_corto_educacion_cumple'])) ? (($data['curso_corto_educacion_cumple'] > 0) ? 1 : 0) : $resultado['U'][$data['umae']]['curso_corto_educacion_cumple'] + $data['curso_corto_educacion_cumple'];
+                $resultado['U'][$data['umae']]['diplomado_educacion_cumple'] = (!isset($resultado['U'][$data['umae']]['diplomado_educacion_cumple'])) ? (($data['diplomado_educacion_cumple'] > 0) ? 1 : 0) : $resultado['U'][$data['umae']]['diplomado_educacion_cumple'] + $data['diplomado_educacion_cumple'];
+                $resultado['U'][$data['umae']]['especialidad_educacion_cumple'] = (!isset($resultado['U'][$data['umae']]['especialidad_educacion_cumple'])) ? (($data['especialidad_educacion_cumple'] > 0) ? 1 : 0) : $resultado['U'][$data['umae']]['especialidad_educacion_cumple'] + $data['especialidad_educacion_cumple'];
+                $resultado['U'][$data['umae']]['maestria_educacion_cumple'] = (!isset($resultado['U'][$data['umae']]['maestria_educacion_cumple'])) ? (($data['maestria_educacion_cumple'] > 0) ? 1 : 0) : $resultado['U'][$data['umae']]['maestria_educacion_cumple'] + $data['maestria_educacion_cumple'];
+                $resultado['U'][$data['umae']]['doctorado_educacion_cumple'] = (!isset($resultado['U'][$data['umae']]['doctorado_educacion_cumple'])) ? (($data['doctorado_educacion_cumple'] > 0) ? 1 : 0) : $resultado['U'][$data['umae']]['doctorado_educacion_cumple'] + $data['doctorado_educacion_cumple'];
             }
             array_push($js, array('matricula' => $data['matricula'], "nombre_docente" => $data['nombre_docente'], "curp" => $data['curp'], 
                     "email" => $data['email'], "delegacion" => $data['delegacion'], "clave_unidad" => $data['clave_unidad'],
                     "nom_unidad" => $data['nom_unidad'], "umae" => $data['umae'], "clave_departamental" => $data['clave_departamental'],
                     "departamento" => $data['departamento'], "clave_categoria" => $data['clave_categoria'], "categoria" => $data['categoria'],
-                    "diplomado_educacion" => $data['diplomado_educacion'],
+                    "curso_corto_educacion" => $data['curso_corto_educacion'],"diplomado_educacion" => $data['diplomado_educacion'],
                     "especialidad_educacion" => $data['especialidad_educacion'], "maestria_educacion" => $data['maestria_educacion'],
-                    "doctorado_educacion" => $data['doctorado_educacion'], "diplomado_educacion_cumple" => $data['diplomado_educacion_cumple'],
+                    "doctorado_educacion" => $data['doctorado_educacion'], "curso_corto_educacion_cumple" => $data['curso_corto_educacion_cumple'], 
+                    "diplomado_educacion_cumple" => $data['diplomado_educacion_cumple'],
                     "especialidad_educacion_cumple" => $data['especialidad_educacion_cumple'], 
                     "maestria_educacion_cumple" => $data['maestria_educacion_cumple'],
                     "doctorado_educacion_cumple" => $data['doctorado_educacion_cumple'],

@@ -16,7 +16,17 @@ function get_html($data_docentes){
             $html .= '<tr>
                 <td>'.$key.'</td>
                 <td>'.$data_docente['total'].'</td>
+                <td>'.$data_docente['curso_corto_educacion_cumple'].'</td>
+                <td>'.$data_docente['diplomado_educacion_cumple'].'</td>
+                <td>'.$data_docente['especialidad_educacion_cumple'].'</td>
+                <td>'.$data_docente['maestria_educacion_cumple'].'</td>
+                <td>'.$data_docente['doctorado_educacion_cumple'].'</td>
                 <td>'.$data_docente['cumplen'].'</td>
+                <td>'.(($data_docente['total']>0) ? number_format($data_docente['curso_corto_educacion_cumple']/$data_docente['total']*100, 2) : 0).' %</td>
+                <td>'.(($data_docente['total']>0) ? number_format($data_docente['diplomado_educacion_cumple']/$data_docente['total']*100, 2) : 0).' %</td>
+                <td>'.(($data_docente['total']>0) ? number_format($data_docente['especialidad_educacion_cumple']/$data_docente['total']*100, 2) : 0).' %</td>
+                <td>'.(($data_docente['total']>0) ? number_format($data_docente['maestria_educacion_cumple']/$data_docente['total']*100, 2) : 0).' %</td>
+                <td>'.(($data_docente['total']>0) ? number_format($data_docente['doctorado_educacion_cumple']/$data_docente['total']*100, 2) : 0).' %</td>
                 <td>'.(($data_docente['total']>0) ? number_format($data_docente['cumplen']/$data_docente['total']*100, 2) : 0).' %</td>
             </tr>';
         }
@@ -33,18 +43,28 @@ function get_html($data_docentes){
     <div class="list-group-item">
         <div class="panel-body">
             <h2>Reporte de formación docente</h2>
-            <!--div class="col-md-12 col-sm-12 text-left">
+            <div class="col-md-12 col-sm-12 text-right">
                 <button id="ver_detalle" type="button" class="btn btn-tpl" onclick="funcion_ver_detalle(this);">Ver detalle</button>               
-            </div-->
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
+            </div>
+            <div class="row" id="main_content_total">
+                <div class="col-lg-12 col-md-12">
                     <table class="table table-striped">
                         <thead class="thead-light">
                             <tr>
                                 <th>OOAD</th>
                                 <th>Número de docentes registrados</th>
+                                <th>Número de docentes que cumplen con Curso corto</th>
+                                <th>Número de docentes que cumplen con Diplomado</th>                                
+                                <th>Número de docentes que cumplen con Especialidad</th>
+                                <th>Número de docentes que cumplen con Maestría</th>
+                                <th>Número de docentes que cumplen con Doctorado</th>
                                 <th>Número de docentes que cumplen</th>
-                                <th>Porcentaje</th>
+                                <th>% acumulado de capacitación docente con Curso corto</th>
+                                <th>% acumulado de capacitación docente con Diplomado</th>
+                                <th>% acumulado de capacitación docente con Especialidad</th>
+                                <th>% acumulado de capacitación docente con Maestría</th>
+                                <th>% acumulado de capacitación docente con Doctorado</th>
+                                <th>% acumulado de docentes que cumplen</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,14 +72,24 @@ function get_html($data_docentes){
                         </tbody>
                     </table>
                 </div>
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-12 col-md-12">
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
                                 <th>UMAE</th>
                                 <th>Número de docentes registrados</th>
+                                <th>Número de docentes que cumplen con Curso corto</th>
+                                <th>Número de docentes que cumplen con Diplomado</th>
+                                <th>Número de docentes que cumplen con Especialidad</th>
+                                <th>Número de docentes que cumplen con Maestría</th>
+                                <th>Número de docentes que cumplen con Doctorado</th>
                                 <th>Número de docentes que cumplen</th>
-                                <th>Porcentaje</th>
+                                <th>% acumulado de capacitación docente con Curso corto</th>
+                                <th>% acumulado de capacitación docente con Diplomado</th>
+                                <th>% acumulado de capacitación docente con Especialidad</th>
+                                <th>% acumulado de capacitación docente con Maestría</th>
+                                <th>% acumulado de capacitación docente con Doctorado</th>
+                                <th>% acumulado de docentes que cumplen</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,7 +99,7 @@ function get_html($data_docentes){
                 </div>
             </div>
             <br>
-            <div id="main_content_detail" class="">
+            <div id="main_content_detail" style="display:none;">
                 <div id="page-inner">
                     <h2>Detallado</h2>
                     <div class="col-md-12 col-sm-12">
@@ -121,10 +151,12 @@ function get_html($data_docentes){
             { name: "departamento", title: "Departamento", type: "text" },
             { name: "clave_categoria", title: "Clave categoría", type: "text" },
             { name: "categoria", title: "Categoría", type: "text" },
+            { name: "curso_corto_educacion", title: "# de cursos cortos en educación", type: "text" },
             { name: "diplomado_educacion", title: "# de diplomados en educación", type: "text" },
             { name: "especialidad_educacion", title: "# de especialidades en educación", type: "text" },
             { name: "maestria_educacion", title: "# de maestrías en educación", type: "text" },
             { name: "doctorado_educacion", title: "# de doctorados en educación", type: "text" },
+            { name: "curso_corto_educacion_cumple", title: "Tiene curso corto", type: "checkbox", sorting: false },
             { name: "diplomado_educacion_cumple", title: "Tiene diplomado", type: "checkbox", sorting: false },
             { name: "especialidad_educacion_cumple", title: "Tiene especialidad", type: "checkbox", sorting: false },
             { name: "maestria_educacion_cumple", title: "Tiene maestría", type: "checkbox", sorting: false },
@@ -134,6 +166,11 @@ function get_html($data_docentes){
         ]
     });
 }());
+function funcion_ver_detalle(){
+    $("#main_content_total").fadeToggle();
+    $("#main_content_detail").fadeToggle();
+}
+
 function exportar_reporte(element) {
     var namegrid = $(element).data('namegrid');
     var headers = remove_headers(obtener_cabeceras(), cabeceras_no_exportar());
@@ -154,10 +191,12 @@ function obtener_cabeceras() {
         departamento: "Departamento",
         clave_categoria: "Clave categoría",
         categoria: "Categoría",
+        curso_corto_educacion: "# de cursos cortos en educación",
         diplomado_educacion: "# de diplomados en educación",
         especialidad_educacion: "# de especialidades en educación",
         maestria_educacion: "# de maestrías en educación",
         doctorado_educacion: "# de doctorados en educación",
+        curso_corto_educacion_cumple: "Tiene curso corto",
         diplomado_educacion_cumple: "Tiene diplomado",
         especialidad_educacion_cumple: "Tiene especialidad",
         maestria_educacion_cumple: "Tiene maestría",

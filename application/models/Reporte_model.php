@@ -206,7 +206,7 @@ class Reporte_model extends MY_Model {
         $this->db->join('censo.total_registros_censo_docente as t1', 't1.id_docente = doc.id_docente', 'left');
 
         $this->db->where("dd.actual = 1 AND rol.clave_rol = 'DOCENTE'");
-        //$this->db->limit(50);
+        //$this->db->limit(150);
         
         $resultado = $this->db->get('censo.historico_datos_docente dd');
         //pr($this->db->last_query());
