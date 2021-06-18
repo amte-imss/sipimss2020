@@ -37,7 +37,8 @@ begin
 	RETURN -1;--no encontro convocatoria alguna	
 END;
 $$;
-
+--Agregar columna a la tabla docente
+ALTER TABLE censo.docente ADD aviso_privacidad bool NULL;
 --Permisos aviso de privacidad
 insert into sistema.modulos (clave_modulo, nombre, url, activo, modulo_padre_clave, orden, clave_configurador_modulo) values ('INI_AVISOPRIVA', 'Confirma aviso de privacidad', '/inicio/confirmar_aviso_privacidad', true, 'INDEX', 4, 'ACCION');
 insert into sistema.roles_modulos (clave_modulo, clave_rol, activo) values ('INI_AVISOPRIVA', 'DOCENTE',true);
