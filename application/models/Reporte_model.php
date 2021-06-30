@@ -96,7 +96,7 @@ class Reporte_model extends MY_Model {
 
         );
         
-        $this->db->select($select);
+        
         
         //Join
         $this->db->join('censo.docente doc', 'doc.id_docente = dd.id_docente', 'inner');
@@ -131,14 +131,22 @@ class Reporte_model extends MY_Model {
             }else{
                 return [];//Retorna vacio el modulo
             }
-
+            
         }
+        
+        if($filtros['reporte_docentes_pregrado'] == 1){
+            $this->db->where("(servicio_social > 0 or internado_medico > 0 or pregrado > 0)", null);
+            //$this->db->where("(servicio_social > 0 or internado_medico > 0)", null);
+        }
+        
 
         if (isset($filtros['filtros']) && !is_null($filtros['filtros']) && !empty($filtros['filtros'])) {
             foreach ($filtros as $key => $value) {
                 $this->db->where($key, $value);
             }
         }
+
+        $this->db->select($select);
         $resultado = $this->db->get('censo.historico_datos_docente dd');
         
         //pr($this->db->last_query()); exit;

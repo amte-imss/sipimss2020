@@ -331,6 +331,7 @@ class Validacion extends Informacion_docente {
             exit();
         }
     }
+    
     public function listado_docentes(){
         $datos_sesion = $this->get_datos_sesion();
         $rol_aplica = $this->get_rol_aplica($datos_sesion);
@@ -426,7 +427,7 @@ class Validacion extends Informacion_docente {
         $claves_rol = $this->get_roles_usuario(2);
         $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente, 'bloquea_delegacion' => 0, 
         'is_entidad_designada' => false,'aplica_bandera_separarV1_v2' => 0, 'editar_reg_doc_nuevamente' => 0 , 'btn_activar_registro_docentes_masivo' => 0,
-        'cambiar_validadorN1'=>0
+        'cambiar_validadorN1'=>0, 'reporte_docentes_pregrado'=>0
         ];
         $conf['rol_docente']=LNiveles_acceso::Docente;
         $conf['convocatoria'] = $datos_sesion['convocatoria']['id_convocatoria'];
@@ -435,6 +436,7 @@ class Validacion extends Informacion_docente {
             $conf['rol_aplica'] = LNiveles_acceso::Normativo;
             $conf['roles_filtro'] = [LNiveles_acceso::Normativo];
             $conf['reporte_docentes'] = 1;
+            $conf['reporte_docentes_pregrado'] = 1;
             $conf['editar_reg_doc_nuevamente'] = 1;
             $conf['btn_activar_registro_docentes_masivo'] = 1;
             if(!is_null($data_post) && !empty($data_post['clave_delegacional'])){
