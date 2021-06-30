@@ -106,7 +106,7 @@ class Censo extends Validacion {
         //$datos_sesion = $this->get_datos_sesion();
         //$datos_rol = $this->get_rol_aplica($datos_sesion); 
         //pr($datos_rol);
-
+        //pr($this->uri->rsegment(2));
         $this->template->setTitle('Listado de docentes pregrado');
         $output['title'] = 'Listado de docentes pregrado';
         $output['exportar_title'] = 'Exportar';

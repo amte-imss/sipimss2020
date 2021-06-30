@@ -47,7 +47,7 @@ function reporte_docentes(){
 
               $.ajax({
                   type: "POST",
-                  url: site_url + url_ctr + "/datos_reporte/",
+                  url: site_url + url_ctr + "/datos_reporte_pregrado/",
                   data: filter,
                   dataType: "json"
               }).done(function (result) {
@@ -85,8 +85,8 @@ function reporte_docentes(){
             {name: 'categoria', title: "Categoría", type: "text", visible:true},
             {name: 'id_docente', title: "ID docente", type: "text", visible:true},
             {name: 'matricula', title: "Matrícula", type: "text", visible:true},
-            {name: 'curp', title: "CURP", type: "text", visible:true, width:"150"},
-            {name: 'email', title: "Correo electrónico", type: "text", visible:true, width:"150"},
+            {name: 'curp', title: "CURP", type: "text", visible:true, width:"155"},
+            {name: 'email', title: "Correo electrónico", type: "text", visible:true, width:"170"},
             {name: 'nombre_docente', title: "Nombre docente", type: "text", visible:true, width:"200"},
             {name: 'telefono_laboral', title: "Teléfono laboral", type: "text", visible:true},
             {name: 'telefono_particular', title: "Teléfono particular", type: "text", visible:true},
@@ -115,7 +115,18 @@ function reporte_docentes(){
             {name:'especialidad_educacion', type: "text", title: "Especialidad en educación y afines", visible:true}, 
             {name:'maestria_educacion', type: "text", title: "Maestria en educación y afines", visible:true}, 
             {name:'doctorado_educacion', type: "text", title: "Doctorado en educación y afines", visible:true},
-            {name:'informacion_pregrado', type: "text", title: "Datos formulario", visible:true, width:"1200"},        
+            {name:'informacion_pregrado', type: "text", title: "Datos formulario pregrado", visible:true, width:"1200",
+            itemTemplate: function (value, item) {
+                //console.log(value);
+                if(value!==null){
+                    var rutas = "<p>" + value + "</p>";
+                    value = rutas.replaceAll("\\n","</p><p>");
+                    return value;
+                }
+                return "";
+                
+            }
+            },        
             //{name: 'id_elemento_catalogo_padre', title: 'Elemento padre', type: 'select', items: json_elementos_catalogo_padre, valueField: "id_elemento_catalogo", textField: "label"},
             //{name: 'id_elemento_catalogo_hijo', title: 'Elemento hijo', type: 'select', items: json_elementos_catalogo_hijo, valueField: "id_elemento_catalogo", textField: "label"},
             /*{type: "control", editButton: false, deleteButton: false, visible:true,
@@ -220,7 +231,7 @@ function obtener_cabeceras() {
         especialidad_educacion: 'Especialidad en educación y afines', 
         maestria_educacion: 'Maestría en educación y afines', 
         doctorado_educacion: 'Doctorado en educación y afines',
-        informacion_pregrado: 'Datos formulario'
+        informacion_pregrado: 'Datos formulario pregrado'
         
     }
 

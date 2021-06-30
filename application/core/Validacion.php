@@ -436,7 +436,11 @@ class Validacion extends Informacion_docente {
             $conf['rol_aplica'] = LNiveles_acceso::Normativo;
             $conf['roles_filtro'] = [LNiveles_acceso::Normativo];
             $conf['reporte_docentes'] = 1;
-            $conf['reporte_docentes_pregrado'] = 1;
+            
+            if($this->uri->rsegment(2)=='datos_reporte_pregrado'){
+                $conf['reporte_docentes_pregrado'] = 1;
+            }
+            
             $conf['editar_reg_doc_nuevamente'] = 1;
             $conf['btn_activar_registro_docentes_masivo'] = 1;
             if(!is_null($data_post) && !empty($data_post['clave_delegacional'])){
