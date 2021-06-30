@@ -51,7 +51,9 @@ class Censo extends Validacion {
     public function reporte_formacion_docente(){
         $this->template->setTitle('Reporte de formación docente');
         
-        $output['data_docentes'] = $this->format_data_formacion_docente($this->reporte->reporte_formacion_docente());
+        $datos_sesion = $this->get_datos_sesion();
+        $datos_rol = $this->get_rol_aplica($datos_sesion);
+        $output['data_docentes'] = $this->format_data_formacion_docente($this->reporte->reporte_formacion_docente($datos_rol));
 
         $main_content = $this->load->view('reporte/reporte_formacion_docente.tpl.php', $output, true);
         $this->template->setMainContent($main_content);
@@ -95,8 +97,12 @@ class Censo extends Validacion {
                     "cumplimiento" => $data["cumplimiento"])
                 );
         }
-        ksort($resultado['U']);
-        ksort($resultado['D']);
+        if(isset($resultado['U'])){
+            ksort($resultado['U']);
+        }
+        if(isset($resultado['D'])){
+            ksort($resultado['D']);
+        }
         $resultado['js'] = $js;
         //pr($resultado);
         return $resultado;

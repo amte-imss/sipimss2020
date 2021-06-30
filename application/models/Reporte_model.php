@@ -193,7 +193,7 @@ class Reporte_model extends MY_Model {
      * @fecha 18/05/2021
      * @return type catálogo de las delegaciones
      */
-    public function reporte_formacion_docente() {
+    public function reporte_formacion_docente($filtros = []) {
         $this->db->select(array("dd.id_departamento_instituto", "di.clave_departamental", 
             "concat(di.nombre,' (',di.clave_departamental,')' ) departamento", "u.id_unidad_instituto", "u.clave_unidad", 
             "u.nombre nom_unidad", "u.nivel_atencion", "u.id_tipo_unidad",  
@@ -214,6 +214,20 @@ class Reporte_model extends MY_Model {
         $this->db->join('censo.total_registros_censo_docente as t1', 't1.id_docente = doc.id_docente', 'left');
 
         $this->db->where("dd.actual = 1 AND rol.clave_rol = 'DOCENTE'");
+        
+        if($filtros['is_entidad_designada']){
+            if(isset($filtros['ooad']) && !empty($filtros['ooad']) && isset($filtros['umae']) && !empty($filtros['umae'])){
+                $this->db->where("(u.unidad_principal in (select upa.unidad_principal from sistema.usuario_umae usuuma join catalogo.unidades_instituto upa on usuuma.umae = upa.clave_unidad_principal where  id_usuario =  ". $filtros['umae_usuario']. " )
+                or (d.clave_delegacional in ( select ooad from sistema.usuario_ooad where id_usuario = " . $filtros['ooad_usuario'] ." ) and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null)) )", null);
+            }else if(isset($filtros['umae']) && !empty($filtros['umae'])){                
+                $this->db->where('u.unidad_principal in (select upa.unidad_principal from sistema.usuario_umae usuuma join catalogo.unidades_instituto upa on usuuma.umae = upa.clave_unidad_principal where  id_usuario =  '. $filtros['umae_usuario']. ' )', null);
+            }else if(isset($filtros['ooad']) && !empty($filtros['ooad'])){                            
+                $this->db->where("d.clave_delegacional in (select ooad from sistema.usuario_ooad where id_usuario = ". $filtros['ooad_usuario'] . ") and (u.umae <> true and u.grupo_tipo_unidad not in ('UMAE','CUMAE') or u.grupo_tipo_unidad is null)", null);                
+            }else{
+                return [];//Retorna vacio el modulo
+            }
+
+        }
         //$this->db->limit(150);
         
         $resultado = $this->db->get('censo.historico_datos_docente dd');

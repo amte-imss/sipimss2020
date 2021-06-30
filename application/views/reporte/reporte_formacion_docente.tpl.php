@@ -47,56 +47,61 @@ function get_html($data_docentes){
                 <button id="ver_detalle" type="button" class="btn btn-tpl" onclick="funcion_ver_detalle(this);">Ver detalle</button>               
             </div>
             <div class="row" id="main_content_total">
-                <div class="col-lg-12 col-md-12">
-                    <table class="table table-striped">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>OOAD</th>
-                                <th>Número de docentes registrados</th>
-                                <th>Número de docentes que cumplen con Curso corto</th>
-                                <th>Número de docentes que cumplen con Diplomado</th>                                
-                                <th>Número de docentes que cumplen con Especialidad</th>
-                                <th>Número de docentes que cumplen con Maestría</th>
-                                <th>Número de docentes que cumplen con Doctorado</th>
-                                <th>Número de docentes que cumplen</th>
-                                <th>% acumulado de capacitación docente con Curso corto</th>
-                                <th>% acumulado de capacitación docente con Diplomado</th>
-                                <th>% acumulado de capacitación docente con Especialidad</th>
-                                <th>% acumulado de capacitación docente con Maestría</th>
-                                <th>% acumulado de capacitación docente con Doctorado</th>
-                                <th>% acumulado de docentes que cumplen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php echo get_html($data_docentes['D']); ?>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-lg-12 col-md-12">
-                    <table class="table table-striped">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>UMAE</th>
-                                <th>Número de docentes registrados</th>
-                                <th>Número de docentes que cumplen con Curso corto</th>
-                                <th>Número de docentes que cumplen con Diplomado</th>
-                                <th>Número de docentes que cumplen con Especialidad</th>
-                                <th>Número de docentes que cumplen con Maestría</th>
-                                <th>Número de docentes que cumplen con Doctorado</th>
-                                <th>Número de docentes que cumplen</th>
-                                <th>% acumulado de capacitación docente con Curso corto</th>
-                                <th>% acumulado de capacitación docente con Diplomado</th>
-                                <th>% acumulado de capacitación docente con Especialidad</th>
-                                <th>% acumulado de capacitación docente con Maestría</th>
-                                <th>% acumulado de capacitación docente con Doctorado</th>
-                                <th>% acumulado de docentes que cumplen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php echo get_html($data_docentes['U']); ?>
-                        </tbody>
-                    </table>
-                </div>
+                <?php if(isset($data_docentes['D'])){ ?>
+                    <div class="col-lg-12 col-md-12">
+                        <table class="table table-striped">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>OOAD</th>
+                                    <th>Número de docentes registrados</th>
+                                    <th>Número de docentes que cumplen con Curso corto</th>
+                                    <th>Número de docentes que cumplen con Diplomado</th>                                
+                                    <th>Número de docentes que cumplen con Especialidad</th>
+                                    <th>Número de docentes que cumplen con Maestría</th>
+                                    <th>Número de docentes que cumplen con Doctorado</th>
+                                    <th>Número de docentes que cumplen</th>
+                                    <th>% acumulado de capacitación docente con Curso corto</th>
+                                    <th>% acumulado de capacitación docente con Diplomado</th>
+                                    <th>% acumulado de capacitación docente con Especialidad</th>
+                                    <th>% acumulado de capacitación docente con Maestría</th>
+                                    <th>% acumulado de capacitación docente con Doctorado</th>
+                                    <th>% acumulado de docentes que cumplen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php echo get_html($data_docentes['D']); ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php 
+                }
+                if(isset($data_docentes['U'])){ ?>
+                    <div class="col-lg-12 col-md-12">
+                        <table class="table table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>UMAE</th>
+                                    <th>Número de docentes registrados</th>
+                                    <th>Número de docentes que cumplen con Curso corto</th>
+                                    <th>Número de docentes que cumplen con Diplomado</th>
+                                    <th>Número de docentes que cumplen con Especialidad</th>
+                                    <th>Número de docentes que cumplen con Maestría</th>
+                                    <th>Número de docentes que cumplen con Doctorado</th>
+                                    <th>Número de docentes que cumplen</th>
+                                    <th>% acumulado de capacitación docente con Curso corto</th>
+                                    <th>% acumulado de capacitación docente con Diplomado</th>
+                                    <th>% acumulado de capacitación docente con Especialidad</th>
+                                    <th>% acumulado de capacitación docente con Maestría</th>
+                                    <th>% acumulado de capacitación docente con Doctorado</th>
+                                    <th>% acumulado de docentes que cumplen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php echo get_html($data_docentes['U']); ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php } ?>
             </div>
             <br>
             <div id="main_content_detail" style="display:none;">
