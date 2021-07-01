@@ -1,30 +1,32 @@
 BEGIN;
+SELECT setval('catalogo.elementos_catalogos_id_elemento_catalogo_seq', 3893);
 --crear catálogo de tipo promocion
 insert into catalogo.catalogo (nombre, descripcion, label,tipo) values ('tipo_promocion','Tipo de prooción para pregrado en los sub tipos de cursos', 'Tipo de promocón', 'elementos_catalogos');
 
 
 ---Tipos de cursos nuevos
-insert into catalogo.elementos_catalogos (id_elemento_catalogo,nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3793,'tipo_curso_7', 'Internado Médico', 15,'Internado Médico',null,1,1);
-insert into catalogo.elementos_catalogos (id_elemento_catalogo,nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3794,'tipo_curso_8', 'Servicio Social', 15,'Servicio Social',null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo,nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3893,'tipo_curso_7', 'Internado Médico', 15,'Internado Médico',null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo,nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3894,'tipo_curso_8', 'Servicio Social', 15,'Servicio Social',null,1,1);
 
 ---Cursos faltantes para servicio social
-insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3795,'curso_curso_140', 'Servicio social medicina', 61,'Servicio social medicina',null,1,1);
-insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3796,'curso_curso_141', 'Servicio social de carreras afines', 61,'Servicio social de carreras afines',null,1,1);
-insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3797,'curso_curso_142', 'QFB', 61,'QFB',null,1,1);
-insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3798,'curso_curso_143', 'QBP', 61,'QBP',null,1,1);
-insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3799,'curso_curso_144', 'Psicología Clínica', 61,'Psicología Clínica', null,1,1);
-insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3800,'curso_curso_145', 'Fisiatría', 61,'Fisiatría',null,1,1);
-insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3801,'curso_curso_146', 'Terapia física y rehabilitación', 61,'Terapia física y rehabilitación',null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3895,'curso_curso_140', 'Servicio social medicina', 61,'Servicio social medicina',null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3896,'curso_curso_141', 'Servicio social de carreras afines', 61,'Servicio social de carreras afines',null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3897,'curso_curso_142', 'QFB', 61,'QFB',null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3898,'curso_curso_143', 'QBP', 61,'QBP',null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3899,'curso_curso_144', 'Psicología Clínica', 61,'Psicología Clínica', null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3900,'curso_curso_145', 'Fisiatría', 61,'Fisiatría',null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3901,'curso_curso_146', 'Terapia física y rehabilitación', 61,'Terapia física y rehabilitación',null,1,1);
 
 --Crea elemetos de promocion
-insert into catalogo.elementos_catalogos (id_elemento_catalogo,nombre, descripcion, id_catalogo, tipo,label,orden, nivel) values (3802,'tipo_promocion_a', null, (select id_catalogo from catalogo.catalogo where nombre = 'tipo_promocion'), 1, 'PROMOCIÓN A', 1,1);
-insert into catalogo.elementos_catalogos (id_elemento_catalogo,nombre, descripcion, id_catalogo, tipo,label,orden, nivel) values (3803,'tipo_promocion_b', null, (select id_catalogo from catalogo.catalogo where nombre = 'tipo_promocion'), 1, 'PROMOCIÓN B', 1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo,nombre, descripcion, id_catalogo, tipo,label,orden, nivel) values (3902,'tipo_promocion_a', null, (select id_catalogo from catalogo.catalogo where nombre = 'tipo_promocion'), 1, 'PROMOCIÓN A', 1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo,nombre, descripcion, id_catalogo, tipo,label,orden, nivel) values (3903,'tipo_promocion_b', null, (select id_catalogo from catalogo.catalogo where nombre = 'tipo_promocion'), 1, 'PROMOCIÓN B', 1,1);
 
 
 
 ---Cursos faltantes para Internado Médico
-insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3804,'curso_curso_147', 'URGENCIAS', 61,'URGENCIAS',null,1,1);
+insert into catalogo.elementos_catalogos (id_elemento_catalogo, nombre, descripcion, id_catalogo,label,orden,tipo,nivel) values (3904,'curso_curso_147', 'URGENCIAS', 61,'URGENCIAS',null,1,1);
 
+SELECT setval('catalogo.elementos_catalogos_id_elemento_catalogo_seq', 3905);
 --Se crea la regla para control de sub tipo de curso
 insert into catalogo.reglas_dependencia_catalogos values ('TPC_STPC','Relación subtipo curso pregrado','Para controlar cursos de pregrado',15,61);
 
@@ -63,7 +65,7 @@ insert into catalogo.detalle_dependencias_catalogos values('TPC_STPC', (select i
 
 
 ---Cambia regla de catalogo del campo tipo de curso para el formulario 5
-update ui.campos_formulario set excepciones_opciones = '208,3793,3794', reglas_catalogos = 2 where id_campos_formulario = 18;
+update ui.campos_formulario set excepciones_opciones = '208,3893,3894', reglas_catalogos = 2 where id_campos_formulario = 18;
 
 
 --Agrega campos que se van a utilizar **************
@@ -81,7 +83,7 @@ INSERT INTO ui.campos_formulario
 --Subtipo de curso
 INSERT INTO ui.campos_formulario
 (id_formulario,id_campo,id_catalogo,orden,rules,id_callback,tooltip,placeholder,display,activo,css,excepciones_opciones,nueva_linea,attributes_extra,reglas_catalogos,regla_notificacion,mostrar_datatable,campos_dependientes,is_precarga,clave_regla_dependencia_catalogo,label_personalizado,is_linea_completa,grupo_informacion_campo) VALUES
-(5,(select id_campo from ui.campo where nombre in('sub_tipo_curso_preg')),(select id_catalogo from catalogo.catalogo where nombre = 'tipo_curso'),5,'{"field":"sub_tipo_curso_preg","label":"Sub tipo curso:","rules":"required"}',NULL,'','',false,true,'','3793,3794',false,'',1,'',false,'{"campos":["tipo_promocion_preg","curso_aux"],"elementos":{"tipo_promocion_preg":["3793","3794"],"curso_aux":["3793","3794"]}}',false,NULL,NULL,false,1);
+(5,(select id_campo from ui.campo where nombre in('sub_tipo_curso_preg')),(select id_catalogo from catalogo.catalogo where nombre = 'tipo_curso'),5,'{"field":"sub_tipo_curso_preg","label":"Sub tipo curso:","rules":"required"}',NULL,'','',false,true,'','3893,3894',false,'',1,'',false,'{"campos":["tipo_promocion_preg","curso_aux"],"elementos":{"tipo_promocion_preg":["3893","3894"],"curso_aux":["3893","3894"]}}',false,NULL,NULL,false,1);
 
 --tipo de promocion
 INSERT INTO ui.campos_formulario
@@ -220,7 +222,7 @@ SELECT "CC".id_docente,
             CASE
                 WHEN "CM".id_campo in(select id_campo from ui.campo where nombre in('sub_tipo_curso_preg')) THEN
                 CASE
-                    WHEN "ELCAT".id_elemento_catalogo IS NOT NULL AND "ELCAT".id_elemento_catalogo = 3794 THEN 1
+                    WHEN "ELCAT".id_elemento_catalogo IS NOT NULL AND "ELCAT".id_elemento_catalogo = 3894 THEN 1
                     ELSE NULL::integer
                 END
                 ELSE NULL::integer
@@ -232,8 +234,8 @@ SELECT "CC".id_docente,
             CASE
                 WHEN "CM".id_campo in(select id_campo from ui.campo where nombre in('sub_tipo_curso_preg')) THEN
                 CASE
-                    --WHEN "ELCAT".id_elemento_catalogo IS NOT NULL AND "ELCAT".id_elemento_catalogo in(3794,3793) then (select texto from censo.informacion_pregrado ip where ip.id_docente = "CC".id_docente and "CC".id_censo = ip.id_censo) 
-                    WHEN "ELCAT".id_elemento_catalogo IS NOT NULL AND "ELCAT".id_elemento_catalogo in(3794,3793) then (SELECT censo.informacion_pregrado_formulario("CC".id_docente,"CC".id_censo)) 
+                    --WHEN "ELCAT".id_elemento_catalogo IS NOT NULL AND "ELCAT".id_elemento_catalogo in(3894,3893) then (select texto from censo.informacion_pregrado ip where ip.id_docente = "CC".id_docente and "CC".id_censo = ip.id_censo) 
+                    WHEN "ELCAT".id_elemento_catalogo IS NOT NULL AND "ELCAT".id_elemento_catalogo in(3894,3893) then (SELECT censo.informacion_pregrado_formulario("CC".id_docente,"CC".id_censo)) 
 					ELSE NULL::varchar
                 END
                 ELSE NULL::varchar
@@ -245,7 +247,7 @@ SELECT "CC".id_docente,
             CASE
                 WHEN "CM".id_campo in(select id_campo from ui.campo where nombre in('sub_tipo_curso_preg')) THEN
                 CASE
-                    WHEN "ELCAT".id_elemento_catalogo IS NOT NULL AND "ELCAT".id_elemento_catalogo = 3793 THEN 1
+                    WHEN "ELCAT".id_elemento_catalogo IS NOT NULL AND "ELCAT".id_elemento_catalogo = 3893 THEN 1
                     ELSE NULL::integer
                 END
                 ELSE NULL::integer
