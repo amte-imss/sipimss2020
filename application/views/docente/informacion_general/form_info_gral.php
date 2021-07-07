@@ -473,6 +473,47 @@ $string_value = get_elementos_lenguaje(array(En_catalogo_textos::INFORMACION_GEN
         <div class="col-md-1">
         </div>
 
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="num_plaza" class="pull-right control-label">
+                    
+                        <?php echo "Número de plaza";?></label>
+                </div>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <span class="fa fa-book"> </span>
+                        </span>
+                        <?php
+                        echo $this->form_complete->create_element(
+                            array(
+                                'id' => 'num_plaza',
+                                'type' => 'textbox',
+                                'value' => $docente['num_plaza'],
+                                'attributes' => array(
+                                    'class' => 'form-control',
+                                    'title' => 'Número de plaza',
+                                )
+                            )
+                        );
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <?php echo form_error_format('num_plaza'); ?>
+        </div>
+        <div  class="col-md-5">
+            <div class="row">
+             
+            </div>
+            
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+
 
 
     </div><br>

@@ -440,6 +440,7 @@ class Docente_model extends MY_Model {
             'telefono_laboral' => $datos_docente['telefono_laboral'],
             //'id_estado_civil' => $datos_docente['estado_civil'],
             'email' => $datos_docente['email'],
+            'num_plaza' => $datos_docente['num_plaza'],
             'id_docente_carrera' => $datos_docente['fase_carrera_docente'],
             'email_personal' => $datos_docente['email_personal'],
             'ext_tel_laboral' => (strlen($datos_docente['ext_tel_laboral'])> 0)? $datos_docente['ext_tel_laboral'] : null
