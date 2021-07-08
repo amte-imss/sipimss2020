@@ -47,7 +47,7 @@ function reporte_docentes(){
 
               $.ajax({
                   type: "POST",
-                  url: site_url + url_ctr + "/datos_reporte_pregrado/",
+                  url: site_url + url_ctr + "/datos_reporte_enfermeria_tecnicos/",
                   data: filter,
                   dataType: "json"
               }).done(function (result) {
@@ -109,25 +109,25 @@ function reporte_docentes(){
             {name:'tecnicos', type: "text", title: "Técnicos", visible:true}, 
             {name:'educacion_continua', type: "text", title: "Educación continua", visible:true},
             {name:'pregrado', type: "text", title: "Pregrado", visible:true},
-            {name:'internado_medico', type: "text", title: "Internado médico", visible:true},
-            {name:'servicio_social', type: "text", title: "Servicio social", visible:true},
+            //{name:'internado_medico', type: "text", title: "Internado médico", visible:true},
+            //{name:'servicio_social', type: "text", title: "Servicio social", visible:true},
             {name:'educacion_distancia', type: "text", title: "Educación a distancia", visible:true},
             {name:'curso_corto_educacion', type: "text", title: "Curso corto en educación y afines", visible:true}, 
             {name:'diplomado_educacion', type: "text", title: "Diplomado en educación y afines", visible:true},            
             {name:'especialidad_educacion', type: "text", title: "Especialidad en educación y afines", visible:true}, 
             {name:'maestria_educacion', type: "text", title: "Maestria en educación y afines", visible:true}, 
             {name:'doctorado_educacion', type: "text", title: "Doctorado en educación y afines", visible:true},
-            {name:'informacion_pregrado', type: "text", title: "Datos formulario pregrado", visible:true, width:"1200",
-            itemTemplate: function (value, item) {
-                //console.log(value);
-                if(value!==null){
-                    var rutas = "<p>" + value + "</p>";
-                    value = rutas.replaceAll("\\n","</p><p>");
-                    return value;
+            {name:'informacion_enf_tec', type: "text", title: "Datos formulario enfermería y técnicos", visible:true, width:"1200",
+                itemTemplate: function (value, item) {
+                    //console.log(value);
+                    if(value!==null){
+                        var rutas = "<p>" + value + "</p>";
+                        value = rutas.replaceAll("\\n","</p><p>");
+                        return value;
+                    }
+                    return "";
+                    
                 }
-                return "";
-                
-            }
             },        
             //{name: 'id_elemento_catalogo_padre', title: 'Elemento padre', type: 'select', items: json_elementos_catalogo_padre, valueField: "id_elemento_catalogo", textField: "label"},
             //{name: 'id_elemento_catalogo_hijo', title: 'Elemento hijo', type: 'select', items: json_elementos_catalogo_hijo, valueField: "id_elemento_catalogo", textField: "label"},
@@ -227,15 +227,15 @@ function obtener_cabeceras() {
         tecnicos: 'Técnicos', 
         educacion_continua: 'Educación continua', 
         pregrado: 'Pregrado',
-        internado_medico:'Internado médico', 
-        servicio_social:'Servicio social', 
+        //internado_medico:'Internado médico', 
+        //servicio_social:'Servicio social', 
         educacion_distancia: 'Educación a distancia',
         curso_corto_educacion: 'Curso corto en educaci{on y afines', 
         diplomado_educacion: 'Diplomado en educación y afines', 
         especialidad_educacion: 'Especialidad en educación y afines', 
         maestria_educacion: 'Maestría en educación y afines', 
         doctorado_educacion: 'Doctorado en educación y afines',
-        informacion_pregrado: 'Datos formulario pregrado'
+        informacion_enf_tec: 'Datos formulario enfermería y técnicos'
         
     }
 

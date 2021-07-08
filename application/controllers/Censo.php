@@ -134,7 +134,7 @@ class Censo extends Validacion {
             $datos_rol = $this->get_rol_aplica($datos_sesion);            
             $output['docentes_reporte'] = [];
             //pr($datos_rol);
-            if($datos_rol['reporte_docentes'] == 1){
+            if($datos_rol['reporte_docentes_pregrado'] == 1){
                 $output = $this->reporte->docentes_reporte_general_censo($datos_rol);
             }
             header('Content-Type: application/json; charset=utf-8;');
@@ -168,7 +168,7 @@ class Censo extends Validacion {
             $datos_rol = $this->get_rol_aplica($datos_sesion);            
             $output['docentes_reporte'] = [];
             //pr($datos_rol);
-            if($datos_rol['reporte_docentes'] == 1){
+            if($datos_rol['reporte_docentes_enfermeria_tecnicos'] == 1){
                 $output = $this->reporte->docentes_reporte_general_censo($datos_rol);
             }
             header('Content-Type: application/json; charset=utf-8;');

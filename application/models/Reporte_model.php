@@ -139,8 +139,8 @@ class Reporte_model extends MY_Model {
             //$this->db->where("(servicio_social > 0 or internado_medico > 0)", null);
         }
         
-        if($filtros['reporte_docentes_pregrado'] == 1){
-            $this->db->where("(servicio_social > 0 or internado_medico > 0 or pregrado > 0)", null);
+        if($filtros['reporte_docentes_enfermeria_tecnicos'] == 1){
+            $this->db->where("(enfermeria_tecnicos > 0 or enfermeria > 0 or tecnicos > 0)", null);
             //$this->db->where("(servicio_social > 0 or internado_medico > 0)", null);
         }
         
