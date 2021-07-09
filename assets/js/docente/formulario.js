@@ -28,11 +28,14 @@ function actualiza_campos_dependientes(element, lanzar) {
     //console.log(componentType);
     if (typeof array_padres_dependientes !== 'undefined' && typeof array_padres_dependientes[element.name] !== 'undefined') {
         var configuracion = array_padres_dependientes[element.name];
+        //console.log('memoria_values');
+        //console.log(element.name +" -> " + objeto_this.val());
         //console.log(memoria_values);
         //console.log(configuracion);
+        //limpiar_memoria_values(configuracion);
         Object.keys(configuracion.campos).forEach(function (index) {
             var dependientes = configuracion.campos[index];
-            console.log("dependientes");
+            //console.log("dependientes");
             //console.log(dependientes);
             //console.log("Dependientes " + dependientes);
             //console.log("Configuracion " + configuracion.elementos[dependientes]);
@@ -48,18 +51,22 @@ function actualiza_campos_dependientes(element, lanzar) {
                     if (opciones.length > 0) {
                         //console.log(document.getElementById(dependientes).name);
                         var no_aplico_opciones = 1;
-                        for (var i = 0; i < opciones.length; i++) {
+                        for (var i = 0; i < opciones.length; i++) {//Recorre las opciones del combo y las compara para ver si es alguna de las que estan registradas para mover un campo
                             if (objeto_this.val().toString() === opciones[i].toString()) {//
                                 //console.log(objeto_this.val().toString()  + " -> " + opciones[i].toString())
+                                //console.log("Entro al recorrido por opciones:");
                                 control_dependientes(dependientes, objeto_this.data('catalogo'), objeto_this.val(), 1,lanzar);//Ejecuta cambio en el control
+                                memoria_values[dependientes] = "";//Limpia la memoria de datos del campo despues de asignar el valor
                                 no_aplico_opciones = 0;
                                 break;//Sale del ciclo
                             }
                         }
                         if (no_aplico_opciones == 1) {
-                            control_dependientes(dependientes, objeto_this.data('catalogo'), objeto_this.val(), 2,lanzar);//Ejecuta cambio en el control
+                            //console.log("No aplica opciones");
+                            control_dependientes(dependientes, objeto_this.data('catalogo'), objeto_this.val().toString(), 2,lanzar);//Ejecuta cambio en el control
                         }
                     } else {
+                        //console.log("No cuenta con opciones");
                         control_dependientes(dependientes, objeto_this.data('catalogo'), objeto_this.val(), 2,lanzar);//Ejecuta cambio en el control
                     }
                 } else {//No existe dependencia  y ejecuta la acción
@@ -112,16 +119,16 @@ function control_dependientes(nombre_elemento_dependiente, catalogo_padre, value
             break;
             case 2: //Es dependiente pero no aplica al valor actual
             
-            div_control.css("display", display);
-            div_control.toggle("slow");//Evento, forma de salida
-            if(tipo_componente.toString()==="checkbox" ){//Aplica
-                if(typeof lanzar === 'undefined'){//Aplica solo cuando el usuario es el que selecciona
-                    elemento_dependiente_ById.checked = false;
-                    elemento_dependiente_ById.onclick();                            
-                }                
-            }else{
-                elemento_dependiente.val("");
-            }
+                div_control.css("display", display);
+                div_control.toggle("slow");//Evento, forma de salida
+                if(tipo_componente.toString()==="checkbox" ){//Aplica
+                    if(typeof lanzar === 'undefined'){//Aplica solo cuando el usuario es el que selecciona
+                        elemento_dependiente_ById.checked = false;
+                        elemento_dependiente_ById.onclick();                            
+                    }                
+                }else{
+                    elemento_dependiente.val("");
+                }
             break;
             default ://cualquier opción
             div_control.css("display", "none");
@@ -133,9 +140,15 @@ function control_dependientes(nombre_elemento_dependiente, catalogo_padre, value
             if (regla_catalogo !== 'undefined' && regla_catalogo != null && regla_catalogo.toString() != "") {
                 //console.log(regla_catalogo);
                 //console.log('cargando elementos');
+                if(typeof lanzar !== 'undefined' && lanzar == false){//Para validar si es necesario poner ajax de modo sincrono 
+                    $.ajaxSetup({async: false});  
+                }
                 carga_hijos_elemento_catalogo(catalogo_padre, value_padre, nombre_elemento_dependiente, elemento_dependiente.data("ruta"), memoria_values[nombre_elemento_dependiente], regla_catalogo, catalogo_hijo);
+                $.ajaxSetup({async: true});  
             }
         }
 //
     }
 }
+
+
