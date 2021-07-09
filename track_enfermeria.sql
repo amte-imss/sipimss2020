@@ -218,7 +218,7 @@ begin
 				 LEFT JOIN ui.tipo_dato_campos "TDC" ON "TDC".id_tipo_dato = "CM".id_tipo_dato
 				 LEFT JOIN ui.tipo_campo "TC" ON "TC".id_tipo_campo = "CM".id_tipo_campo
 				 LEFT JOIN catalogo.elementos_catalogos "ELCAT" ON "ELCAT".id_catalogo = "CT".id_catalogo AND "ELCAT".id_elemento_catalogo::text = "CIF".valor
-				 where "F".id_formulario = 5 and "CIF".valor != 'NULL' and id_docente = 2112
+				 where "F".id_formulario = 5 and "CIF".valor != 'NULL' --and id_docente = 2112
 			--  	 GROUP BY "CC".id_docente, "CC".id_censo, "CF".orden, "CM".label
 				 order by "CC".id_docente, "CC".id_censo, "CF".orden
 			  ) as pregado_info
