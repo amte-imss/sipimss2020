@@ -58,6 +58,8 @@ function reporte_docentes(){
                               itemsCount: result.datos_docentes.length,
                           });*/
                           var res = $.grep(result.docentes_reporte, function (registro) {
+                            registro.enfermeria_tecnicos = (Number.parseInt(registro.enfermeria_tecnicos) + Number.parseInt(registro.enfermeria) + Number.parseInt(registro.tecnicos));
+                            registro.pregrado = (Number.parseInt(registro.pregrado) + Number.parseInt(registro.internado_medico) + Number.parseInt(registro.servicio_social));
                             registro.status_validacion = get_status(registro.id_status_validacion);
                             return true;
                             /*return (!filter.clave_delegacional || (registro.clave_delegacional != null && (registro.clave_delegacional == filter.clave_delegacional)))
