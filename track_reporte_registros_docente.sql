@@ -68,7 +68,6 @@ CREATE OR REPLACE FUNCTION censo.estado_validacion_docente(id_docente_ bigint) R
 	declare aux_row_conv RECORD;
   declare id_validacion_rat integer;
 begin
-
 	if id_docente_ is not null then--
 		FOR aux_row_conv IN 
 			select id_convocatoria, nombre, clave, id_tipo_convocatoria from convocatoria.convocatorias where activa
@@ -97,7 +96,8 @@ begin
 		END LOOP;
 	else
 		RETURN 0;
-	end if;		
+	end if;
+	RETURN -1;--no encontro convocatoria alguna	
 END;
 $$;
 
