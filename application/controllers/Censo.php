@@ -177,4 +177,36 @@ class Censo extends Validacion {
         }
     }
 
+    public function reporte_posgrado(){
+        $this->template->setTitle('Listado de docentes posgrado');
+        $output['title'] = 'Listado de docentes posgrado';
+        $output['exportar_title'] = 'Exportar';
+        
+        /* $output['catalogos']['result_delegacional'] = $this->cm->get_delegaciones();
+        array_unshift($output['catalogos']['result_delegacional'], ['clave_delegacional'=>'',"nombre"=>'Selecciona OOAD']); 
+        $output['catalogos']['estados_validacion'] = $this->get_estados_validacion_censo_c();
+        array_unshift($output['catalogos']['estados_validacion'], ['id'=>'',"label"=>'Selecciona...']); */
+        $main_content = $this->load->view('reporte/body_reporte_posgrado_censo.tpl.php', $output, true);
+        $this->template->setMainContent($main_content);
+        $this->template->getTemplate();
+    }
+
+    public function datos_reporte_posgrado(){
+        if ($this->input->is_ajax_request()) {
+            $param = []; 
+            
+            $datos_sesion = $this->get_datos_sesion();
+            $datos_rol = $this->get_rol_aplica($datos_sesion);            
+            $output['docentes_reporte'] = [];
+            //pr($datos_sesion);
+            //pr($datos_rol); exit();
+            if($datos_rol['reporte_docentes_posgrado'] == 1){
+                $output = $this->reporte->docentes_reporte_general_censo($datos_rol);
+            }
+            header('Content-Type: application/json; charset=utf-8;');
+            echo json_encode($output);
+
+        }
+    }
+
 }

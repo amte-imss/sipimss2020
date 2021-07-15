@@ -427,7 +427,7 @@ class Validacion extends Informacion_docente {
         $claves_rol = $this->get_roles_usuario(2);
         $conf=['rol_aplica'=>null, 'filtros'=>null, 'rol_docente'=>LNiveles_acceso::Docente, 'bloquea_delegacion' => 0, 
         'is_entidad_designada' => false,'aplica_bandera_separarV1_v2' => 0, 'editar_reg_doc_nuevamente' => 0 , 'btn_activar_registro_docentes_masivo' => 0,
-        'cambiar_validadorN1'=>0, 'reporte_docentes_pregrado'=>0, 'reporte_docentes_enfermeria_tecnicos'=>0
+        'cambiar_validadorN1'=>0, 'reporte_docentes_pregrado'=>0, 'reporte_docentes_enfermeria_tecnicos'=>0, 'reporte_docentes_posgrado'=>0
         ];
         $conf['rol_docente']=LNiveles_acceso::Docente;
         $conf['convocatoria'] = $datos_sesion['convocatoria']['id_convocatoria'];
@@ -443,6 +443,9 @@ class Validacion extends Informacion_docente {
                 break;
                 case 'datos_reporte_enfermeria_tecnicos':
                     $conf['reporte_docentes_enfermeria_tecnicos'] = 1;
+                break;
+                case 'datos_reporte_posgrado':
+                    $conf['reporte_docentes_posgrado'] = 1;
                 break;
             }
                         
